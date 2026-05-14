@@ -1,3 +1,17 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+current_phase: Phase 1 - Workspace Scaffold
+status: Pending
+last_updated: "2026-05-14T16:04:18.833Z"
+progress:
+  total_phases: 14
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+---
+
 # Project State
 
 **Project:** Riplai Web
@@ -26,6 +40,7 @@ See: `.planning/PROJECT.md` (updated 2026-05-14)
 **Goal:** Create the root Turborepo workspace and app/package skeletons so every later phase has a stable place to build.
 
 **Success Criteria:**
+
 1. Root `package.json`, `pnpm-workspace.yaml`, `turbo.json`, root `tsconfig.json`, `.nvmrc`, `.node-version`, and `.gitignore` exist.
 2. `apps/web`, `apps/partner`, `apps/admin`, and all `packages/*` directories exist with package manifests or placeholders.
 3. Root scripts expose workspace build/dev/lint/type-check commands plus app-specific dev commands.
