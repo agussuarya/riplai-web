@@ -29,12 +29,41 @@ riplai-web/
 ├── tsconfig.json                   # root tsconfig (references only)
 │
 ├── apps/
-│   ├── web/                        # Landing page — riplai.id
+│   ├── web/                        # Landing page — riplai.id (port 3001)
 │   │   ├── app/
-│   │   │   ├── layout.tsx
-│   │   │   └── page.tsx            # Hello World: calls GET /health
+│   │   │   ├── layout.tsx          # Root layout: Navbar + Footer + fonts
+│   │   │   ├── globals.css         # @import "tailwindcss" + CSS token vars
+│   │   │   ├── page.tsx            # Home — Hero, Fitur, HowItWorks, Pricing, Testimonials
+│   │   │   ├── fitur/
+│   │   │   │   └── page.tsx        # Full feature breakdown
+│   │   │   ├── harga/
+│   │   │   │   └── page.tsx        # 4-tier pricing table
+│   │   │   ├── demo/
+│   │   │   │   └── page.tsx        # Interactive chat demo (DemoChat component)
+│   │   │   ├── tentang/
+│   │   │   │   └── page.tsx        # About / Tentang Kami
+│   │   │   ├── privacy/
+│   │   │   │   └── page.tsx        # Kebijakan Privasi (UU PDP compliant)
+│   │   │   └── terms/
+│   │   │       └── page.tsx        # Syarat & Ketentuan
 │   │   ├── components/
-│   │   │   └── .gitkeep
+│   │   │   ├── layout/
+│   │   │   │   ├── Navbar.tsx      # Logo + nav + CTA; sticky + mobile hamburger
+│   │   │   │   └── Footer.tsx      # Links, copyright, legal links
+│   │   │   ├── logo/
+│   │   │   │   └── RiplaiLogo.tsx  # Canonical Bubble Ripple SVG + wordmark
+│   │   │   ├── landing/
+│   │   │   │   ├── Hero.tsx
+│   │   │   │   ├── LogoStrip.tsx
+│   │   │   │   ├── FiturGrid.tsx
+│   │   │   │   ├── HowItWorks.tsx
+│   │   │   │   ├── PricingCards.tsx
+│   │   │   │   ├── Testimonials.tsx
+│   │   │   │   └── WaitlistModal.tsx
+│   │   │   └── demo/
+│   │   │       └── DemoChat.tsx    # Scripted interactive chat, 'use client'
+│   │   ├── lib/
+│   │   │   └── fonts.ts            # Plus Jakarta Sans + JetBrains Mono
 │   │   ├── public/
 │   │   │   └── .gitkeep
 │   │   ├── next.config.ts
@@ -760,7 +789,9 @@ export { Avatar } from "./components/Avatar";
 
 ---
 
-### Step 7 — apps/web (Landing Page)
+### Step 7 — apps/web (Landing Page scaffold)
+
+> Full landing page spec and content decisions in: `docs/plans/2026-05-14-landing-page-plan.md`
 
 **File: `apps/web/package.json`**
 ```json
@@ -779,9 +810,8 @@ export { Avatar } from "./components/Avatar";
     "next": "latest",
     "react": "^19",
     "react-dom": "^19",
+    "@heroicons/react": "^2",
     "@riplai/config": "workspace:*",
-    "@riplai/api-client": "workspace:*",
-    "@riplai/types": "workspace:*",
     "@riplai/ui": "workspace:*"
   },
   "devDependencies": {
@@ -793,6 +823,8 @@ export { Avatar } from "./components/Avatar";
   }
 }
 ```
+
+> Note: `@riplai/api-client` is NOT a dependency of apps/web. The landing page is fully static — no API calls. Remove it from deps to keep the bundle clean.
 
 **File: `apps/web/tsconfig.json`**
 ```json
@@ -814,7 +846,7 @@ export { Avatar } from "./components/Avatar";
 import type { NextConfig } from "next";
 
 const config: NextConfig = {
-  transpilePackages: ["@riplai/ui", "@riplai/api-client"],
+  transpilePackages: ["@riplai/ui"],
 };
 
 export default config;
@@ -827,98 +859,133 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   ...baseConfig,
-  content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
+  content: [
+    "./app/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./lib/**/*.{ts,tsx}",
+  ],
 };
 
 export default config;
 ```
 
-**File: `apps/web/app/layout.tsx`**
-```tsx
-import type { Metadata } from "next";
-import "./globals.css";
+**File: `apps/web/lib/fonts.ts`**
+```typescript
+import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 
-export const metadata: Metadata = {
-  title: "Riplai — WA Bot for Indonesian Merchants",
-  description: "Auto-reply WhatsApp messages while you sleep.",
-};
+export const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-sans",
+  display: "swap",
+});
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="id">
-      <body className="bg-white text-gray-900 antialiased">{children}</body>
-    </html>
-  );
-}
+export const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-mono",
+  display: "swap",
+});
 ```
 
 **File: `apps/web/app/globals.css`**
 ```css
 @import "tailwindcss";
+
+:root {
+  --brand-50:   #ECFDF5;
+  --brand-100:  #D1FAE5;
+  --brand-200:  #A7F3D0;
+  --brand-400:  #34D399;
+  --brand-500:  #10B981;
+  --brand-600:  #059669;
+  --brand-700:  #047857;
+  --brand-900:  #064E3B;
+  --accent-100: #E0E7FF;
+  --accent-500: #6366F1;
+  --accent-600: #4F46E5;
+}
 ```
 
-**File: `apps/web/app/page.tsx`** — Hello World with GET /health
+**File: `apps/web/app/layout.tsx`**
 ```tsx
-interface HealthResponse {
-  status: string;
-  service?: string;
-  version?: string;
-}
+import type { Metadata } from "next";
+import { jakarta, mono } from "@/lib/fonts";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
+import "./globals.css";
 
-async function fetchHealth(): Promise<HealthResponse | null> {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080"}/health`,
-      { cache: "no-store" }
-    );
-    return res.ok ? (res.json() as Promise<HealthResponse>) : null;
-  } catch {
-    return null;
-  }
-}
+export const metadata: Metadata = {
+  title: "riplai — Penjawab 24 Jam untuk Bisnis Indonesia",
+  description:
+    "Admin otomatis WhatsApp yang menjawab pertanyaan pelanggan berdasarkan data bisnis kamu. Tanpa perlu angkat telepon.",
+  metadataBase: new URL("https://riplai.id"),
+};
 
-export default async function HomePage() {
-  const health = await fetchHealth();
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-8">
-      <div className="w-full max-w-sm rounded-2xl border border-gray-200 p-6 shadow-sm">
-        <h1 className="mb-4 text-xl font-semibold text-gray-900">Riplai — Web</h1>
-        <p className="mb-3 text-sm text-gray-500">Backend health check</p>
-
-        {health ? (
-          <div className="space-y-2">
-            <StatusRow label="Status"  value={health.status}           ok={health.status === "ok"} />
-            {health.service && <StatusRow label="Service" value={health.service} ok />}
-            {health.version && <StatusRow label="Version" value={health.version} ok />}
-          </div>
-        ) : (
-          <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
-            Backend unreachable — start the api server at localhost:8080
-          </p>
-        )}
-      </div>
-    </main>
-  );
-}
-
-function StatusRow({ label, value, ok }: { label: string; value: string; ok: boolean }) {
-  return (
-    <div className="flex items-center justify-between rounded-lg bg-gray-50 px-3 py-2">
-      <span className="text-sm text-gray-500">{label}</span>
-      <span className={`text-sm font-medium ${ok ? "text-green-600" : "text-red-600"}`}>
-        {value}
-      </span>
-    </div>
+    <html lang="id" className={`${jakarta.variable} ${mono.variable}`}>
+      <body className="bg-white font-sans text-gray-900 antialiased">
+        <Navbar />
+        <main>{children}</main>
+        <Footer />
+      </body>
+    </html>
   );
 }
 ```
+
+**Stub files** — create with minimal placeholder `<div>` export so the app builds. Real content added in landing page phases:
+
+- `app/page.tsx` — Home (beranda)
+- `app/fitur/page.tsx`
+- `app/harga/page.tsx`
+- `app/demo/page.tsx`
+- `app/tentang/page.tsx`
+- `app/privacy/page.tsx`
+- `app/terms/page.tsx`
+- `components/layout/Navbar.tsx`
+- `components/layout/Footer.tsx`
+- `components/logo/RiplaiLogo.tsx`
 
 **File: `apps/web/.env.local`**
 ```
-NEXT_PUBLIC_API_URL=http://localhost:8080
-NEXT_PUBLIC_USE_FIXTURES=false
+NEXT_PUBLIC_APP_URL=http://localhost:3001
 ```
+
+**Exit condition for this step:** `pnpm dev:web` starts on port 3001, renders a page with Navbar and Footer, no TypeScript errors.
+
+---
+
+### Step 7a — apps/web Landing Page (Phase 1: Foundation)
+> See full spec: `docs/plans/2026-05-14-landing-page-plan.md`
+
+- [ ] `components/logo/RiplaiLogo.tsx` — canonical Bubble Ripple SVG, props: `size`, `variant`
+- [ ] `components/layout/Navbar.tsx` — sticky, logo + nav links + CTA + mobile hamburger
+- [ ] `components/layout/Footer.tsx` — columns + legal links + copyright
+
+### Step 7b — apps/web Landing Page (Phase 2: Home page)
+
+- [ ] `components/demo/DemoChat.tsx` — scripted 3-exchange interactive chat, `'use client'`
+- [ ] `components/landing/Hero.tsx` — headline + sub + dual CTA + DemoChat inline
+- [ ] `components/landing/FiturGrid.tsx` — 6-feature 3×2 grid (Heroicons)
+- [ ] `components/landing/HowItWorks.tsx` — 3 numbered steps on brand-50 bg
+- [ ] `components/landing/PricingCards.tsx` — 4 tiers, Growth highlighted, annual toggle UI
+- [ ] `components/landing/Testimonials.tsx` — 3 SMB persona quote cards
+- [ ] `components/landing/WaitlistModal.tsx` — email capture modal, no backend
+- [ ] `app/page.tsx` — assembles all sections
+
+### Step 7c — apps/web Landing Page (Phase 3: Inner pages)
+
+- [ ] `app/fitur/page.tsx` — extended feature breakdown
+- [ ] `app/harga/page.tsx` — full pricing comparison table
+- [ ] `app/demo/page.tsx` — standalone DemoChat + explanatory copy
+- [ ] `app/tentang/page.tsx` — About, placeholder founder story
+
+### Step 7d — apps/web Landing Page (Phase 4: Legal pages)
+
+- [ ] `app/privacy/page.tsx` — full Kebijakan Privasi (Bahasa Indonesia, UU PDP compliant)
+- [ ] `app/terms/page.tsx` — full Syarat & Ketentuan
 
 ---
 
@@ -1003,10 +1070,21 @@ pnpm dev:admin     # http://localhost:3003
 
 ---
 
+## Terminology Correction
+
+The original plan used `apps/merchant` — the design system decision (2026-05-14) renames this to `apps/partner`. All routes and references should use "partner", not "merchant". The `apps/merchant` directory will be renamed to `apps/partner` during scaffolding.
+
+---
+
 ## Out of Scope (this plan)
-- Auth / JWT flow (Phase 3)
-- Inbox / conversation UI (Phase 4)
-- Dashboard (Phase 5)
-- Admin CRUD (Phase 6)
-- PWA manifest (Phase 7)
-- CI/CD (Phase 8)
+
+**In scope (added via Steps 7a–7d):**
+- Landing page: Home, Fitur, Harga, Demo, Tentang, Privacy, Terms — see `docs/plans/2026-05-14-landing-page-plan.md`
+
+**Still out of scope:**
+- Auth / JWT flow
+- Inbox / conversation UI (Partner app)
+- Partner dashboard — Analytics, Knowledge Base, Settings
+- Admin CRUD
+- PWA manifest
+- CI/CD
