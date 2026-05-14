@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riplai — Design Preview</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand:  { 50:'#ECFDF5',100:'#D1FAE5',200:'#A7F3D0',400:'#34D399',500:'#10B981',600:'#059669',700:'#047857',900:'#064E3B' },
+            accent: { 100:'#E0E7FF',500:'#6366F1',600:'#4F46E5' }
+          },
+          fontFamily: { sans:['Plus Jakarta Sans','ui-sans-serif','system-ui'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* ── Semantic color tokens ── */
+    :root {
+      --bg-base:     #F9FAFB;
+      --bg-surface:  #FFFFFF;
+      --bg-subtle:   #F3F4F6;
+      --bg-hover:    #F3F4F6;
+      --border:      #E5E7EB;
+      --border-sub:  #F3F4F6;
+      --text-1:      #111827;
+      --text-2:      #6B7280;
+      --text-3:      #9CA3AF;
+      --brand-sub:   #ECFDF5;
+      --brand-sub2:  #D1FAE5;
+      --brand-text:  #047857;
+      --accent-sub:  #E0E7FF;
+      --accent-text: #4F46E5;
+      --bubble-in:   #FFFFFF;
+      --bubble-in-b: #E5E7EB;
+      --bubble-bot:  #E0E7FF;
+      --bubble-area: #ECE5DD;
+      --needs-bg:    #FEE2E2; --needs-c: #B91C1C;
+      --handled-bg:  #D1FAE5; --handled-c:#047857;
+      --waiting-bg:  #FEF3C7; --waiting-c:#92400E;
+    }
+    html.dark {
+      --bg-base:     #0D1117;
+      --bg-surface:  #161B22;
+      --bg-subtle:   #1C2330;
+      --bg-hover:    #21293A;
+      --border:      #30394A;
+      --border-sub:  #1C2330;
+      --text-1:      #E6EDF3;
+      --text-2:      #8B949E;
+      --text-3:      #6E7681;
+      --brand-sub:   rgba(16,185,129,0.13);
+      --brand-sub2:  rgba(16,185,129,0.22);
+      --brand-text:  #34D399;
+      --accent-sub:  rgba(99,102,241,0.16);
+      --accent-text: #818CF8;
+      --bubble-in:   #1C2330;
+      --bubble-in-b: #30394A;
+      --bubble-bot:  rgba(99,102,241,0.18);
+      --bubble-area: #131C24;
+      --needs-bg:    rgba(239,68,68,0.15);  --needs-c: #F87171;
+      --handled-bg:  rgba(16,185,129,0.15); --handled-c:#34D399;
+      --waiting-bg:  rgba(245,158,11,0.15); --waiting-c:#FCD34D;
+    }
+
+    * { box-sizing: border-box; }
+    body { font-family:'Plus Jakarta Sans',system-ui; margin:0; background:var(--bg-base); }
+
+    /* Switcher bar */
+    #switcher { position:fixed;top:0;left:0;right:0;height:44px;background:var(--bg-surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;padding:0 16px;z-index:100;transition:background .2s,border-color .2s; }
+    #switcher .lbl { font-size:10px;font-weight:700;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;margin-right:4px; }
+    .tab-btn { font-size:12px;font-weight:600;padding:5px 14px;border-radius:9999px;border:none;cursor:pointer;transition:background .15s,color .15s;background:var(--bg-subtle);color:var(--text-2);font-family:inherit; }
+    .tab-btn.active { background:#10B981;color:#fff; }
+    #dark-toggle { margin-left:auto;width:32px;height:32px;border-radius:9999px;border:1px solid var(--border);background:var(--bg-subtle);cursor:pointer;display:flex;align-items:center;justify-content:center; }
+
+    /* Screens */
+    .screen { display:none;position:fixed;top:44px;left:0;right:0;bottom:0; }
+    #s-dashboard { flex-direction:row;overflow:hidden; }
+    #s-landing,#s-components { flex-direction:column;overflow-y:auto; }
+
+    /* Sidebar */
+    .sidebar { width:228px;min-width:228px;background:var(--bg-surface);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100%;overflow:hidden; }
+    .sidebar-logo { padding:16px 16px 12px;border-bottom:1px solid var(--border-sub); }
+    .sidebar-nav { flex:1;padding:8px;display:flex;flex-direction:column;gap:1px; }
+    .nav-item { display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;font-size:13.5px;font-weight:500;color:var(--text-2);text-decoration:none;transition:background .12s; }
+    .nav-item:hover { background:var(--bg-hover); }
+    .nav-item.active { background:var(--brand-sub);color:var(--brand-text);font-weight:600; }
+    .nav-item.active svg { color:#10B981; }
+    .sidebar-footer { padding:12px 16px;border-top:1px solid var(--border-sub); }
+
+    /* Conv list */
+    .conv-list { width:276px;min-width:276px;background:var(--bg-surface);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100%;overflow:hidden; }
+    .conv-list-header { padding:14px 14px 10px;border-bottom:1px solid var(--border-sub);flex-shrink:0; }
+    .conv-items { flex:1;overflow-y:auto; }
+    .conv-item { padding:11px 13px;border-bottom:1px solid var(--border-sub);cursor:pointer;transition:background .12s; }
+    .conv-item:hover { background:var(--bg-hover); }
+    .conv-item.active { background:var(--brand-sub); }
+    .search-input { width:100%;padding:7px 10px 7px 30px;font-size:12.5px;background:var(--bg-subtle);border:1px solid var(--border);border-radius:9999px;outline:none;color:var(--text-1);font-family:inherit; }
+
+    /* Thread */
+    .thread { flex:1;display:flex;flex-direction:column;height:100%;background:var(--bg-base);min-width:0; }
+    .thread-header { background:var(--bg-surface);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0; }
+    .thread-body { flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px; }
+    .thread-reply { background:var(--bg-surface);border-top:1px solid var(--border);padding:12px 16px;flex-shrink:0; }
+    .reply-box { flex:1;background:var(--bg-subtle);border:1px solid var(--border);border-radius:9999px;padding:9px 16px; }
+    .reply-input { width:100%;background:transparent;border:none;outline:none;font-size:13.5px;color:var(--text-1);font-family:inherit; }
+    .reply-input::placeholder { color:var(--text-3); }
+
+    /* Bubbles */
+    .bubble-in  { background:var(--bubble-in); border:1px solid var(--bubble-in-b); border-radius:18px;border-top-left-radius:4px; padding:10px 14px;max-width:290px;box-shadow:0 1px 2px rgba(0,0,0,.06); }
+    .bubble-bot { background:var(--bubble-bot); border-radius:18px;border-top-right-radius:4px; padding:10px 14px;max-width:320px;box-shadow:0 1px 2px rgba(0,0,0,.06); }
+    .bubble-out { background:#10B981; border-radius:18px;border-top-right-radius:4px; padding:10px 14px;max-width:290px;box-shadow:0 1px 2px rgba(0,0,0,.06); }
+    .bubble-text { margin:0;font-size:13.5px;color:var(--text-1); }
+    .bubble-out .bubble-text { color:#fff; }
+    .bubble-meta { margin:4px 0 0;font-size:11px;color:var(--text-3); }
+
+    /* Badges */
+    .badge { display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:9999px;font-size:11.5px;font-weight:600; }
+    .badge-needs   { background:var(--needs-bg);color:var(--needs-c); }
+    .badge-handled { background:var(--handled-bg);color:var(--handled-c); }
+    .badge-waiting { background:var(--waiting-bg);color:var(--waiting-c); }
+    .badge-ai      { background:var(--accent-sub);color:var(--accent-text); }
+    .badge-brand   { background:#10B981;color:#fff; }
+    .badge-muted   { background:var(--bg-subtle);color:var(--text-2); }
+
+    /* Cards */
+    .card { background:var(--bg-surface);border:1.5px solid var(--border);border-radius:18px;padding:18px 20px; }
+    .card-highlight { background:var(--brand-sub);border-color:var(--brand-sub2); }
+
+    /* Landing nav */
+    .landing-nav { background:var(--bg-surface);border-bottom:1px solid var(--border);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:sticky;top:0;z-index:10; }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar { width:5px;height:5px; }
+    ::-webkit-scrollbar-track { background:transparent; }
+    ::-webkit-scrollbar-thumb { background:var(--border);border-radius:9999px; }
+
+    /* Transitions */
+    .sidebar,.conv-list,.thread,.thread-header,.thread-reply,.landing-nav,
+    #switcher,.card,.reply-box { transition:background .2s,border-color .2s; }
+  </style>
+</head>
+<body>
+
+<!-- ── Switcher ── -->
+<div id="switcher">
+  <span class="lbl">Preview</span>
+  <button class="tab-btn active" onclick="show('dashboard')">Partner Dashboard</button>
+  <button class="tab-btn" onclick="show('landing')">Landing Page</button>
+  <button class="tab-btn" onclick="show('components')">Components</button>
+  <button id="dark-toggle" onclick="toggleDark()" title="Toggle dark mode">
+    <svg id="icon-sun" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--text-2)" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><path stroke-linecap="round" d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    <svg id="icon-moon" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="var(--text-2)" stroke-width="2"><path stroke-linecap="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+  </button>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SCREEN 1 — PARTNER DASHBOARD
+══════════════════════════════════════ -->
+<div id="s-dashboard" class="screen" style="display:flex;">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:34px;height:34px;background:#10B981;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="20" height="23" viewBox="0 0 40 46" fill="none">
+            <path d="M10,2 H30 Q38,2 38,10 V28 Q38,36 30,36 H16 L6,46 L6,36 Q2,36 2,28 V10 Q2,2 10,2 Z" fill="white" opacity=".93"/>
+            <circle cx="12" cy="19" r="3" fill="#059669"/>
+            <path d="M12,13 A6,6 0 0,1 12,25" stroke="#059669" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <path d="M12,8 A11,11 0 0,1 12,30" stroke="#059669" stroke-width="2.2" stroke-linecap="round" fill="none" opacity=".6"/>
+            <path d="M12,3 A16,16 0 0,1 12,35" stroke="#059669" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".35"/>
+          </svg>
+        </div>
+        <span style="font-size:17px;font-weight:700;color:var(--text-1);letter-spacing:-.02em;">riplai</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+        Inbox
+        <span style="margin-left:auto;background:#10B981;color:#fff;font-size:11px;font-weight:700;padding:1px 7px;border-radius:9999px;">3</span>
+      </a>
+      <a href="#" class="nav-item">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        Analytics
+      </a>
+      <a href="#" class="nav-item">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        Knowledge Base
+      </a>
+      <a href="#" class="nav-item">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Settings
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:32px;height:32px;border-radius:9999px;background:#10B981;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;flex-shrink:0;">AS</div>
+        <div style="min-width:0;">
+          <p style="margin:0;font-size:13px;font-weight:600;color:var(--text-1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Apotek Sehat</p>
+          <p style="margin:0;font-size:11px;font-weight:700;color:#6366F1;">Starter plan</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Conversation list -->
+  <div class="conv-list">
+    <div class="conv-list-header">
+      <h1 style="margin:0 0 10px;font-size:16px;font-weight:700;color:var(--text-1);">Inbox</h1>
+      <div style="position:relative;">
+        <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="var(--text-3)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
+        <input class="search-input" type="text" placeholder="Cari percakapan...">
+      </div>
+    </div>
+    <div class="conv-items">
+
+      <div class="conv-item active">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <div style="width:38px;height:38px;border-radius:9999px;background:#10B981;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;flex-shrink:0;">56</div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+              <span style="font-size:13px;font-weight:700;color:var(--text-1);">0812-3456-7890</span>
+              <span style="font-size:11px;color:var(--text-3);">2 mnt</span>
+            </div>
+            <p style="margin:0;font-size:12px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Apakah buka hari Minggu besok?</p>
+            <span class="badge badge-needs" style="margin-top:5px;">Needs Reply</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="conv-item">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <div style="width:38px;height:38px;border-radius:9999px;background:#6366F1;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;flex-shrink:0;">78</div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+              <span style="font-size:13px;font-weight:600;color:var(--text-1);">0856-7890-1234</span>
+              <span style="font-size:11px;color:var(--text-3);">15 mnt</span>
+            </div>
+            <p style="margin:0;font-size:12px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Terima kasih atas informasinya!</p>
+            <span class="badge badge-handled" style="margin-top:5px;">Bot Handled</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="conv-item">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <div style="width:38px;height:38px;border-radius:9999px;background:#64748B;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;flex-shrink:0;">90</div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+              <span style="font-size:13px;font-weight:600;color:var(--text-1);">0878-9012-3456</span>
+              <span style="font-size:11px;color:var(--text-3);">1 jam</span>
+            </div>
+            <p style="margin:0;font-size:12px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Obat untuk demam ada stoknya?</p>
+            <span class="badge badge-waiting" style="margin-top:5px;">Waiting</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="conv-item">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <div style="width:38px;height:38px;border-radius:9999px;background:#059669;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;flex-shrink:0;">12</div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+              <span style="font-size:13px;font-weight:600;color:var(--text-1);">0821-2345-6789</span>
+              <span style="font-size:11px;color:var(--text-3);">3 jam</span>
+            </div>
+            <p style="margin:0;font-size:12px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Konsultasi dokter umum berapa?</p>
+            <span class="badge badge-handled" style="margin-top:5px;">Bot Handled</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="conv-item" style="border-bottom:none;">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <div style="width:38px;height:38px;border-radius:9999px;background:#8B5CF6;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;flex-shrink:0;">34</div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+              <span style="font-size:13px;font-weight:600;color:var(--text-1);">0813-4567-8901</span>
+              <span style="font-size:11px;color:var(--text-3);">Kemarin</span>
+            </div>
+            <p style="margin:0;font-size:12px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Jam buka apotek sampai jam berapa?</p>
+            <span class="badge badge-handled" style="margin-top:5px;">Bot Handled</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Thread -->
+  <div class="thread">
+    <div class="thread-header">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:36px;height:36px;border-radius:9999px;background:#10B981;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;">56</div>
+        <div>
+          <p style="margin:0;font-size:14px;font-weight:700;color:var(--text-1);">0812-3456-7890</p>
+          <p style="margin:0;font-size:12px;color:var(--text-3);">Terakhir aktif 2 menit lalu</p>
+        </div>
+      </div>
+      <span class="badge badge-needs">Needs Reply</span>
+    </div>
+
+    <div class="thread-body">
+
+      <div style="display:flex;align-items:flex-end;gap:8px;">
+        <div style="width:27px;height:27px;border-radius:9999px;background:#10B981;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;flex-shrink:0;">56</div>
+        <div>
+          <div class="bubble-in"><p class="bubble-text">Halo, apotek masih buka ga hari ini?</p></div>
+          <p class="bubble-meta" style="margin-left:4px;">08:30</p>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:flex-end;gap:8px;flex-direction:row-reverse;">
+        <div style="width:27px;height:27px;border-radius:9999px;background:#6366F1;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1.5l.6 1.9 2 .6-2 .7L6 6.5l-.6-1.8-2-.7 2-.6z" fill="white"/></svg>
+        </div>
+        <div>
+          <div class="bubble-bot"><p class="bubble-text">Halo! 😊 Apotek Sehat buka setiap hari:<br>Senin–Sabtu 08.00–21.00 WIB<br>Minggu 09.00–17.00 WIB<br><br>Ada yang bisa kami bantu?</p></div>
+          <p class="bubble-meta" style="margin-right:4px;text-align:right;">08:30 · Bot ✦</p>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:flex-end;gap:8px;">
+        <div style="width:27px;height:27px;border-radius:9999px;background:#10B981;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;flex-shrink:0;">56</div>
+        <div>
+          <div class="bubble-in"><p class="bubble-text">Stok paracetamol 500mg ada?</p></div>
+          <p class="bubble-meta" style="margin-left:4px;">08:31</p>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:flex-end;gap:8px;flex-direction:row-reverse;">
+        <div style="width:27px;height:27px;border-radius:9999px;background:#6366F1;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1.5l.6 1.9 2 .6-2 .7L6 6.5l-.6-1.8-2-.7 2-.6z" fill="white"/></svg>
+        </div>
+        <div>
+          <div class="bubble-bot"><p class="bubble-text">Paracetamol 500mg tersedia ✓<br>Rp 500/tablet · Rp 8.000/strip.<br>Mau kami sisihkan stoknya?</p></div>
+          <p class="bubble-meta" style="margin-right:4px;text-align:right;">08:31 · Bot ✦</p>
+        </div>
+      </div>
+
+      <!-- Unanswered — highlighted border -->
+      <div style="display:flex;align-items:flex-end;gap:8px;">
+        <div style="width:27px;height:27px;border-radius:9999px;background:#10B981;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;flex-shrink:0;">56</div>
+        <div>
+          <div class="bubble-in" style="border-color:#F87171;"><p class="bubble-text">Apakah buka hari Minggu besok?</p></div>
+          <p class="bubble-meta" style="margin-left:4px;color:#EF4444;">08:33 · Menunggu balasan</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="thread-reply">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="reply-box" style="display:flex;">
+          <input class="reply-input" type="text" placeholder="Ketik balasan manual...">
+        </div>
+        <button style="background:#10B981;color:#fff;border:none;border-radius:9999px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:inherit;white-space:nowrap;">
+          Kirim
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+        </button>
+      </div>
+      <p style="margin:8px 0 0 2px;font-size:11.5px;color:var(--text-3);">Bot tidak dapat menjawab ini. Balas manual atau <span style="color:#6366F1;font-weight:600;cursor:pointer;">beri tahu bot</span>.</p>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SCREEN 2 — LANDING PAGE
+══════════════════════════════════════ -->
+<div id="s-landing" class="screen">
+
+  <nav class="landing-nav">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="width:32px;height:32px;background:#10B981;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="18" height="21" viewBox="0 0 40 46" fill="none"><path d="M10,2 H30 Q38,2 38,10 V28 Q38,36 30,36 H16 L6,46 L6,36 Q2,36 2,28 V10 Q2,2 10,2 Z" fill="white" opacity=".93"/><circle cx="12" cy="19" r="3" fill="#059669"/><path d="M12,13 A6,6 0 0,1 12,25" stroke="#059669" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M12,8 A11,11 0 0,1 12,30" stroke="#059669" stroke-width="2.2" stroke-linecap="round" fill="none" opacity=".6"/><path d="M12,3 A16,16 0 0,1 12,35" stroke="#059669" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".35"/></svg>
+      </div>
+      <span style="font-size:16px;font-weight:700;color:var(--text-1);letter-spacing:-.02em;">riplai</span>
+    </div>
+    <div style="display:flex;gap:28px;">
+      <a href="#" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Fitur</a>
+      <a href="#" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Harga</a>
+      <a href="#" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Tentang</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a href="#" style="font-size:14px;font-weight:600;color:var(--text-1);text-decoration:none;">Masuk</a>
+      <a href="#" style="font-size:14px;font-weight:700;color:#fff;background:#10B981;padding:8px 20px;border-radius:9999px;text-decoration:none;">Coba Gratis</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section style="background:var(--bg-surface);padding:72px 40px 56px;text-align:center;transition:background .2s;">
+    <div style="max-width:680px;margin:0 auto;">
+      <span style="display:inline-flex;align-items:center;gap:6px;background:var(--accent-sub);color:var(--accent-text);font-size:12px;font-weight:700;padding:5px 14px;border-radius:9999px;margin-bottom:22px;">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><path d="M5 1l.6 1.8 1.9.7-1.9.7L5 6 4.4 4.2 2.5 3.5l1.9-.7z"/></svg>
+        Admin Otomatis WhatsApp
+      </span>
+      <h1 style="font-size:46px;font-weight:800;color:var(--text-1);line-height:1.13;margin:0 0 18px;letter-spacing:-.03em;">
+        WhatsApp kamu aktif<br><span style="color:#10B981;">24 jam</span>, bahkan saat tidur.
+      </h1>
+      <p style="font-size:17px;color:var(--text-2);line-height:1.65;margin:0 0 32px;max-width:480px;margin-left:auto;margin-right:auto;">
+        Riplai menjawab pertanyaan pelanggan secara otomatis berdasarkan data bisnis kamu. Tidak ada yang terlewat.
+      </p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <a href="#" style="font-size:15px;font-weight:700;color:#fff;background:#10B981;padding:13px 28px;border-radius:9999px;text-decoration:none;">Coba Gratis 14 Hari →</a>
+        <a href="#" style="font-size:15px;font-weight:600;color:var(--text-1);background:var(--bg-subtle);border:1.5px solid var(--border);padding:13px 28px;border-radius:9999px;text-decoration:none;">Lihat Demo</a>
+      </div>
+      <p style="font-size:12px;color:var(--text-3);margin-top:14px;">Tidak perlu kartu kredit. Setup dalam 5 menit.</p>
+    </div>
+
+    <!-- Demo bot widget -->
+    <div style="max-width:350px;margin:56px auto 0;border:1px solid var(--border);border-radius:22px;box-shadow:0 8px 40px rgba(0,0,0,.1);overflow:hidden;text-align:left;">
+      <div style="background:#075E54;padding:12px 16px;display:flex;align-items:center;gap:10px;">
+        <div style="width:36px;height:36px;border-radius:9999px;background:#128C7E;display:flex;align-items:center;justify-content:center;">
+          <svg width="19" height="22" viewBox="0 0 40 46" fill="none"><path d="M10,2 H30 Q38,2 38,10 V28 Q38,36 30,36 H16 L6,46 L6,36 Q2,36 2,28 V10 Q2,2 10,2 Z" fill="#10B981"/><circle cx="12" cy="19" r="3" fill="white"/><path d="M12,13 A6,6 0 0,1 12,25" stroke="white" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M12,8 A11,11 0 0,1 12,30" stroke="white" stroke-width="2.2" stroke-linecap="round" fill="none" opacity=".7"/></svg>
+        </div>
+        <div>
+          <p style="margin:0;font-size:14px;font-weight:600;color:#fff;">Apotek Sehat</p>
+          <p style="margin:0;font-size:11px;color:#A7F3D0;">online</p>
+        </div>
+      </div>
+      <div id="demo-msgs" style="background:var(--bubble-area);padding:14px;min-height:172px;display:flex;flex-direction:column;gap:10px;transition:background .2s;">
+        <div style="display:flex;justify-content:flex-start;">
+          <div style="background:var(--bubble-in);border-radius:8px;border-top-left-radius:2px;padding:8px 11px;max-width:230px;box-shadow:0 1px 2px rgba(0,0,0,.08);">
+            <p style="margin:0;font-size:13px;color:var(--text-1);">Halo, jam buka sampai jam berapa?</p>
+            <p style="margin:3px 0 0;font-size:10px;color:var(--text-3);text-align:right;">09:00</p>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;">
+          <div style="background:#DCF8C6;border-radius:8px;border-top-right-radius:2px;padding:8px 11px;max-width:250px;box-shadow:0 1px 2px rgba(0,0,0,.08);">
+            <p style="margin:0;font-size:13px;color:#111827;">Halo! 😊 Kami buka Senin–Sabtu 08.00–21.00 WIB, Minggu 09.00–17.00 WIB. Ada yang bisa dibantu?</p>
+            <p style="margin:3px 0 0;font-size:10px;color:#6B7280;text-align:right;">09:00 ✓✓</p>
+          </div>
+        </div>
+      </div>
+      <div style="background:var(--bg-subtle);padding:10px 12px;display:flex;gap:8px;align-items:center;border-top:1px solid var(--border);transition:background .2s;">
+        <input id="demo-input" type="text" placeholder="Coba: stok obat batuk ada?" onkeypress="handleDemo(event)" style="flex:1;background:var(--bg-surface);border:1px solid var(--border);border-radius:9999px;padding:7px 13px;font-size:12.5px;outline:none;font-family:inherit;color:var(--text-1);">
+        <button onclick="sendDemo()" style="width:34px;height:34px;background:#10B981;border:none;border-radius:9999px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+        </button>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--text-3);margin-top:12px;">Coba ketik: "stok paracetamol?" atau "harga konsultasi"</p>
+  </section>
+
+  <!-- How it works -->
+  <section style="background:var(--bg-base);padding:64px 40px;transition:background .2s;">
+    <div style="max-width:840px;margin:0 auto;">
+      <h2 style="text-align:center;font-size:26px;font-weight:800;color:var(--text-1);margin:0 0 44px;letter-spacing:-.02em;">Cara kerjanya sederhana</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+        <div style="text-align:center;">
+          <div style="width:52px;height:52px;background:var(--brand-sub2);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:24px;">💬</div>
+          <h3 style="font-size:15px;font-weight:700;color:var(--text-1);margin:0 0 8px;">1. Pelanggan chat</h3>
+          <p style="font-size:13.5px;color:var(--text-2);margin:0;line-height:1.6;">Pelanggan kirim pesan WA kapan saja — siang maupun malam.</p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:52px;height:52px;background:var(--accent-sub);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:24px;">✦</div>
+          <h3 style="font-size:15px;font-weight:700;color:var(--text-1);margin:0 0 8px;">2. Jago balas beraksi</h3>
+          <p style="font-size:13.5px;color:var(--text-2);margin:0;line-height:1.6;">Riplai membaca data bisnis kamu dan menjawab dalam hitungan detik.</p>
+        </div>
+        <div style="text-align:center;">
+          <div style="width:52px;height:52px;background:var(--brand-sub2);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:24px;">📊</div>
+          <h3 style="font-size:15px;font-weight:700;color:var(--text-1);margin:0 0 8px;">3. Kamu pantau</h3>
+          <p style="font-size:13.5px;color:var(--text-2);margin:0;line-height:1.6;">Monitor semua percakapan dari dashboard. Balas manual jika perlu.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section style="background:var(--bg-surface);padding:64px 40px;transition:background .2s;">
+    <div style="max-width:880px;margin:0 auto;">
+      <h2 style="text-align:center;font-size:26px;font-weight:800;color:var(--text-1);margin:0 0 6px;letter-spacing:-.02em;">Harga transparan, tanpa kejutan</h2>
+      <p style="text-align:center;font-size:14px;color:var(--text-3);margin:0 0 44px;">Mulai gratis, upgrade kapan saja.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
+
+        <div class="card">
+          <h3 style="margin:0 0 4px;font-size:15px;font-weight:700;color:var(--text-1);">Free</h3>
+          <p style="margin:0 0 4px;font-size:30px;font-weight:800;color:var(--text-1);">Rp 0</p>
+          <p style="margin:0 0 18px;font-size:12px;color:var(--text-3);">Selamanya gratis</p>
+          <ul style="margin:0 0 18px;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;">
+            <li style="font-size:13.5px;color:var(--text-2);display:flex;gap:8px;"><span style="color:#10B981;font-weight:700;">✓</span>50 balasan / bulan</li>
+            <li style="font-size:13.5px;color:var(--text-2);display:flex;gap:8px;"><span style="color:#10B981;font-weight:700;">✓</span>1 nomor WA</li>
+            <li style="font-size:13.5px;color:var(--text-2);display:flex;gap:8px;"><span style="color:#10B981;font-weight:700;">✓</span>Knowledge base dasar</li>
+          </ul>
+          <button style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:9999px;background:transparent;font-size:13.5px;font-weight:700;color:var(--text-1);cursor:pointer;font-family:inherit;">Mulai Gratis</button>
+        </div>
+
+        <div class="card" style="border-color:#10B981;border-width:2px;position:relative;">
+          <span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#10B981;color:#fff;font-size:11px;font-weight:700;padding:3px 12px;border-radius:9999px;white-space:nowrap;">Paling Populer</span>
+          <h3 style="margin:0 0 4px;font-size:15px;font-weight:700;color:var(--text-1);">Starter</h3>
+          <p style="margin:0 0 4px;font-size:30px;font-weight:800;color:var(--text-1);">Rp 149k</p>
+          <p style="margin:0 0 18px;font-size:12px;color:var(--text-3);">per bulan</p>
+          <ul style="margin:0 0 18px;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;">
+            <li style="font-size:13.5px;color:var(--text-2);display:flex;gap:8px;"><span style="color:#10B981;font-weight:700;">✓</span>500 balasan / bulan</li>
+            <li style="font-size:13.5px;color:var(--text-2);display:flex;gap:8px;"><span style="color:#10B981;font-weight:700;">✓</span>1 nomor WA</li>
+            <li style="font-size:13.5px;color:var(--text-2);display:flex;gap:8px;"><span style="color:#10B981;font-weight:700;">✓</span>Knowledge base lengkap</li>
+            <li style="font-size:13.5px;color:var(--text-2);display:flex;gap:8px;"><span style="color:#10B981;font-weight:700;">✓</span>Analytics dasar</li>
+          </ul>
+          <button style="width:100%;padding:10px;border:none;border-radius:9999px;background:#10B981;font-size:13.5px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;">Coba 14 Hari Gratis</button>
+        </div>
+
+        <div class="card">
+          <h3 style="margin:0 0 4px;font-size:15px;font-weight:700;color:var(--text-1);">Growth</h3>
+          <p style="margin:0 0 4px;font-size:30px;font-weight:800;color:var(--text-1);">Rp 349k</p>
+          <p style="margin:0 0 18px;font-size:12px;color:var(--text-3);">per bulan</p>
+          <ul style="margin:0 0 18px;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;">
+            <li style="font-size:13.5px;color:var(--text-2);display:flex;gap:8px;"><span style="color:#10B981;font-weight:700;">✓</span>2.000 balasan / bulan</li>
+            <li style="font-size:13.5px;color:var(--text-2);display:flex;gap:8px;"><span style="color:#10B981;font-weight:700;">✓</span>3 nomor WA</li>
+            <li style="font-size:13.5px;color:var(--text-2);display:flex;gap:8px;"><span style="color:#10B981;font-weight:700;">✓</span>Analytics lengkap</li>
+            <li style="font-size:13.5px;color:var(--text-2);display:flex;gap:8px;"><span style="color:#10B981;font-weight:700;">✓</span>Prioritas support</li>
+          </ul>
+          <button style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:9999px;background:transparent;font-size:13.5px;font-weight:700;color:var(--text-1);cursor:pointer;font-family:inherit;">Pilih Growth</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer — always dark -->
+  <footer style="background:#0D1117;padding:44px 40px 24px;color:#8B949E;flex-shrink:0;">
+    <div style="max-width:880px;margin:0 auto;">
+      <div style="display:flex;justify-content:space-between;gap:40px;margin-bottom:32px;flex-wrap:wrap;">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div style="width:28px;height:28px;background:#10B981;border-radius:8px;display:flex;align-items:center;justify-content:center;">
+              <svg width="14" height="16" viewBox="0 0 40 46" fill="none"><path d="M10,2 H30 Q38,2 38,10 V28 Q38,36 30,36 H16 L6,46 L6,36 Q2,36 2,28 V10 Q2,2 10,2 Z" fill="white" opacity=".93"/><circle cx="12" cy="19" r="3" fill="#059669"/><path d="M12,13 A6,6 0 0,1 12,25" stroke="#059669" stroke-width="3.2" stroke-linecap="round" fill="none"/><path d="M12,8 A11,11 0 0,1 12,30" stroke="#059669" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".5"/></svg>
+            </div>
+            <span style="font-size:15px;font-weight:700;color:#E6EDF3;">riplai</span>
+          </div>
+          <p style="font-size:13px;max-width:200px;line-height:1.6;margin:0;">Penjawab 24 jam untuk bisnis Indonesia yang tidak pernah tidur.</p>
+        </div>
+        <div style="display:flex;gap:44px;">
+          <div>
+            <p style="font-size:13px;font-weight:600;color:#E6EDF3;margin:0 0 10px;">Produk</p>
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <a href="#" style="font-size:13px;color:#8B949E;text-decoration:none;">Fitur</a>
+              <a href="#" style="font-size:13px;color:#8B949E;text-decoration:none;">Harga</a>
+              <a href="#" style="font-size:13px;color:#8B949E;text-decoration:none;">Demo</a>
+            </div>
+          </div>
+          <div>
+            <p style="font-size:13px;font-weight:600;color:#E6EDF3;margin:0 0 10px;">Legal</p>
+            <div style="display:flex;flex-direction:column;gap:7px;">
+              <a href="#" style="font-size:13px;color:#8B949E;text-decoration:none;">Kebijakan Privasi</a>
+              <a href="#" style="font-size:13px;color:#8B949E;text-decoration:none;">Syarat & Ketentuan</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #21262D;padding-top:18px;text-align:center;font-size:12px;">© 2026 Riplai. Dibuat di Indonesia 🇮🇩</div>
+    </div>
+  </footer>
+
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SCREEN 3 — COMPONENTS
+══════════════════════════════════════ -->
+<div id="s-components" class="screen">
+<div style="max-width:840px;margin:0 auto;padding:32px 24px 60px;">
+  <h1 style="font-size:20px;font-weight:800;color:var(--text-1);margin:0 0 28px;letter-spacing:-.02em;">Component Library</h1>
+
+  <!-- Logo -->
+  <section style="margin-bottom:32px;">
+    <p style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;">Logo</p>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;">
+      <div class="card" style="display:flex;align-items:center;gap:10px;padding:16px 22px;">
+        <div style="width:34px;height:34px;background:#10B981;border-radius:10px;display:flex;align-items:center;justify-content:center;"><svg width="20" height="23" viewBox="0 0 40 46" fill="none"><path d="M10,2 H30 Q38,2 38,10 V28 Q38,36 30,36 H16 L6,46 L6,36 Q2,36 2,28 V10 Q2,2 10,2 Z" fill="white" opacity=".92"/><circle cx="12" cy="19" r="3" fill="#059669"/><path d="M12,13 A6,6 0 0,1 12,25" stroke="#059669" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M12,8 A11,11 0 0,1 12,30" stroke="#059669" stroke-width="2.2" stroke-linecap="round" fill="none" opacity=".6"/><path d="M12,3 A16,16 0 0,1 12,35" stroke="#059669" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".35"/></svg></div>
+        <span style="font-size:18px;font-weight:700;color:var(--text-1);letter-spacing:-.02em;">riplai</span>
+      </div>
+      <div class="card" style="display:flex;align-items:center;justify-content:center;padding:16px 20px;">
+        <div style="width:40px;height:40px;background:#10B981;border-radius:12px;display:flex;align-items:center;justify-content:center;"><svg width="23" height="27" viewBox="0 0 40 46" fill="none"><path d="M10,2 H30 Q38,2 38,10 V28 Q38,36 30,36 H16 L6,46 L6,36 Q2,36 2,28 V10 Q2,2 10,2 Z" fill="white" opacity=".92"/><circle cx="12" cy="19" r="3" fill="#059669"/><path d="M12,13 A6,6 0 0,1 12,25" stroke="#059669" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M12,8 A11,11 0 0,1 12,30" stroke="#059669" stroke-width="2.2" stroke-linecap="round" fill="none" opacity=".6"/><path d="M12,3 A16,16 0 0,1 12,35" stroke="#059669" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".35"/></svg></div>
+      </div>
+      <div style="background:#111827;border-radius:18px;padding:16px 22px;display:flex;align-items:center;gap:10px;">
+        <div style="width:34px;height:34px;background:#10B981;border-radius:10px;display:flex;align-items:center;justify-content:center;"><svg width="20" height="23" viewBox="0 0 40 46" fill="none"><path d="M10,2 H30 Q38,2 38,10 V28 Q38,36 30,36 H16 L6,46 L6,36 Q2,36 2,28 V10 Q2,2 10,2 Z" fill="white" opacity=".92"/><circle cx="12" cy="19" r="3" fill="#059669"/><path d="M12,13 A6,6 0 0,1 12,25" stroke="#059669" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M12,8 A11,11 0 0,1 12,30" stroke="#059669" stroke-width="2.2" stroke-linecap="round" fill="none" opacity=".6"/><path d="M12,3 A16,16 0 0,1 12,35" stroke="#059669" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".35"/></svg></div>
+        <span style="font-size:18px;font-weight:700;color:#fff;letter-spacing:-.02em;">riplai</span>
+      </div>
+      <div class="card" style="display:flex;align-items:center;padding:16px 22px;">
+        <span style="font-size:22px;font-weight:700;color:var(--text-1);letter-spacing:-.02em;">riplai</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Colors -->
+  <section style="margin-bottom:32px;">
+    <p style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;">Colors</p>
+    <div class="card" style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <p style="font-size:12px;font-weight:600;color:var(--text-3);margin:0 0 8px;">Brand (Emerald) — primary</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <div style="text-align:center;"><div style="width:42px;height:42px;background:#ECFDF5;border-radius:10px;border:1px solid var(--border);"></div><p style="margin:4px 0 0;font-size:10px;color:var(--text-3);">50</p></div>
+          <div style="text-align:center;"><div style="width:42px;height:42px;background:#D1FAE5;border-radius:10px;"></div><p style="margin:4px 0 0;font-size:10px;color:var(--text-3);">100</p></div>
+          <div style="text-align:center;"><div style="width:42px;height:42px;background:#A7F3D0;border-radius:10px;"></div><p style="margin:4px 0 0;font-size:10px;color:var(--text-3);">200</p></div>
+          <div style="text-align:center;"><div style="width:42px;height:42px;background:#34D399;border-radius:10px;"></div><p style="margin:4px 0 0;font-size:10px;color:var(--text-3);">400</p></div>
+          <div style="text-align:center;"><div style="width:42px;height:42px;background:#10B981;border-radius:10px;"></div><p style="margin:4px 0 0;font-size:10px;color:#10B981;font-weight:700;">500★</p></div>
+          <div style="text-align:center;"><div style="width:42px;height:42px;background:#059669;border-radius:10px;"></div><p style="margin:4px 0 0;font-size:10px;color:var(--text-3);">600</p></div>
+          <div style="text-align:center;"><div style="width:42px;height:42px;background:#047857;border-radius:10px;"></div><p style="margin:4px 0 0;font-size:10px;color:var(--text-3);">700</p></div>
+          <div style="text-align:center;"><div style="width:42px;height:42px;background:#064E3B;border-radius:10px;"></div><p style="margin:4px 0 0;font-size:10px;color:var(--text-3);">900</p></div>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:12px;font-weight:600;color:var(--text-3);margin:0 0 8px;">Accent (Indigo) — bot / otomatis</p>
+        <div style="display:flex;gap:8px;">
+          <div style="text-align:center;"><div style="width:42px;height:42px;background:#E0E7FF;border-radius:10px;"></div><p style="margin:4px 0 0;font-size:10px;color:var(--text-3);">100</p></div>
+          <div style="text-align:center;"><div style="width:42px;height:42px;background:#6366F1;border-radius:10px;"></div><p style="margin:4px 0 0;font-size:10px;color:#6366F1;font-weight:700;">500★</p></div>
+          <div style="text-align:center;"><div style="width:42px;height:42px;background:#4F46E5;border-radius:10px;"></div><p style="margin:4px 0 0;font-size:10px;color:var(--text-3);">600</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Buttons -->
+  <section style="margin-bottom:32px;">
+    <p style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;">Buttons — Plus Jakarta Sans · rounded-full</p>
+    <div class="card" style="display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span style="font-size:11px;color:var(--text-3);width:56px;flex-shrink:0;">Primary</span>
+        <button style="background:#10B981;color:#fff;border:none;border-radius:9999px;padding:5px 13px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">Small</button>
+        <button style="background:#10B981;color:#fff;border:none;border-radius:9999px;padding:9px 22px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;">Default</button>
+        <button style="background:#10B981;color:#fff;border:none;border-radius:9999px;padding:12px 28px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;">Large</button>
+        <button style="background:#34D399;color:#fff;border:none;border-radius:9999px;padding:9px 22px;font-size:13.5px;font-weight:700;cursor:not-allowed;font-family:inherit;opacity:.55;">Disabled</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span style="font-size:11px;color:var(--text-3);width:56px;flex-shrink:0;">Others</span>
+        <button style="background:transparent;color:var(--text-1);border:1.5px solid var(--border);border-radius:9999px;padding:9px 22px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:inherit;">Secondary</button>
+        <button style="background:transparent;color:#059669;border:none;border-radius:9999px;padding:9px 22px;font-size:13.5px;font-weight:600;cursor:pointer;font-family:inherit;">Ghost</button>
+        <button style="background:#6366F1;color:#fff;border:none;border-radius:9999px;padding:9px 22px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:6px;">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1.5l.6 1.9 2 .6-2 .7L6 6.5l-.6-1.8-2-.7 2-.6z" fill="white"/></svg>
+          Bot Action
+        </button>
+        <button style="background:#DC2626;color:#fff;border:none;border-radius:9999px;padding:9px 22px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;">Danger</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Badges -->
+  <section style="margin-bottom:32px;">
+    <p style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;">Badges</p>
+    <div class="card" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+      <span class="badge badge-needs">Needs Reply</span>
+      <span class="badge badge-handled">Bot Handled</span>
+      <span class="badge badge-waiting">Waiting</span>
+      <span class="badge badge-ai">
+        Bot
+      </span>
+      <span style="width:1px;height:18px;background:var(--border);"></span>
+      <span class="badge badge-handled">● Active</span>
+      <span class="badge badge-muted">○ Inactive</span>
+      <span class="badge badge-ai">Growth</span>
+      <span class="badge badge-brand">Starter</span>
+      <span class="badge badge-muted">Free</span>
+    </div>
+  </section>
+
+  <!-- Inputs -->
+  <section style="margin-bottom:32px;">
+    <p style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;">Form Inputs</p>
+    <div class="card" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+      <div>
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--text-2);margin-bottom:5px;">Nama Bisnis</label>
+        <input type="text" value="Apotek Sehat Sentosa" style="width:100%;border:1.5px solid #10B981;border-radius:12px;padding:9px 13px;font-size:13.5px;font-family:inherit;outline:none;box-shadow:0 0 0 3px rgba(16,185,129,.12);box-sizing:border-box;color:var(--text-1);background:var(--bg-surface);">
+      </div>
+      <div>
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--text-2);margin-bottom:5px;">Nomor WhatsApp</label>
+        <input type="text" placeholder="628123456789" style="width:100%;border:1.5px solid var(--border);border-radius:12px;padding:9px 13px;font-size:13.5px;font-family:inherit;outline:none;box-sizing:border-box;color:var(--text-3);background:var(--bg-surface);">
+      </div>
+      <div>
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--text-2);margin-bottom:5px;">Email <span style="color:#EF4444;">*</span></label>
+        <input type="text" value="bukan-email" style="width:100%;border:1.5px solid #EF4444;border-radius:12px;padding:9px 13px;font-size:13.5px;font-family:inherit;outline:none;box-shadow:0 0 0 3px rgba(239,68,68,.1);box-sizing:border-box;color:var(--text-1);background:var(--bg-surface);">
+        <p style="margin:5px 0 0 2px;font-size:12px;color:#EF4444;">Format email tidak valid.</p>
+      </div>
+      <div>
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--text-2);margin-bottom:5px;">Plan</label>
+        <select style="width:100%;border:1.5px solid var(--border);border-radius:12px;padding:9px 13px;font-size:13.5px;font-family:inherit;outline:none;box-sizing:border-box;color:var(--text-1);background:var(--bg-surface);">
+          <option>Starter — Rp 149k/bln</option>
+          <option>Growth — Rp 349k/bln</option>
+          <option>Free</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <!-- Typography -->
+  <section style="margin-bottom:32px;">
+    <p style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;">Typography — Plus Jakarta Sans</p>
+    <div class="card" style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:baseline;gap:14px;"><span style="font-size:10px;color:var(--text-3);width:54px;flex-shrink:0;">800/48</span><span style="font-size:40px;font-weight:800;color:var(--text-1);letter-spacing:-.03em;line-height:1;">Hero</span></div>
+      <div style="display:flex;align-items:baseline;gap:14px;"><span style="font-size:10px;color:var(--text-3);width:54px;flex-shrink:0;">700/24</span><span style="font-size:24px;font-weight:700;color:var(--text-1);letter-spacing:-.02em;">Page Heading</span></div>
+      <div style="display:flex;align-items:baseline;gap:14px;"><span style="font-size:10px;color:var(--text-3);width:54px;flex-shrink:0;">600/18</span><span style="font-size:18px;font-weight:600;color:var(--text-1);">Section Heading</span></div>
+      <div style="display:flex;align-items:baseline;gap:14px;"><span style="font-size:10px;color:var(--text-3);width:54px;flex-shrink:0;">600/16</span><span style="font-size:16px;font-weight:600;color:var(--text-1);">Card Title</span></div>
+      <div style="display:flex;align-items:baseline;gap:14px;"><span style="font-size:10px;color:var(--text-3);width:54px;flex-shrink:0;">400/14</span><span style="font-size:14px;color:var(--text-2);line-height:1.6;">Body — untuk konten utama, deskripsi, dan paragraf panjang di seluruh halaman.</span></div>
+      <div style="display:flex;align-items:baseline;gap:14px;"><span style="font-size:10px;color:var(--text-3);width:54px;flex-shrink:0;">400/12</span><span style="font-size:12px;color:var(--text-3);">Caption · meta · timestamp · label sekunder</span></div>
+    </div>
+  </section>
+
+  <!-- Stat Cards -->
+  <section style="padding-bottom:8px;">
+    <p style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;">Cards</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+      <div class="card">
+        <p style="margin:0 0 6px;font-size:12px;color:var(--text-3);font-weight:500;">Total Chat Bulan Ini</p>
+        <p style="margin:0 0 4px;font-size:30px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">248</p>
+        <p style="margin:0;font-size:12px;color:#10B981;font-weight:700;">↑ 12% dari bulan lalu</p>
+      </div>
+      <div class="card">
+        <p style="margin:0 0 6px;font-size:12px;color:var(--text-3);font-weight:500;">Bot Handled</p>
+        <p style="margin:0 0 4px;font-size:30px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">182</p>
+        <p style="margin:0;font-size:12px;color:var(--text-3);">73% dari total chat</p>
+      </div>
+      <div class="card card-highlight">
+        <p style="margin:0 0 8px;font-size:12px;color:var(--brand-text);font-weight:700;">Penggunaan Bulan Ini</p>
+        <div style="background:var(--brand-sub2);border-radius:9999px;height:5px;margin-bottom:8px;"><div style="background:#10B981;height:5px;border-radius:9999px;width:36%;"></div></div>
+        <p style="margin:0;font-size:12px;color:var(--brand-text);font-weight:500;">182 / 500 balasan (36%)</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+</div>
+
+
+<script>
+  function show(name) {
+    ['dashboard','landing','components'].forEach(s => {
+      const el  = document.getElementById('s-' + s);
+      const btn = document.querySelector(`[onclick="show('${s}')"]`);
+      if (s === name) {
+        el.style.display = 'flex';
+        btn.classList.add('active');
+      } else {
+        el.style.display = 'none';
+        btn.classList.remove('active');
+      }
+    });
+  }
+
+  function toggleDark() {
+    const isDark = document.documentElement.classList.toggle('dark');
+    document.getElementById('icon-sun').style.display  = isDark ? 'block' : 'none';
+    document.getElementById('icon-moon').style.display = isDark ? 'none'  : 'block';
+  }
+
+  /* Demo bot */
+  const replies = {
+    'paracetamol': 'Paracetamol 500mg tersedia ✓ Harga Rp 500/tablet atau Rp 8.000/strip. Mau kami sisihkan stoknya?',
+    'batuk':  'Stok obat batuk tersedia! OBH Combi Rp 18.500, Woods Peppermint Rp 22.000. Mau pesan?',
+    'stok':   'Stok obat batuk tersedia! OBH Combi Rp 18.500, Woods Peppermint Rp 22.000. Mau pesan?',
+    'konsultasi': 'Biaya konsultasi dokter umum Rp 75.000 (termasuk pemeriksaan dasar). Tersedia Senin–Sabtu 09.00–17.00. Mau booking?',
+    'harga':  'Untuk info harga, sebutkan nama obat atau produknya? Kami cek stok dan harga terbaru untuk kamu 😊',
+    'dokter': 'Dokter umum tersedia Senin–Sabtu 09.00–17.00 WIB. Biaya konsultasi Rp 75.000. Mau kami bantu booking?',
+    'buka':   'Kami buka Senin–Sabtu 08.00–21.00 WIB, Minggu 09.00–17.00 WIB 😊',
+    'jam':    'Jam operasional: Senin–Sabtu 08.00–21.00 WIB, Minggu 09.00–17.00 WIB.',
+  };
+
+  function handleDemo(e) { if (e.key === 'Enter') sendDemo(); }
+
+  function sendDemo() {
+    const input = document.getElementById('demo-input');
+    const box   = document.getElementById('demo-msgs');
+    const text  = input.value.trim();
+    if (!text) return;
+    const t = new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+
+    const cEl = document.createElement('div');
+    cEl.style.cssText = 'display:flex;justify-content:flex-start;';
+    cEl.innerHTML = `<div style="background:var(--bubble-in);border-radius:8px;border-top-left-radius:2px;padding:8px 11px;max-width:230px;box-shadow:0 1px 2px rgba(0,0,0,.08);border:1px solid var(--bubble-in-b);"><p style="margin:0;font-size:13px;color:var(--text-1);">${text}</p><p style="margin:3px 0 0;font-size:10px;color:var(--text-3);text-align:right;">${t}</p></div>`;
+    box.appendChild(cEl);
+    input.value = '';
+    box.scrollTop = box.scrollHeight;
+
+    setTimeout(() => {
+      const lower = text.toLowerCase();
+      let reply = 'Terima kasih pesannya! 😊 Pertanyaan kamu sudah kami catat dan tim kami akan segera membalas.';
+      for (const [k,v] of Object.entries(replies)) { if (lower.includes(k)) { reply = v; break; } }
+      const bEl = document.createElement('div');
+      bEl.style.cssText = 'display:flex;justify-content:flex-end;';
+      bEl.innerHTML = `<div style="background:#DCF8C6;border-radius:8px;border-top-right-radius:2px;padding:8px 11px;max-width:250px;box-shadow:0 1px 2px rgba(0,0,0,.08);"><p style="margin:0;font-size:13px;color:#111827;">${reply}</p><p style="margin:3px 0 0;font-size:10px;color:#6B7280;text-align:right;">${t} ✓✓</p></div>`;
+      box.appendChild(bEl);
+      box.scrollTop = box.scrollHeight;
+    }, 700);
+  }
+</script>
+</body>
+</html>
