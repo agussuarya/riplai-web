@@ -9,13 +9,13 @@ Requirements for the initial frontend milestone. Each maps to roadmap phases.
 
 ### Workspace
 
-- [ ] **WORK-01**: Developer can install dependencies from the repo root with pnpm.
-- [ ] **WORK-02**: Developer can run all apps through Turborepo from the repo root.
+- [x] **WORK-01**: Developer can install dependencies from the repo root with pnpm.
+- [x] **WORK-02**: Developer can run all apps through Turborepo from the repo root.
 - [ ] **WORK-03**: Developer can run the public web app on port 3001.
 - [ ] **WORK-04**: Developer can run the partner app on port 3002.
 - [ ] **WORK-05**: Developer can run the admin app on port 3003.
-- [ ] **WORK-06**: Root TypeScript references include every app and shared package.
-- [ ] **WORK-07**: Root scripts expose build, dev, lint, type-check, and app-specific dev commands.
+- [x] **WORK-06**: Root TypeScript references include every app and shared package.
+- [x] **WORK-07**: Root scripts expose build, dev, lint, type-check, and app-specific dev commands.
 
 ### Shared Packages
 
@@ -162,13 +162,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| WORK-01 | Phase 1 | Pending |
-| WORK-02 | Phase 1 | Pending |
+| WORK-01 | Phase 1 | Complete |
+| WORK-02 | Phase 1 | Complete |
 | WORK-03 | Phase 1 | Pending |
 | WORK-04 | Phase 1 | Pending |
 | WORK-05 | Phase 1 | Pending |
-| WORK-06 | Phase 1 | Pending |
-| WORK-07 | Phase 1 | Pending |
+| WORK-06 | Phase 1 | Complete |
+| WORK-07 | Phase 1 | Complete |
 | PKG-01 | Phase 2 | Pending |
 | PKG-02 | Phase 2 | Pending |
 | PKG-03 | Phase 2 | Pending |

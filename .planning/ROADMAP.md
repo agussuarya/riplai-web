@@ -11,7 +11,7 @@ This roadmap turns the existing `docs/plans` material into buildable GSD phases 
 
 | Phase | Name | Goal | Requirements |
 |-------|------|------|--------------|
-| 1 | Workspace Scaffold | Create the root Turborepo workspace and app/package skeletons | WORK-01..WORK-07 |
+| 1 | Workspace Scaffold | Create the root Turborepo workspace and app/package skeletons (1/3 plans complete) | WORK-01..WORK-07 |
 | 2 | Shared Package Foundation | Implement shared config, types, utils, API client, fixtures, and UI primitives | PKG-01..PKG-10 |
 | 3 | Brand System | Implement the locked Riplai visual identity and design tokens | BRAND-01..BRAND-08 |
 | 4 | Public Web Shell | Create the public web app shell, layout, navigation, footer, and static dependency boundary | WEB-01..WEB-04, WEB-22 |
