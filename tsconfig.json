@@ -1,0 +1,13 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/config" },
+    { "path": "packages/types" },
+    { "path": "packages/utils" },
+    { "path": "packages/api-client" },
+    { "path": "packages/ui" },
+    { "path": "apps/web" },
+    { "path": "apps/partner" },
+    { "path": "apps/admin" }
+  ]
+}

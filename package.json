@@ -1,0 +1,22 @@
+{
+  "name": "riplai-web",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "type-check": "turbo type-check",
+    "dev:web": "turbo dev --filter=@riplai/web",
+    "dev:partner": "turbo dev --filter=@riplai/partner",
+    "dev:admin": "turbo dev --filter=@riplai/admin"
+  },
+  "devDependencies": {
+    "turbo": "latest",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=24",
+    "pnpm": ">=9"
+  },
+  "packageManager": "pnpm@11.1.2"
+}
