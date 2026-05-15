@@ -33,14 +33,14 @@ riplai-web/
 │   │   ├── app/
 │   │   │   ├── layout.tsx          # Root layout: Navbar + Footer + fonts
 │   │   │   ├── globals.css         # @import "tailwindcss" + CSS token vars
-│   │   │   ├── page.tsx            # Home — Hero, Fitur, HowItWorks, Pricing, Testimonials
-│   │   │   ├── fitur/
+│   │   │   ├── page.tsx            # Home — Hero, FeatureGrid, HowItWorks, Pricing, Testimonials
+│   │   │   ├── features/
 │   │   │   │   └── page.tsx        # Full feature breakdown
-│   │   │   ├── harga/
+│   │   │   ├── pricing/
 │   │   │   │   └── page.tsx        # 4-tier pricing table
 │   │   │   ├── demo/
 │   │   │   │   └── page.tsx        # Interactive chat demo (DemoChat component)
-│   │   │   ├── tentang/
+│   │   │   ├── about/
 │   │   │   │   └── page.tsx        # About / Tentang Kami
 │   │   │   ├── privacy/
 │   │   │   │   └── page.tsx        # Kebijakan Privasi (UU PDP compliant)
@@ -55,7 +55,7 @@ riplai-web/
 │   │   │   ├── landing/
 │   │   │   │   ├── Hero.tsx
 │   │   │   │   ├── LogoStrip.tsx
-│   │   │   │   ├── FiturGrid.tsx
+│   │   │   │   ├── FeatureGrid.tsx
 │   │   │   │   ├── HowItWorks.tsx
 │   │   │   │   ├── PricingCards.tsx
 │   │   │   │   ├── Testimonials.tsx
@@ -975,10 +975,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 **Stub files** — create with minimal placeholder `<div>` export so the app builds. Real content added in landing page phases:
 
 - `app/page.tsx` — Home (beranda)
-- `app/fitur/page.tsx`
-- `app/harga/page.tsx`
+- `app/features/page.tsx`
+- `app/pricing/page.tsx`
 - `app/demo/page.tsx`
-- `app/tentang/page.tsx`
+- `app/about/page.tsx`
 - `app/privacy/page.tsx`
 - `app/terms/page.tsx`
 - `components/layout/Navbar.tsx`
@@ -1005,7 +1005,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3001
 
 - [ ] `components/demo/DemoChat.tsx` — scripted 3-exchange interactive chat, `'use client'`
 - [ ] `components/landing/Hero.tsx` — headline + sub + dual CTA + DemoChat inline
-- [ ] `components/landing/FiturGrid.tsx` — 6-feature 3×2 grid (Heroicons)
+- [ ] `components/landing/FeatureGrid.tsx` — 6-feature 3×2 grid (Heroicons)
 - [ ] `components/landing/HowItWorks.tsx` — 3 numbered steps on brand-50 bg
 - [ ] `components/landing/PricingCards.tsx` — 4 tiers, Growth highlighted, annual toggle UI
 - [ ] `components/landing/Testimonials.tsx` — 3 SMB persona quote cards
@@ -1014,10 +1014,10 @@ NEXT_PUBLIC_APP_URL=http://localhost:3001
 
 ### Step 7c — apps/web Landing Page (Phase 3: Inner pages)
 
-- [ ] `app/fitur/page.tsx` — extended feature breakdown
-- [ ] `app/harga/page.tsx` — full pricing comparison table
+- [ ] `app/features/page.tsx` — extended feature breakdown
+- [ ] `app/pricing/page.tsx` — full pricing comparison table
 - [ ] `app/demo/page.tsx` — standalone DemoChat + explanatory copy
-- [ ] `app/tentang/page.tsx` — About, placeholder founder story
+- [ ] `app/about/page.tsx` — About, placeholder founder story
 
 ### Step 7d — apps/web Landing Page (Phase 4: Legal pages)
 

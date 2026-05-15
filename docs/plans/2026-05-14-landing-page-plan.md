@@ -9,11 +9,11 @@
 
 | Route | Page | Priority | Notes |
 |-------|------|----------|-------|
-| `/` | Home (beranda) | P0 | Hero + fitur highlight + how it works + pricing preview + waitlist CTA |
-| `/fitur` | Fitur | P0 | Full feature breakdown per audience type |
-| `/harga` | Harga | P0 | 3-tier pricing table with feature comparison |
+| `/` | Home (beranda) | P0 | Hero + feature highlight + how it works + pricing preview + waitlist CTA |
+| `/features` | Fitur | P0 | Full feature breakdown per audience type |
+| `/pricing` | Harga | P0 | 3-tier pricing table with feature comparison |
 | `/demo` | Demo | P0 | Interactive chat simulation — no backend needed |
-| `/tentang` | Tentang | P1 | Founder story + mission + team |
+| `/about` | Tentang | P1 | Founder story + mission + team |
 | `/privacy` | Kebijakan Privasi | P0 (legal) | Full UU PDP-compliant privacy policy |
 | `/terms` | Syarat & Ketentuan | P0 (legal) | Full terms of service |
 
@@ -124,13 +124,13 @@ apps/web/
 │   ├── layout.tsx              ← root layout: Navbar + Footer, fonts
 │   ├── globals.css
 │   ├── page.tsx                ← Home (beranda)
-│   ├── fitur/
+│   ├── features/
 │   │   └── page.tsx
-│   ├── harga/
+│   ├── pricing/
 │   │   └── page.tsx
 │   ├── demo/
 │   │   └── page.tsx
-│   ├── tentang/
+│   ├── about/
 │   │   └── page.tsx
 │   ├── privacy/
 │   │   └── page.tsx
@@ -146,7 +146,7 @@ apps/web/
 │   ├── landing/
 │   │   ├── Hero.tsx            ← headline + sub + dual CTA
 │   │   ├── LogoStrip.tsx       ← "Dipercaya oleh" partner logos (placeholder)
-│   │   ├── FiturGrid.tsx       ← 6-feature icon grid
+│   │   ├── FeatureGrid.tsx       ← 6-feature icon grid
 │   │   ├── HowItWorks.tsx      ← 3-step numbered section
 │   │   ├── PricingCards.tsx    ← 4-tier cards (Gratis/Starter/Growth/Custom) with CTA
 │   │   ├── Testimonials.tsx    ← 3 placeholder quotes from SMB types
@@ -176,7 +176,7 @@ apps/web/
 - Below CTAs: small social proof line — "Sudah dipakai 200+ bisnis di Indonesia" (placeholder)
 - No hero image — show `DemoChat` component inline below the headline
 
-### FiturGrid (`/fitur` + home section)
+### FeatureGrid (`/features` + home section)
 Six features in a 3×2 grid, each card: icon (Heroicons) + title + 2-line description.
 
 | # | Icon | Feature title | Description |
@@ -261,7 +261,7 @@ Structure:
 
 ---
 
-## 8. About Page Outline (`/tentang`)
+## 8. About Page Outline (`/about`)
 
 **Placeholder story — replace with real content before launch.**
 
@@ -300,7 +300,7 @@ Wordmark: Plus Jakarta Sans 800, tracking -0.02em, lowercase "riplai". Color mat
 ### Phase 2 — Home Page
 - [ ] `components/landing/Hero.tsx`
 - [ ] `components/demo/DemoChat.tsx` (used in Hero + `/demo` page)
-- [ ] `components/landing/FiturGrid.tsx`
+- [ ] `components/landing/FeatureGrid.tsx`
 - [ ] `components/landing/HowItWorks.tsx`
 - [ ] `components/landing/PricingCards.tsx`
 - [ ] `components/landing/Testimonials.tsx`
@@ -308,10 +308,10 @@ Wordmark: Plus Jakarta Sans 800, tracking -0.02em, lowercase "riplai". Color mat
 - [ ] `app/page.tsx` — assembles all above sections
 
 ### Phase 3 — Inner Pages
-- [ ] `app/fitur/page.tsx` — extended FiturGrid + per-audience breakdown
-- [ ] `app/harga/page.tsx` — full pricing table with comparison grid
+- [ ] `app/features/page.tsx` — extended FeatureGrid + per-audience breakdown
+- [ ] `app/pricing/page.tsx` — full pricing table with comparison grid
 - [ ] `app/demo/page.tsx` — standalone DemoChat with explanatory copy
-- [ ] `app/tentang/page.tsx` — About with placeholder story
+- [ ] `app/about/page.tsx` — About with placeholder story
 
 ### Phase 4 — Legal Pages
 - [ ] `app/privacy/page.tsx` — full Kebijakan Privasi (Bahasa Indonesia)
