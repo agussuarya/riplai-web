@@ -71,22 +71,30 @@ riplai-web/
 │   │   ├── tsconfig.json
 │   │   └── package.json
 │   │
-│   ├── merchant/                   # Merchant PWA — inbox + dashboard
+│   ├── partner/                    # Partner PWA — inbox + analytics
 │   │   ├── app/
 │   │   │   ├── layout.tsx
 │   │   │   ├── page.tsx            # Hello World: calls GET /health
 │   │   │   ├── (auth)/
-│   │   │   │   └── login/
-│   │   │   │       └── .gitkeep
+│   │   │   │   ├── login/
+│   │   │   │   │   └── page.tsx    # stub
+│   │   │   │   ├── forgot-password/
+│   │   │   │   │   └── page.tsx    # stub
+│   │   │   │   └── reset-password/
+│   │   │   │       └── page.tsx    # stub
 │   │   │   └── (app)/
-│   │   │       ├── layout.tsx      # protected layout stub
+│   │   │       ├── layout.tsx      # protected layout stub (sidebar + header)
 │   │   │       ├── inbox/
 │   │   │       │   ├── page.tsx    # stub
 │   │   │       │   └── [id]/
 │   │   │       │       └── page.tsx # stub
-│   │   │       ├── dashboard/
+│   │   │       ├── analytics/
 │   │   │       │   └── page.tsx    # stub
-│   │   │       └── knowledge-base/
+│   │   │       ├── knowledge-base/
+│   │   │       │   └── page.tsx    # stub
+│   │   │       ├── settings/
+│   │   │       │   └── page.tsx    # stub
+│   │   │       └── onboarding/
 │   │   │           └── page.tsx    # stub
 │   │   ├── components/
 │   │   │   └── inbox/
@@ -106,8 +114,11 @@ riplai-web/
 │       ├── app/
 │       │   ├── layout.tsx
 │       │   ├── page.tsx            # Hello World: calls GET /health
+│       │   ├── (auth)/
+│       │   │   └── login/
+│       │   │       └── page.tsx    # stub
 │       │   └── (app)/
-│       │       ├── merchants/
+│       │       ├── partners/
 │       │       │   ├── page.tsx    # stub
 │       │       │   └── [id]/
 │       │       │       └── page.tsx # stub
@@ -211,7 +222,7 @@ packages:
     "lint": "turbo lint",
     "type-check": "turbo type-check",
     "dev:web": "turbo dev --filter=@riplai/web",
-    "dev:merchant": "turbo dev --filter=@riplai/merchant",
+    "dev:partner": "turbo dev --filter=@riplai/partner",
     "dev:admin": "turbo dev --filter=@riplai/admin"
   },
   "devDependencies": {
@@ -258,7 +269,7 @@ packages:
     { "path": "packages/api-client" },
     { "path": "packages/ui" },
     { "path": "apps/web" },
-    { "path": "apps/merchant" },
+    { "path": "apps/partner" },
     { "path": "apps/admin" }
   ]
 }
@@ -320,14 +331,27 @@ export const baseConfig: Partial<Config> = {
     extend: {
       colors: {
         brand: {
-          50:  "#ecfdf5",
-          500: "#10b981",
+          50:  "#ECFDF5",
+          100: "#D1FAE5",
+          200: "#A7F3D0",
+          400: "#34D399",
+          500: "#10B981",
           600: "#059669",
-          900: "#064e3b",
+          700: "#047857",
+          900: "#064E3B",
+        },
+        accent: {
+          100: "#E0E7FF",
+          500: "#6366F1",
+          600: "#4F46E5",
         },
       },
       fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui"],
+        sans: ["Plus Jakarta Sans", "ui-sans-serif", "system-ui"],
+        mono: ["JetBrains Mono", "ui-monospace", "monospace"],
+      },
+      borderRadius: {
+        pill: "9999px",
       },
     },
   },
@@ -705,18 +729,29 @@ export * from "./endpoints/knowledge";
 ```tsx
 import type { ButtonHTMLAttributes } from "react";
 
+type ButtonVariant = "primary" | "secondary" | "danger" | "ghost" | "ai";
+type ButtonSize = "sm" | "md" | "lg";
+
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "danger";
+  variant?: ButtonVariant;
+  size?: ButtonSize;
 }
 
-export function Button({ variant = "primary", className = "", ...props }: ButtonProps) {
-  const base = "inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 disabled:opacity-50";
-  const variants = {
+export function Button({ variant = "primary", size = "md", className = "", ...props }: ButtonProps) {
+  const base = "inline-flex items-center justify-center rounded-full font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 disabled:opacity-50";
+  const variants: Record<ButtonVariant, string> = {
     primary:   "bg-brand-500 text-white hover:bg-brand-600",
     secondary: "bg-white text-gray-900 border border-gray-300 hover:bg-gray-50",
     danger:    "bg-red-600 text-white hover:bg-red-700",
+    ghost:     "bg-transparent text-brand-600 hover:bg-brand-50",
+    ai:        "bg-accent-500 text-white hover:bg-accent-600",
   };
-  return <button className={`${base} ${variants[variant]} ${className}`} {...props} />;
+  const sizes: Record<ButtonSize, string> = {
+    sm: "px-4 py-1.5 text-xs",
+    md: "px-6 py-2.5 text-sm",
+    lg: "px-8 py-3 text-base",
+  };
+  return <button className={`${base} ${variants[variant]} ${sizes[size]} ${className}`} {...props} />;
 }
 ```
 
@@ -744,18 +779,20 @@ export function Input({ label, id, className = "", ...props }: InputProps) {
 
 **File: `packages/ui/src/components/Badge.tsx`**
 ```tsx
-type BadgeVariant = "needs_reply" | "bot_handled" | "waiting";
+type BadgeVariant = "needs_reply" | "bot_handled" | "waiting" | "ai";
 
 const styles: Record<BadgeVariant, string> = {
   needs_reply: "bg-red-100 text-red-700",
-  bot_handled: "bg-green-100 text-green-700",
+  bot_handled: "bg-brand-100 text-brand-700",
   waiting:     "bg-yellow-100 text-yellow-700",
+  ai:          "bg-accent-100 text-accent-600",
 };
 
 const labels: Record<BadgeVariant, string> = {
   needs_reply: "Needs Reply",
   bot_handled: "Bot Handled",
   waiting:     "Waiting",
+  ai:          "AI",
 };
 
 export function Badge({ variant }: { variant: BadgeVariant }) {
@@ -989,44 +1026,49 @@ NEXT_PUBLIC_APP_URL=http://localhost:3001
 
 ---
 
-### Step 8 — apps/merchant (Merchant PWA)
+### Step 8 — apps/partner (Partner PWA)
 
 Same structure as `apps/web` but on port 3002.
 
-**File: `apps/merchant/package.json`** — same as web but:
-- `name: "@riplai/merchant"`, port 3002
+**File: `apps/partner/package.json`** — same as web but:
+- `name: "@riplai/partner"`, port 3002
 - adds `@tanstack/react-query`, `zustand`
 
-**File: `apps/merchant/app/layout.tsx`** — same pattern as web
+**File: `apps/partner/app/layout.tsx`** — same pattern as web
 
-**File: `apps/merchant/app/page.tsx`** — same Hello World pattern as `apps/web/app/page.tsx` with title "Riplai — Merchant"
+**File: `apps/partner/app/page.tsx`** — same Hello World pattern as `apps/web/app/page.tsx` with title "riplai — Partner"
 
-**File: `apps/merchant/app/(app)/layout.tsx`** — protected layout stub
+**File: `apps/partner/app/(app)/layout.tsx`** — protected layout stub (sidebar + header shell, auth guard added in Phase 3)
 ```tsx
 export default function AppLayout({ children }: { children: React.ReactNode }) {
-  // Auth guard will be added in Phase 3
+  // Auth guard and sidebar added in Phase 3
   return <>{children}</>;
 }
 ```
 
 Stub pages (just export a placeholder `<div>`):
 - `app/(auth)/login/page.tsx`
+- `app/(auth)/forgot-password/page.tsx`
+- `app/(auth)/reset-password/page.tsx`
 - `app/(app)/inbox/page.tsx`
 - `app/(app)/inbox/[id]/page.tsx`
-- `app/(app)/dashboard/page.tsx`
+- `app/(app)/analytics/page.tsx`
 - `app/(app)/knowledge-base/page.tsx`
+- `app/(app)/settings/page.tsx`
+- `app/(app)/onboarding/page.tsx`
 
 ---
 
 ### Step 9 — apps/admin (Admin Panel)
 
-Same pattern as merchant but port 3003.
+Same pattern as partner but port 3003.
 
-**File: `apps/admin/app/page.tsx`** — Hello World with title "Riplai — Admin"
+**File: `apps/admin/app/page.tsx`** — Hello World with title "riplai — Admin"
 
 Stub pages:
-- `app/(app)/merchants/page.tsx`
-- `app/(app)/merchants/[id]/page.tsx`
+- `app/(auth)/login/page.tsx`
+- `app/(app)/partners/page.tsx`
+- `app/(app)/partners/[id]/page.tsx`
 - `app/(app)/onboarding/page.tsx`
 - `app/(app)/system/page.tsx`
 
@@ -1041,9 +1083,9 @@ pnpm install
 # Run all 3 apps in parallel
 pnpm dev
 # or individually:
-pnpm dev:web       # http://localhost:3001
-pnpm dev:merchant  # http://localhost:3002
-pnpm dev:admin     # http://localhost:3003
+pnpm dev:web      # http://localhost:3001
+pnpm dev:partner  # http://localhost:3002
+pnpm dev:admin    # http://localhost:3003
 ```
 
 **Exit condition:** All 3 apps start without errors. Each shows a styled card. If the backend is running at `localhost:8080/health`, the card shows green status. If not, it shows a red "Backend unreachable" message.
@@ -1055,7 +1097,7 @@ pnpm dev:admin     # http://localhost:3003
 | App | Port | URL |
 |---|---|---|
 | `apps/web` | 3001 | http://localhost:3001 |
-| `apps/merchant` | 3002 | http://localhost:3002 |
+| `apps/partner` | 3002 | http://localhost:3002 |
 | `apps/admin` | 3003 | http://localhost:3003 |
 | `api` (backend) | 8080 | http://localhost:8080 |
 
@@ -1067,12 +1109,6 @@ pnpm dev:admin     # http://localhost:3003
 |---|---|---|
 | `NEXT_PUBLIC_API_URL` | all apps | `http://localhost:8080` (local) |
 | `NEXT_PUBLIC_USE_FIXTURES` | api-client | `false` (real api) / `true` (fixtures) |
-
----
-
-## Terminology Correction
-
-The original plan used `apps/merchant` — the design system decision (2026-05-14) renames this to `apps/partner`. All routes and references should use "partner", not "merchant". The `apps/merchant` directory will be renamed to `apps/partner` during scaffolding.
 
 ---
 
