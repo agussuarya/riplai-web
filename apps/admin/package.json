@@ -10,7 +10,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "next": "latest",
+    "next": "^16",
     "react": "^19",
     "react-dom": "^19",
     "@riplai/api-client": "workspace:*",

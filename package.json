@@ -11,7 +11,7 @@
     "dev:admin": "turbo dev --filter=@riplai/admin"
   },
   "devDependencies": {
-    "turbo": "latest",
+    "turbo": "^2",
     "typescript": "^5"
   },
   "engines": {

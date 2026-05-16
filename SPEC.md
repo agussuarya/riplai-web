@@ -6,7 +6,8 @@ Build riplai-web Turborepo monorepo — shared pkg layer + 3 Next.js apps (web/p
 
 ## §C
 
-- Node 24, pnpm, Turborepo, Next.js latest, TypeScript strict, Tailwind v4
+- Node 24, pnpm, Turborepo, Next.js ^16, TypeScript strict, Tailwind v4
+- Docker + docker-compose for all 3 apps; Makefile: make up/down/build/logs/shell ENV=staging|production
 - Plus Jakarta Sans all apps; JetBrains Mono KB editor only
 - Pill buttons (rounded-full) — brand shape invariant
 - Code artifacts English; UI copy rendered in browser Indonesian
@@ -41,6 +42,8 @@ Build riplai-web Turborepo monorepo — shared pkg layer + 3 Next.js apps (web/p
 | V4 | apps/web has no @riplai/api-client in dependencies — landing page static only |
 | V5 | apps/partner stubs: login, forgot-password, reset-password, inbox, inbox/[id], analytics, knowledge-base, settings, onboarding |
 | V6 | apps/admin stubs: (auth)/login, partners, partners/[id], onboarding, system |
+| V7 | No "latest" in any package.json — all deps pinned to major (^N) |
+| V8 | output: "standalone" in next.config.ts for all 3 apps |
 
 ---
 
@@ -50,6 +53,7 @@ Build riplai-web Turborepo monorepo — shared pkg layer + 3 Next.js apps (web/p
 |----|--------|------|-------|-------|
 | T1 | x | scaffold shared packages — packages/config (full brand/accent palette, Plus Jakarta Sans, JetBrains Mono, borderRadius.pill), packages/types (Conversation/Message/Partner/KnowledgeBase), packages/utils (formatRupiah/formatWANumber/date), packages/api-client (Axios+JWT interceptor+fixtures), packages/ui (Button 5-variant pill/Input rounded-xl/Badge 4-variant/Avatar) | V1,V3,I.config,I.ui,I.types,I.api,I.utils | frontend-setup §Steps 1–6; design-system §11,§12 |
 | T2 | x | scaffold 3 app shells — apps/web (port 3001, root layout with Navbar+Footer stub, all 7 page stubs), apps/partner (port 3002, auth routes + app routes per V5, hello-world page calling GET /health), apps/admin (port 3003, auth + app routes per V6, hello-world page calling GET /health); exit: all 3 apps start without errors | V4,V5,V6,I.web,I.partner,I.admin | frontend-setup §Steps 7–9 |
+| T4 | x | docker infra — pin next→^16/turbo→^2, rm .nvmrc+.node-version, add standalone output to 3 apps, Dockerfile (ARG APP+ENV multi-stage), docker-compose.yml (3 services 3001-3003), .env.staging/.env.production, .dockerignore, Makefile | V7,V8,I.web,I.partner,I.admin | 2026-05-16-docker-infra-setup |
 | T3 | . | build apps/web landing page — Phase 1: RiplaiLogo (Bubble Ripple SVG), Navbar (sticky+hamburger), Footer; Phase 2: Hero+DemoChat (scripted 3-exchange), FeatureGrid (6-item 3×2), HowItWorks (3-step brand-50 bg), PricingCards (4-tier Growth highlighted), Testimonials (3 SMB), WaitlistModal; Phase 3: /features /pricing /demo /about pages; Phase 4: /privacy /terms legal pages | V2,V3,I.web | landing-page-plan §Phases 1–4; design-system §2,§3,§4,§13 |
 
 ---
