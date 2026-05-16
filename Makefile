@@ -1,6 +1,6 @@
 .PHONY: up down build logs shell
 
-ENV ?= staging
+ENV ?= local
 
 up:
 	docker compose --env-file .env.$(ENV) up -d

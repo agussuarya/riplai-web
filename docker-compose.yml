@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
       args:
         APP: web
-        ENV: ${ENV:-staging}
+        ENV: ${ENV:-local}
     ports:
       - "3001:3000"
     environment:
@@ -18,7 +18,7 @@ services:
       dockerfile: Dockerfile
       args:
         APP: partner
-        ENV: ${ENV:-staging}
+        ENV: ${ENV:-local}
     ports:
       - "3002:3000"
     environment:
@@ -31,7 +31,7 @@ services:
       dockerfile: Dockerfile
       args:
         APP: admin
-        ENV: ${ENV:-staging}
+        ENV: ${ENV:-local}
     ports:
       - "3003:3000"
     environment:

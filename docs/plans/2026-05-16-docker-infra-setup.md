@@ -40,6 +40,7 @@ New files at repo root:
 ```
 Dockerfile
 docker-compose.yml
+.env.local
 .env.staging
 .env.production
 .dockerignore
@@ -101,7 +102,7 @@ services:
       context: .
       args:
         APP: web
-        ENV: ${ENV:-staging}
+        ENV: ${ENV:-local}
     ports:
       - "3001:3000"
     environment:
@@ -113,7 +114,7 @@ services:
       context: .
       args:
         APP: partner
-        ENV: ${ENV:-staging}
+        ENV: ${ENV:-local}
     ports:
       - "3002:3000"
     environment:
@@ -125,7 +126,7 @@ services:
       context: .
       args:
         APP: admin
-        ENV: ${ENV:-staging}
+        ENV: ${ENV:-local}
     ports:
       - "3003:3000"
     environment:
@@ -133,9 +134,12 @@ services:
     restart: unless-stopped
 ```
 
-**env files** — `NEXT_PUBLIC_*` bake at build time, staging/production need separate builds. Safe to commit (public vars only):
+**env files** — `NEXT_PUBLIC_*` bake at build time, each env needs separate build. Safe to commit (public vars only):
 
 ```bash
+# .env.local
+NEXT_PUBLIC_API_URL=http://localhost:8080
+
 # .env.staging
 NEXT_PUBLIC_API_URL=https://api-staging.riplai.com
 
@@ -143,12 +147,14 @@ NEXT_PUBLIC_API_URL=https://api-staging.riplai.com
 NEXT_PUBLIC_API_URL=https://api.riplai.com
 ```
 
+> `.env.local` must be committed. Update `.gitignore` and `.dockerignore`: replace `.env*.local` with specific Next.js override patterns (`.env.development.local`, `.env.production.local`, `.env.test.local`) so `.env.local` is not excluded.
+
 **Makefile:**
 
 ```makefile
 .PHONY: up down build logs shell
 
-ENV ?= staging
+ENV ?= local
 
 up:
 	docker compose --env-file .env.$(ENV) up -d
@@ -166,7 +172,9 @@ shell:
 	docker compose exec $(APP) sh
 ```
 
-Usage: `make build ENV=production` / `make up` / `make logs APP=web`
+Usage: `make build ENV=production` / `make up ENV=local` / `make logs APP=web`
+
+Default `ENV=local` — bare `make up` uses local.
 
 **.dockerignore:**
 
@@ -176,6 +184,10 @@ node_modules
 .turbo
 .git
 *.log
-.env*.local
+.env.development.local
+.env.production.local
+.env.test.local
 docs
 ```
+
+> `.env*.local` replaced with specific patterns — allows `.env.local` into build context.
