@@ -30,10 +30,11 @@ RUN pnpm --filter @riplai/${APP} build
 
 FROM node:24-alpine AS runner
 ARG APP
+ENV APP=${APP}
 WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=builder /repo/apps/${APP}/.next/standalone ./
 COPY --from=builder /repo/apps/${APP}/.next/static ./apps/${APP}/.next/static
 COPY --from=builder /repo/apps/${APP}/public ./apps/${APP}/public
 EXPOSE 3000
-CMD ["node", "apps/${APP}/server.js"]
+CMD node apps/$APP/server.js
