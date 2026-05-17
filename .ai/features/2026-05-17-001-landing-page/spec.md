@@ -79,7 +79,7 @@ All files: server components (no `'use client'`).
 - `sticky top-0 z-10 bg-white/95 backdrop-blur border-b border-gray-100`
 - Left: `RiplaiLogo` (mark 30px + wordmark "riplai")
 - Center: `<a href="/features">Fitur</a>` · Harga → `/pricing` · Demo → `/demo` · Tentang → `/about` (`text-sm font-medium text-gray-500`)
-- Right: `<a href="/login" class="text-sm font-semibold text-gray-500">Masuk</a>` + `<a href="/signup" class="...rounded-full bg-brand-500 text-white px-5 py-2 text-sm font-bold">Coba Gratis</a>`
+- Right: `<a href="/signin" class="text-sm font-semibold text-gray-500">Masuk</a>` + `<a href="/signup" class="...rounded-full bg-brand-500 text-white px-5 py-2 text-sm font-bold">Coba Gratis</a>`
 - Mobile: hamburger visual (icon only, no drawer — static)
 
 ---
@@ -212,7 +212,7 @@ All CTAs are `<a>` links — not `<button>`. No onClick.
 
 ---
 
-### Login (`/login`)
+### Signin (`/signin`)
 
 Full-page centered layout: `flex-1 flex items-center justify-center py-10 px-6`
 
@@ -244,7 +244,7 @@ Navbar on this page: logo (links to `/`) + nav links only — no "Masuk" / "Coba
   5. Kata sandi — `input-base input-error-state with-icon-r` + eye icon (static) + error msg "Minimal 8 karakter"
 - Checkbox row `flex items-start gap-2.5`: checked box visual (`check-box checked` with SVG check) + "Saya setuju dengan `<a href="/terms">Syarat & Ketentuan</a>` dan `<a href="/privacy">Kebijakan Privasi</a>` Riplai"
 - CTA: `<a href="#" class="btn btn-lg btn-primary w-full justify-content-center pointer-events-none opacity-70">` with loading spinner SVG + "Membuat akun..." — visual loading state, no action
-- Footer `text-center text-[13.5px] text-gray-400 mt-4`: "Sudah punya akun? `<a href="/login" class="text-brand-500 font-bold">Masuk</a>`"
+- Footer `text-center text-[13.5px] text-gray-400 mt-4`: "Sudah punya akun? `<a href="/signin" class="text-brand-500 font-bold">Masuk</a>`"
 
 **Right — benefits panel:**
 `bg-[#ECFDF5] rounded-[20px] p-7`

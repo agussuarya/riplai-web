@@ -14,7 +14,7 @@
 - [ ] 4. Refactor app layout — remove Navbar and Footer from `app/layout.tsx` (keep HTML/body/fonts/metadata); create `app/(marketing)/layout.tsx` wrapping children with `<Navbar />` + `<Footer />`; create `app/(auth)/layout.tsx` wrapping children with `<NavbarMinimal />`; delete `app/page.tsx`, `app/privacy/page.tsx`, `app/terms/page.tsx` stubs (will be recreated in route groups)
        → Done when: root layout.tsx has no Navbar/Footer import; (marketing) and (auth) group layouts exist; `pnpm type-check` passes
 
-- [ ] 5. Rewrite `Navbar.tsx` — full variant: sticky, logo → `/`, nav links (Fitur→`/features`, Harga→`/pricing`, Demo→`/demo`, Tentang→`/about`), "Masuk"→`/login`, "Coba Gratis"→`/signup` pill; extract `NavbarMinimal` export: logo + nav links only, no auth CTAs; mobile: hamburger icon visible, no drawer (static)
+- [ ] 5. Rewrite `Navbar.tsx` — full variant: sticky, logo → `/`, nav links (Fitur→`#`, Harga→`#`, Demo→`#`, Tentang→`#`), "Masuk"→`/signin`, "Coba Gratis"→`/signup` pill; extract `NavbarMinimal` export: logo + nav links only, no auth CTAs; mobile: hamburger icon visible, no drawer (static)
        → Done when: full navbar has "Masuk" link + "Coba Gratis" rounded-full; minimal navbar has neither; no onClick; no `'use client'`
 
 - [ ] 6. Rewrite `Footer.tsx` — dark `bg-[#0D1117]`, RiplaiLogo variant="white", tagline, 3 link columns (Produk, Perusahaan, Legal), copyright line; Blog link uses `href="#"`
@@ -44,11 +44,11 @@
 - [ ] 14. Create `apps/web/app/(marketing)/page.tsx` — assemble sections in order: Hero, LogoStrip, FeatureGrid, HowItWorks, Testimonials, PricingCards
         → Done when: home page renders all 6 sections; `pnpm build` passes for apps/web; no JS errors in browser console
 
-- [ ] 15. Create `apps/web/app/(auth)/login/page.tsx` — flex-1 centered layout; card max-w-[400px]; RiplaiLogo mark centered; H1 "Selamat datang kembali"; static error banner (bg-[#FEF2F2]); email field with `input-error-state` styling; password field with static eye icon; "Lupa kata sandi?" link; "Masuk" `<a>` with `pointer-events-none`; "Daftar gratis" → `/signup`
+- [ ] 15. Create `apps/web/app/(auth)/signin/page.tsx` — flex-1 centered layout; card max-w-[400px]; RiplaiLogo mark centered; H1 "Selamat datang kembali"; static error banner (bg-[#FEF2F2]); email field with `input-error-state` styling; password field with static eye icon; "Lupa kata sandi?" link; "Masuk" `<a>` with `pointer-events-none`; "Daftar gratis" → `/signup`
         → Done when: page renders centered card; error banner visible; inputs render with correct border states; no form submission possible; "Daftar gratis" links to /signup
 
-- [ ] 16. Create `apps/web/app/(auth)/signup/page.tsx` — 2-col grid (collapse to 1 col `md:`); left: H1 "Coba gratis 14 hari", 5 fields (nama, email, WA +62 prefix, jenis bisnis select, kata sandi with error state), checked checkbox visual, loading CTA `pointer-events-none opacity-70`, "Masuk" → `/login`; right: brand-50 panel with 5 benefit rows + check circles
-        → Done when: 2-col layout renders; all 5 fields present; checkbox shows checked state; CTA non-interactive; benefits panel visible; "Masuk" links to /login
+- [ ] 16. Create `apps/web/app/(auth)/signup/page.tsx` — 2-col grid (collapse to 1 col `md:`); left: H1 "Coba gratis 14 hari", 5 fields (nama, email, WA +62 prefix, jenis bisnis select, kata sandi with error state), checked checkbox visual, loading CTA `pointer-events-none opacity-70`, "Masuk" → `/signin`; right: brand-50 panel with 5 benefit rows + check circles
+        → Done when: 2-col layout renders; all 5 fields present; checkbox shows checked state; CTA non-interactive; benefits panel visible; "Masuk" links to /signin
 
 - [ ] 17. Create `apps/web/app/(marketing)/privacy/page.tsx` — doc layout; sticky TOC left (11 section links); right: H1 "Kebijakan Privasi", effective date with `[1 Juni 2026]` placeholder, 11 sections in Bahasa Indonesia per `refs/landing-page-build.md §7.1`; operator identity with `[NOMOR NIB]` visible
         → Done when: TOC renders 11 links; all 11 section H2s present; `[NOMOR NIB]` and `[1 Juni 2026]` visible as literal text in page output
@@ -74,7 +74,7 @@
 - `apps/web/app/(marketing)/privacy/page.tsx`
 - `apps/web/app/(marketing)/terms/page.tsx`
 - `apps/web/app/(auth)/layout.tsx`
-- `apps/web/app/(auth)/login/page.tsx`
+- `apps/web/app/(auth)/signin/page.tsx`
 - `apps/web/app/(auth)/signup/page.tsx`
 - `apps/web/components/demo/DemoChat.tsx`
 - `apps/web/components/landing/Hero.tsx`

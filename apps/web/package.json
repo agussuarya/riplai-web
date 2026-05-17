@@ -13,6 +13,7 @@
     "next": "^16",
     "react": "^19",
     "react-dom": "^19",
+    "@heroicons/react": "^2",
     "@riplai/config": "workspace:*",
     "@riplai/ui": "workspace:*"
   },

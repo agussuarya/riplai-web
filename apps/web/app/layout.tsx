@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { jakarta, mono } from "@/lib/fonts";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,9 +13,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="id" className={`${jakarta.variable} ${mono.variable}`}>
       <body className="bg-white font-sans text-gray-900 antialiased">
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        {children}
       </body>
     </html>
   );
