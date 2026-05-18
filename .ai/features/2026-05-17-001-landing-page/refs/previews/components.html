@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Riplai — Komponen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-base:#F9FAFB;--bg-surface:#FFFFFF;--bg-subtle:#F3F4F6;--bg-hover:#F0F0F0;
+  --border:#E5E7EB;--border-sub:#F3F4F6;
+  --text-1:#111827;--text-2:#6B7280;--text-3:#9CA3AF;
+  --brand-sub:#ECFDF5;--brand-sub2:#D1FAE5;--brand-text:#047857;
+  --accent-sub:#E0E7FF;--accent-text:#4F46E5;
+  --needs-bg:#FEE2E2;--needs-c:#B91C1C;
+  --handled-bg:#D1FAE5;--handled-c:#047857;
+  --waiting-bg:#FEF3C7;--waiting-c:#92400E;
+}
+html.dark{
+  --bg-base:#0D1117;--bg-surface:#161B22;--bg-subtle:#1C2330;--bg-hover:#21293A;
+  --border:#30394A;--border-sub:#1C2330;
+  --text-1:#E6EDF3;--text-2:#8B949E;--text-3:#6E7681;
+  --brand-sub:rgba(16,185,129,.13);--brand-sub2:rgba(16,185,129,.22);--brand-text:#34D399;
+  --accent-sub:rgba(99,102,241,.16);--accent-text:#818CF8;
+  --needs-bg:rgba(239,68,68,.15);--needs-c:#F87171;
+  --handled-bg:rgba(16,185,129,.15);--handled-c:#34D399;
+  --waiting-bg:rgba(245,158,11,.15);--waiting-c:#FCD34D;
+}
+*{box-sizing:border-box;}
+body{font-family:'Plus Jakarta Sans',system-ui;margin:0;background:var(--bg-base);}
+
+#dark-toggle{position:fixed;top:12px;right:12px;z-index:200;width:36px;height:36px;border-radius:9999px;border:1px solid var(--border);background:var(--bg-surface);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,border-color .2s;}
+
+.card{background:var(--bg-surface);border:1.5px solid var(--border);border-radius:18px;padding:18px 20px;transition:background .2s,border-color .2s;}
+
+/* badges */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:9999px;font-size:11.5px;font-weight:600;}
+.badge-needs{background:var(--needs-bg);color:var(--needs-c);}
+.badge-handled{background:var(--handled-bg);color:var(--handled-c);}
+.badge-waiting{background:var(--waiting-bg);color:var(--waiting-c);}
+.badge-ai{background:var(--accent-sub);color:var(--accent-text);}
+.badge-brand{background:#10B981;color:#fff;}
+.badge-muted{background:var(--bg-subtle);color:var(--text-2);}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:7px;border-radius:9999px;font-family:inherit;cursor:pointer;font-weight:600;border:none;transition:background .15s,color .15s,opacity .15s;white-space:nowrap;}
+.btn-sm{padding:7px 16px;font-size:12.5px;}
+.btn-md{padding:10px 22px;font-size:13.5px;}
+.btn-lg{padding:13px 28px;font-size:15px;}
+.btn-primary{background:#10B981;color:#fff;}
+.btn-primary:hover{background:#059669;}
+.btn-secondary{background:var(--bg-surface);color:var(--text-1);border:1.5px solid var(--border) !important;}
+.btn-secondary:hover{background:var(--bg-subtle);}
+.btn-ghost-brand{background:transparent;color:var(--brand-text);border:1.5px solid var(--brand-sub2) !important;}
+.btn-ghost-brand:hover{background:var(--brand-sub);}
+.btn-ghost{background:transparent;color:var(--text-2);}
+.btn-ghost:hover{background:var(--bg-subtle);}
+.btn-danger{background:#EF4444;color:#fff;}
+.btn-danger:hover{background:#DC2626;}
+.btn-accent{background:#6366F1;color:#fff;}
+.btn-accent:hover{background:#4F46E5;}
+.btn:disabled,.btn[disabled]{opacity:.45;cursor:not-allowed;}
+
+/* action buttons */
+.action-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border-radius:9999px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:inherit;white-space:nowrap;transition:background .12s,color .12s;}
+.action-btn-ghost{background:transparent;color:var(--brand-text);border:1.5px solid var(--brand-sub2);}
+.action-btn-ghost:hover{background:var(--brand-sub);}
+.action-btn-ai{background:#6366F1;color:#fff;border:1.5px solid transparent;}
+.action-btn-ai:hover{background:#4F46E5;}
+
+/* toggle */
+.toggle-track{width:44px;height:24px;border-radius:9999px;background:#D1D5DB;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;}
+.toggle-track.on{background:#10B981;}
+.toggle-knob{width:20px;height:20px;border-radius:9999px;background:#fff;position:absolute;top:2px;left:2px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.toggle-track.on .toggle-knob{transform:translateX(20px);}
+
+/* form */
+.field-group{margin-bottom:16px;}
+.field-label{display:block;font-size:13px;font-weight:600;color:var(--text-1);margin-bottom:6px;}
+.field-helper{font-size:12px;color:var(--text-3);margin-top:4px;}
+.field-error{font-size:12px;color:#EF4444;margin-top:4px;display:flex;align-items:center;gap:4px;}
+.field-success-msg{font-size:12px;color:#10B981;margin-top:4px;}
+.input-base{width:100%;padding:10px 14px;font-size:14px;border:1.5px solid var(--border);border-radius:12px;outline:none;color:var(--text-1);background:var(--bg-surface);font-family:inherit;transition:border-color .15s,box-shadow .15s;box-sizing:border-box;}
+.input-base:focus{border-color:#10B981;box-shadow:0 0 0 3px rgba(16,185,129,.3);}
+.input-base::placeholder{color:var(--text-3);}
+.input-base:disabled{background:var(--bg-subtle);color:var(--text-3);cursor:not-allowed;}
+.input-error-state{border-color:#EF4444 !important;box-shadow:0 0 0 3px rgba(239,68,68,.15) !important;}
+.input-success-state{border-color:#10B981 !important;}
+.input-icon-wrap{position:relative;}
+.input-icon-wrap .icon-l{position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--text-3);}
+.input-icon-wrap .icon-r{position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--text-3);}
+.input-icon-wrap .input-base.with-icon-l{padding-left:38px;}
+.input-icon-wrap .input-base.with-icon-r{padding-right:38px;}
+textarea.input-base{resize:vertical;min-height:100px;}
+select.input-base{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' viewBox='0 0 24 24' stroke='%236B7280' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;}
+
+/* checkbox / radio */
+.check-wrap{display:flex;align-items:flex-start;gap:10px;cursor:pointer;}
+.check-box{width:18px;height:18px;border:1.5px solid var(--border);border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s,border-color .15s;margin-top:1px;}
+.check-box.checked{background:#10B981;border-color:#10B981;}
+.radio-box{width:18px;height:18px;border:1.5px solid var(--border);border-radius:9999px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s,border-color .15s;margin-top:1px;}
+.radio-box.checked{border-color:#10B981;}
+.radio-box.checked::after{content:'';width:10px;height:10px;border-radius:9999px;background:#10B981;}
+
+/* toast */
+.toast{display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;font-size:13.5px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.12);}
+.toast-success{background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0;}
+.toast-error{background:#FEF2F2;color:#991B1B;border:1px solid #FECACA;}
+.toast-warning{background:#FFFBEB;color:#92400E;border:1px solid #FDE68A;}
+.toast-info{background:#EFF6FF;color:#1E40AF;border:1px solid #BFDBFE;}
+
+/* modal */
+.modal-box{background:var(--bg-surface);border-radius:20px;padding:28px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+
+/* skeleton */
+.skel{background:linear-gradient(90deg,var(--bg-subtle) 25%,var(--bg-hover) 50%,var(--bg-subtle) 75%);background-size:200% 100%;animation:skel-shine 1.4s infinite;border-radius:8px;}
+@keyframes skel-shine{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* focus demo */
+.focus-bad:focus{outline:none;border-color:#10B981;box-shadow:0 0 0 3px rgba(16,185,129,.12);}
+.focus-good:focus{outline:none;border-color:#10B981;box-shadow:0 0 0 3px rgba(16,185,129,.3);}
+
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:9999px;}
+</style>
+</head>
+<body>
+
+<button id="dark-toggle" onclick="toggleDark()" title="Toggle dark mode">
+  <svg id="icon-sun" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--text-2)" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><path stroke-linecap="round" d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+  <svg id="icon-moon" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="var(--text-2)" stroke-width="2"><path stroke-linecap="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+</button>
+
+<div style="max-width:860px;margin:0 auto;padding:48px 24px 80px;">
+  <h1 style="font-size:20px;font-weight:800;color:var(--text-1);margin:0 0 8px;letter-spacing:-.02em;">Komponen v2</h1>
+  <p style="font-size:13px;color:var(--text-3);margin:0 0 32px;">Design system reference — toggle, empty states, focus rings, buttons, inputs, badges, toasts, modal, skeleton</p>
+
+  <!-- ══ TOGGLE ══ -->
+  <section style="margin-bottom:32px;">
+    <p style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;">Toggle / Switch</p>
+    <div class="card" style="display:flex;flex-direction:column;gap:18px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;max-width:380px;">
+        <div>
+          <p style="margin:0;font-size:14px;font-weight:600;color:var(--text-1);">Balas Otomatis</p>
+          <p style="margin:0;font-size:12px;color:var(--text-3);">Admin otomatis aktif menjawab pesan masuk</p>
+        </div>
+        <div class="toggle-track on" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;max-width:380px;">
+        <div>
+          <p style="margin:0;font-size:14px;font-weight:600;color:var(--text-1);">Notifikasi WhatsApp</p>
+          <p style="margin:0;font-size:12px;color:var(--text-3);">Kirim notif ke nomor kamu saat admin otomatis tidak bisa menjawab</p>
+        </div>
+        <div class="toggle-track" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;max-width:380px;opacity:.45;">
+        <div>
+          <p style="margin:0;font-size:14px;font-weight:600;color:var(--text-1);">Mode Malam</p>
+          <p style="margin:0;font-size:12px;color:var(--text-3);">Hanya tersedia di plan Growth</p>
+        </div>
+        <div class="toggle-track" style="cursor:not-allowed;"><div class="toggle-knob"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOCUS RING ══ -->
+  <section style="margin-bottom:32px;">
+    <p style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;">Focus Ring — Before / After</p>
+    <div class="card" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div>
+        <p style="font-size:12px;color:var(--text-3);margin:0 0 8px;">❌ Before (12% opacity — nearly invisible)</p>
+        <input class="focus-bad" type="text" value="Villa Ubud Jiwa" style="width:100%;border:1.5px solid #10B981;border-radius:12px;padding:9px 13px;font-size:13.5px;font-family:inherit;box-shadow:0 0 0 3px rgba(16,185,129,.12);box-sizing:border-box;color:var(--text-1);background:var(--bg-surface);outline:none;">
+        <p style="font-size:11px;color:var(--text-3);margin:6px 0 0;">box-shadow: 0 0 0 3px rgba(16,185,129, .12)</p>
+      </div>
+      <div>
+        <p style="font-size:12px;color:var(--text-3);margin:0 0 8px;">✓ After (30% opacity — accessible)</p>
+        <input class="focus-good" type="text" value="Villa Ubud Jiwa" style="width:100%;border:1.5px solid #10B981;border-radius:12px;padding:9px 13px;font-size:13.5px;font-family:inherit;box-shadow:0 0 0 3px rgba(16,185,129,.30);box-sizing:border-box;color:var(--text-1);background:var(--bg-surface);outline:none;">
+        <p style="font-size:11px;color:var(--text-3);margin:6px 0 0;">box-shadow: 0 0 0 3px rgba(16,185,129, .30)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ EMPTY STATES ══ -->
+  <section style="margin-bottom:32px;">
+    <p style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;">Empty States</p>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;">
+      <div class="card" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:40px 24px;gap:16px;">
+        <svg width="120" height="100" viewBox="0 0 120 100" fill="none">
+          <rect x="18" y="14" width="68" height="48" rx="12" stroke="#A7F3D0" stroke-width="2.5"/>
+          <path d="M18 62 L10 78 L32 62" fill="#D1FAE5"/>
+          <path d="M10 78 L32 62" stroke="#A7F3D0" stroke-width="2.5" stroke-linejoin="round"/>
+          <circle cx="72" cy="56" r="20" fill="#ECFDF5" stroke="#D1FAE5" stroke-width="2"/>
+          <circle cx="72" cy="56" r="13" stroke="#34D399" stroke-width="2"/>
+          <path d="M72 49 L72 56" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+          <path d="M72 56 L77 61" stroke="#10B981" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <p style="margin:0 0 6px;font-size:15px;font-weight:700;color:var(--text-1);">Belum ada percakapan</p>
+          <p style="margin:0 0 14px;font-size:13px;color:var(--text-3);max-width:220px;">Percakapan WhatsApp akan muncul di sini saat pelanggan mengirim pesan.</p>
+          <button style="background:transparent;color:#047857;border:1.5px solid #D1FAE5;border-radius:9999px;padding:7px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Atur Data Bisnis</button>
+        </div>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:40px 24px;gap:16px;">
+        <svg width="120" height="100" viewBox="0 0 120 100" fill="none">
+          <rect x="20" y="22" width="58" height="42" rx="8" stroke="#C7D2FE" stroke-width="2.5"/>
+          <rect x="26" y="16" width="58" height="42" rx="8" stroke="#A5B4FC" stroke-width="2" opacity=".5"/>
+          <rect x="32" y="10" width="58" height="42" rx="8" stroke="#818CF8" stroke-width="1.5" opacity=".3"/>
+          <path d="M34 38 L58 38" stroke="#C7D2FE" stroke-width="2" stroke-linecap="round"/>
+          <path d="M34 46 L50 46" stroke="#E0E7FF" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="88" cy="72" r="14" fill="#6366F1"/>
+          <path d="M88 66 L88 78 M82 72 L94 72" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <p style="margin:0 0 6px;font-size:15px;font-weight:700;color:var(--text-1);">Data Bisnis masih kosong</p>
+          <p style="margin:0 0 14px;font-size:13px;color:var(--text-3);max-width:220px;">Tambahkan info bisnis, produk, dan FAQ agar bot bisa menjawab pelanggan.</p>
+          <button style="background:#6366F1;color:#fff;border:none;border-radius:9999px;padding:7px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Tambah Konten</button>
+        </div>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:40px 24px;gap:16px;">
+        <svg width="120" height="100" viewBox="0 0 120 100" fill="none">
+          <rect x="20" y="52" width="18" height="32" rx="4" fill="#D1FAE5" stroke="#A7F3D0" stroke-width="1.5"/>
+          <rect x="46" y="36" width="18" height="48" rx="4" fill="#6EE7B7" stroke="#34D399" stroke-width="1.5"/>
+          <rect x="72" y="22" width="18" height="62" rx="4" fill="#10B981" stroke="#059669" stroke-width="1.5"/>
+          <path d="M20 18 L100 18" stroke="var(--border)" stroke-width="1.5" stroke-dasharray="4 4"/>
+          <circle cx="96" cy="76" r="16" fill="#ECFDF5" stroke="#D1FAE5" stroke-width="2"/>
+          <path d="M90 76 L94 80 L102 71" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div>
+          <p style="margin:0 0 6px;font-size:15px;font-weight:700;color:var(--text-1);">Belum ada data</p>
+          <p style="margin:0 0 14px;font-size:13px;color:var(--text-3);max-width:220px;">Analitik akan muncul setelah bot mulai membalas percakapan pelanggan.</p>
+          <button style="background:transparent;color:#047857;border:1.5px solid #D1FAE5;border-radius:9999px;padding:7px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Lihat Cara Kerja</button>
+        </div>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:40px 24px;gap:16px;">
+        <svg width="120" height="100" viewBox="0 0 120 100" fill="none">
+          <circle cx="52" cy="44" r="26" stroke="#E5E7EB" stroke-width="3"/>
+          <path d="M70 62 L88 80" stroke="#E5E7EB" stroke-width="4" stroke-linecap="round"/>
+          <path d="M44 38 L44 44 M44 44 L44 50" stroke="#D1D5DB" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="44" cy="54" r="2" fill="#D1D5DB"/>
+        </svg>
+        <div>
+          <p style="margin:0 0 6px;font-size:15px;font-weight:700;color:var(--text-1);">Tidak ditemukan</p>
+          <p style="margin:0 0 14px;font-size:13px;color:var(--text-3);max-width:220px;">Coba kata kunci lain atau periksa ejaan pencarian kamu.</p>
+          <button style="background:transparent;color:var(--text-2);border:1.5px solid var(--border);border-radius:9999px;padding:7px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">Hapus Pencarian</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SIDEBAR ACTIVE STATE ══ -->
+  <section style="margin-bottom:32px;">
+    <p style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;">Sidebar Active State — Before / After</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="card" style="padding:12px;">
+        <p style="font-size:11px;color:var(--text-3);margin:0 0 10px;font-weight:600;">❌ Before — full-width rounded-xl</p>
+        <div style="background:#ECFDF5;border-radius:12px;padding:9px 12px;display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;color:#047857;">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#10B981" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/></svg>
+          Inbox
+        </div>
+      </div>
+      <div class="card" style="padding:12px;">
+        <p style="font-size:11px;color:var(--text-3);margin:0 0 10px;font-weight:600;">✓ After — floating pill (mx-2)</p>
+        <div style="background:#ECFDF5;border-radius:9999px;padding:9px 12px;margin:0 4px;display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;color:#047857;">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#10B981" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/></svg>
+          Inbox
+          <span style="margin-left:auto;background:#EF4444;color:#fff;font-size:11px;font-weight:700;padding:1px 7px;border-radius:9999px;">3</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ THREAD ACTION BUTTONS ══ -->
+  <section style="margin-bottom:32px;">
+    <p style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;">Thread Action Buttons</p>
+    <div class="card" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+      <button class="action-btn action-btn-ghost">
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Tandai Selesai
+      </button>
+      <button class="action-btn action-btn-ai">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+        Sarankan Balasan
+      </button>
+      <div style="width:1px;height:24px;background:var(--border);"></div>
+      <span style="font-size:12px;color:var(--text-3);">Tandai Selesai = thread header · Sarankan Balasan = area balas</span>
+    </div>
+  </section>
+
+  <!-- ══ BUTTON SYSTEM ══ -->
+  <section style="margin-bottom:32px;">
+    <p style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;">Sistem Tombol</p>
+    <div class="card" style="display:flex;flex-direction:column;gap:20px;">
+      <div>
+        <p style="font-size:12px;color:var(--text-3);margin:0 0 10px;font-weight:600;">Varian (ukuran md)</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <button class="btn btn-md btn-primary">Primary</button>
+          <button class="btn btn-md btn-secondary">Secondary</button>
+          <button class="btn btn-md btn-ghost-brand">Ghost Brand</button>
+          <button class="btn btn-md btn-ghost">Ghost</button>
+          <button class="btn btn-md btn-danger">Bahaya</button>
+          <button class="btn btn-md btn-accent">Aksen</button>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:12px;color:var(--text-3);margin:0 0 10px;font-weight:600;">Ukuran</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <button class="btn btn-sm btn-primary">Kecil (sm)</button>
+          <button class="btn btn-md btn-primary">Sedang (md)</button>
+          <button class="btn btn-lg btn-primary">Besar (lg)</button>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:12px;color:var(--text-3);margin:0 0 10px;font-weight:600;">Dengan ikon</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <button class="btn btn-md btn-primary"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg> Tambah</button>
+          <button class="btn btn-md btn-secondary"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg> Unduh</button>
+          <button class="btn btn-md btn-ghost-brand">Tandai Selesai <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg></button>
+          <button class="btn btn-md btn-secondary" style="padding:10px;width:42px;justify-content:center;"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/></svg></button>
+        </div>
+      </div>
+      <div>
+        <p style="font-size:12px;color:var(--text-3);margin:0 0 10px;font-weight:600;">Status</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <button class="btn btn-md btn-primary">Normal</button>
+          <button class="btn btn-md btn-primary" disabled>Disabled</button>
+          <button class="btn btn-md btn-primary" style="opacity:.7;cursor:not-allowed;"><svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5" style="animation:spin 1s linear infinite;"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/></svg> Memproses...</button>
+          <button class="btn btn-md btn-secondary" style="width:100%;justify-content:center;max-width:200px;">Lebar Penuh</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ INPUT SYSTEM ══ -->
+  <section style="margin-bottom:32px;">
+    <p style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;">Sistem Input</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="card">
+        <p style="font-size:12px;color:var(--text-3);margin:0 0 14px;font-weight:700;">Status Input</p>
+        <div class="field-group"><label class="field-label">Default</label><input type="text" class="input-base" placeholder="Ketik di sini..."></div>
+        <div class="field-group"><label class="field-label">Focus (aktif)</label><input type="text" class="input-base" value="Villa Ubud Jiwa" style="border-color:#10B981;box-shadow:0 0 0 3px rgba(16,185,129,.3);"></div>
+        <div class="field-group"><label class="field-label">Error <span style="color:#EF4444;">*</span></label><input type="text" class="input-base input-error-state" value="email salah"><p class="field-error"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="#EF4444" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/></svg> Format email tidak valid</p></div>
+        <div class="field-group"><label class="field-label">Sukses</label><input type="text" class="input-base input-success-state" value="budi@villa.id"><p class="field-success-msg">✓ Email tersedia</p></div>
+        <div class="field-group" style="margin-bottom:0;"><label class="field-label" style="opacity:.5;">Disabled</label><input type="text" class="input-base" value="Tidak bisa diubah" disabled><p class="field-helper">Konten ini dikunci</p></div>
+      </div>
+      <div class="card">
+        <p style="font-size:12px;color:var(--text-3);margin:0 0 14px;font-weight:700;">Tipe Input</p>
+        <div class="field-group">
+          <label class="field-label">Search (dengan ikon)</label>
+          <div class="input-icon-wrap">
+            <svg class="icon-l" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
+            <input type="text" class="input-base with-icon-l" style="border-radius:9999px;" placeholder="Cari...">
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Password</label>
+          <div class="input-icon-wrap">
+            <input type="password" class="input-base with-icon-r" value="secret123">
+            <svg class="icon-r" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Select / Dropdown</label>
+          <select class="input-base"><option>Villa / Penginapan</option><option>Apotek / Toko Obat</option><option>Restoran / F&amp;B</option></select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Textarea</label>
+          <textarea class="input-base" style="min-height:80px;">Villa Ubud Jiwa buka setiap hari pukul 07.00–22.00...</textarea>
+          <p class="field-helper" style="text-align:right;">48 / 500 karakter</p>
+        </div>
+        <div class="field-group" style="margin-bottom:0;">
+          <label class="field-label">Nomor dengan prefix</label>
+          <div class="input-icon-wrap">
+            <span class="icon-l" style="font-size:13px;font-weight:600;color:var(--text-2);">+62</span>
+            <input type="tel" class="input-base with-icon-l" style="padding-left:46px;" placeholder="812-3456-7890">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CHECKBOX & RADIO ══ -->
+  <section style="margin-bottom:32px;">
+    <p style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;">Checkbox &amp; Radio</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="card">
+        <p style="font-size:12px;color:var(--text-3);margin:0 0 14px;font-weight:700;">Checkbox</p>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <label class="check-wrap"><div class="check-box checked" onclick="this.classList.toggle('checked')"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg></div><span style="font-size:13.5px;color:var(--text-1);">Balas Otomatis</span></label>
+          <label class="check-wrap"><div class="check-box" onclick="this.classList.toggle('checked')"></div><span style="font-size:13.5px;color:var(--text-1);">Notifikasi Email</span></label>
+          <label class="check-wrap" style="opacity:.4;"><div class="check-box checked" style="cursor:not-allowed;"><svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg></div><span style="font-size:13.5px;color:var(--text-1);">Fitur Premium (disabled)</span></label>
+        </div>
+      </div>
+      <div class="card">
+        <p style="font-size:12px;color:var(--text-3);margin:0 0 14px;font-weight:700;">Radio Button</p>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <label class="check-wrap"><div class="radio-box checked radio-demo" onclick="document.querySelectorAll('.radio-demo').forEach(r=>r.classList.remove('checked'));this.classList.add('checked');" style="cursor:pointer;"></div><span style="font-size:13.5px;color:var(--text-1);">Paket Gratis</span></label>
+          <label class="check-wrap"><div class="radio-box radio-demo" onclick="document.querySelectorAll('.radio-demo').forEach(r=>r.classList.remove('checked'));this.classList.add('checked');" style="cursor:pointer;"></div><span style="font-size:13.5px;color:var(--text-1);">Paket Starter — Rp 199k/bln</span></label>
+          <label class="check-wrap"><div class="radio-box radio-demo" onclick="document.querySelectorAll('.radio-demo').forEach(r=>r.classList.remove('checked'));this.classList.add('checked');" style="cursor:pointer;"></div><span style="font-size:13.5px;color:var(--text-1);">Paket Growth — Rp 499k/bln</span></label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ BADGES ══ -->
+  <section style="margin-bottom:32px;">
+    <p style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;">Badge — Semua Varian</p>
+    <div class="card" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+      <span class="badge badge-needs">Perlu Dibalas</span>
+      <span class="badge badge-handled">Dibalas Otomatis</span>
+      <span class="badge badge-waiting">Menunggu</span>
+      <span class="badge badge-ai">Admin Otomatis</span>
+      <span class="badge badge-brand">Terhubung</span>
+      <span class="badge badge-muted">Draft</span>
+      <div style="width:1px;height:20px;background:var(--border);"></div>
+      <span style="font-size:11.5px;color:var(--text-3);">needs · handled · waiting · ai · brand · muted</span>
+    </div>
+  </section>
+
+  <!-- ══ TOAST ══ -->
+  <section style="margin-bottom:32px;">
+    <p style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;">Toast / Notifikasi</p>
+    <div class="card" style="display:flex;flex-direction:column;gap:10px;">
+      <div class="toast toast-success"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#10B981" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Data bisnis berhasil disimpan</div>
+      <div class="toast toast-error"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#EF4444" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/></svg> Gagal menghubungkan WhatsApp. Coba lagi.</div>
+      <div class="toast toast-warning"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#D97706" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg> Kuota balasan tersisa 23. Segera upgrade.</div>
+      <div class="toast toast-info"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#3B82F6" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"/></svg> Admin otomatis aktif dan menjawab pesan</div>
+    </div>
+  </section>
+
+  <!-- ══ MODAL ══ -->
+  <section style="margin-bottom:32px;">
+    <p style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;">Modal Dialog</p>
+    <div class="card" style="padding:0;overflow:hidden;">
+      <div style="background:rgba(0,0,0,.35);padding:32px;display:flex;align-items:center;justify-content:center;">
+        <div class="modal-box">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+            <div style="width:40px;height:40px;border-radius:12px;background:#FEF2F2;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#EF4444" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg></div>
+            <div><p style="margin:0;font-size:15px;font-weight:700;color:var(--text-1);">Batalkan Langganan</p></div>
+          </div>
+          <p style="font-size:14px;color:var(--text-2);margin:0 0 20px;line-height:1.6;">Kamu akan kehilangan akses ke semua fitur premium setelah periode berjalan selesai. Admin otomatis akan berhenti aktif.</p>
+          <div style="display:flex;gap:8px;justify-content:flex-end;">
+            <button class="btn btn-md btn-secondary">Batal</button>
+            <button class="btn btn-md btn-danger">Ya, Batalkan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SKELETON ══ -->
+  <section style="margin-bottom:32px;">
+    <p style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin:0 0 12px;">Loading / Skeleton</p>
+    <div class="card">
+      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:16px;">
+        <div class="skel" style="width:38px;height:38px;border-radius:9999px;flex-shrink:0;"></div>
+        <div style="flex:1;">
+          <div class="skel" style="height:13px;width:60%;margin-bottom:8px;"></div>
+          <div class="skel" style="height:11px;width:90%;margin-bottom:6px;"></div>
+          <div class="skel" style="height:20px;width:30%;border-radius:9999px;"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:16px;">
+        <div class="skel" style="width:38px;height:38px;border-radius:9999px;flex-shrink:0;"></div>
+        <div style="flex:1;">
+          <div class="skel" style="height:13px;width:45%;margin-bottom:8px;"></div>
+          <div class="skel" style="height:11px;width:80%;margin-bottom:6px;"></div>
+          <div class="skel" style="height:20px;width:35%;border-radius:9999px;"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div class="skel" style="width:38px;height:38px;border-radius:9999px;flex-shrink:0;"></div>
+        <div style="flex:1;">
+          <div class="skel" style="height:13px;width:55%;margin-bottom:8px;"></div>
+          <div class="skel" style="height:11px;width:75%;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+function toggleDark() {
+  const html = document.documentElement;
+  html.classList.toggle('dark');
+  document.getElementById('icon-sun').style.display = html.classList.contains('dark') ? 'block' : 'none';
+  document.getElementById('icon-moon').style.display = html.classList.contains('dark') ? 'none' : 'block';
+}
+</script>
+</body>
+</html>
