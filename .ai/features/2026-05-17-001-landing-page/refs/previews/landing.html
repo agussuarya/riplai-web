@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Riplai — Landing Page Preview</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>tailwind.config={darkMode:'class',theme:{extend:{colors:{brand:{50:'#ECFDF5',100:'#D1FAE5',200:'#A7F3D0',400:'#34D399',500:'#10B981',600:'#059669',700:'#047857'},accent:{100:'#E0E7FF',500:'#6366F1',600:'#4F46E5'}},fontFamily:{sans:['Plus Jakarta Sans','ui-sans-serif','system-ui']}}}}</script>
+<style>
+:root{--bg-base:#F9FAFB;--bg-surface:#FFFFFF;--bg-subtle:#F3F4F6;--bg-hover:#F0F0F0;--border:#E5E7EB;--border-sub:#F3F4F6;--text-1:#111827;--text-2:#6B7280;--text-3:#9CA3AF;--brand-sub:#ECFDF5;--brand-sub2:#D1FAE5;--brand-text:#047857;--accent-sub:#E0E7FF;--accent-text:#4F46E5;}
+html.dark{--bg-base:#0D1117;--bg-surface:#161B22;--bg-subtle:#1C2330;--bg-hover:#21293A;--border:#30394A;--border-sub:#1C2330;--text-1:#E6EDF3;--text-2:#8B949E;--text-3:#6E7681;--brand-sub:rgba(16,185,129,.13);--brand-sub2:rgba(16,185,129,.22);--brand-text:#34D399;--accent-sub:rgba(99,102,241,.16);--accent-text:#818CF8;}
+*{box-sizing:border-box;}
+body{font-family:'Plus Jakarta Sans',system-ui;margin:0;background:var(--bg-base);color:var(--text-1);}
+
+.landing-nav{background:var(--bg-surface);border-bottom:1px solid var(--border);padding:14px 48px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;transition:background .2s,border-color .2s;}
+.hero-v2{background:radial-gradient(ellipse 65% 90% at 0% 0%,#ECFDF5 0%,transparent 60%),#ffffff;position:relative;padding:72px 64px 80px;transition:background .2s;}
+html.dark .hero-v2{background:radial-gradient(ellipse 65% 90% at 0% 0%,rgba(16,185,129,.07) 0%,transparent 60%),#0D1117;}
+.hero-heading{font-size:58px;font-weight:800;letter-spacing:-0.04em;line-height:1.06;color:var(--text-1);margin:0 0 20px;}
+.gradient-text{background:linear-gradient(135deg,#10B981 0%,#34D399 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.demo-wrap{transform:rotate(-0.8deg);transition:transform .3s ease;filter:drop-shadow(0 20px 40px rgba(0,0,0,.12));}
+.demo-wrap:hover{transform:rotate(0deg) scale(1.01);}
+.demo-widget{border:1px solid var(--border);border-radius:22px;overflow:hidden;background:var(--bg-surface);}
+.demo-header-v2{background:#10B981;padding:12px 16px;display:flex;align-items:center;gap:10px;}
+.demo-chat-area{background:#F0F4F0;padding:14px;min-height:175px;display:flex;flex-direction:column;gap:10px;}
+html.dark .demo-chat-area{background:#131C24;}
+.demo-bubble-c{background:#fff;border-radius:8px 8px 8px 2px;padding:8px 11px;max-width:220px;box-shadow:0 1px 2px rgba(0,0,0,.08);}
+html.dark .demo-bubble-c{background:#1C2330;}
+.demo-bubble-b{background:#E0E7FF;border-radius:8px 8px 2px 8px;padding:8px 11px;max-width:240px;box-shadow:0 1px 2px rgba(0,0,0,.08);}
+html.dark .demo-bubble-b{background:rgba(99,102,241,.2);}
+.demo-footer{background:var(--bg-subtle);padding:10px 12px;display:flex;gap:8px;align-items:center;border-top:1px solid var(--border);}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:0 auto;}
+.feature-card{background:var(--bg-surface);border:1.5px solid var(--border);border-radius:18px;padding:20px;transition:background .2s,border-color .2s,box-shadow .15s;}
+.feature-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.08);border-color:var(--brand-sub2);}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:0 auto;}
+.pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1000px;margin:0 auto;}
+.pricing-card{background:var(--bg-surface);border:1.5px solid var(--border);border-radius:20px;padding:22px 18px;display:flex;flex-direction:column;position:relative;}
+.pricing-card.popular{border-color:#10B981;border-width:2px;box-shadow:0 8px 32px rgba(16,185,129,.15);transform:scale(1.03);z-index:1;}
+.card{background:var(--bg-surface);border:1.5px solid var(--border);border-radius:18px;padding:18px 20px;}
+.btn{display:inline-flex;align-items:center;gap:7px;border-radius:9999px;font-family:inherit;cursor:pointer;font-weight:600;border:none;transition:background .15s;white-space:nowrap;}
+.btn-md{padding:10px 22px;font-size:13.5px;}
+.btn-lg{padding:13px 28px;font-size:15px;}
+.btn-primary{background:#10B981;color:#fff;}
+.btn-primary:hover{background:#059669;}
+.btn-secondary{background:var(--bg-surface);color:var(--text-1);border:1.5px solid var(--border) !important;}
+.btn-secondary:hover{background:var(--bg-subtle);}
+.page-section{display:none;}
+.page-section.active{display:block;}
+.page-back{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--text-2);cursor:pointer;margin-bottom:24px;text-decoration:none;}
+.page-back:hover{color:var(--text-1);}
+.input-base{width:100%;padding:10px 14px;font-size:14px;border:1.5px solid var(--border);border-radius:12px;outline:none;color:var(--text-1);background:var(--bg-surface);font-family:inherit;transition:border-color .15s,box-shadow .15s;}
+.input-base:focus{border-color:#10B981;box-shadow:0 0 0 3px rgba(16,185,129,.3);}
+.input-base::placeholder{color:var(--text-3);}
+.doc-h2{font-size:17px;font-weight:700;color:var(--text-1);margin:28px 0 10px;padding-top:8px;border-top:1px solid var(--border-sub);}
+.doc-p{font-size:14px;color:var(--text-2);line-height:1.75;margin:0 0 12px;}
+</style>
+</head>
+<body>
+
+<!-- Dark mode toggle -->
+<button id="dark-toggle" onclick="toggleDark()" style="position:fixed;top:12px;right:12px;z-index:999;width:36px;height:36px;border-radius:9999px;border:1px solid var(--border);background:var(--bg-surface);cursor:pointer;display:flex;align-items:center;justify-content:center;">
+  <svg id="icon-sun" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--text-2)" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><path stroke-linecap="round" d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+  <svg id="icon-moon" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="var(--text-2)" stroke-width="2"><path stroke-linecap="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+</button>
+
+<!-- ══════════ HOME (beranda) ══════════ -->
+<div id="pg-home" class="page-section active">
+  <nav class="landing-nav">
+    <div style="display:flex;align-items:center;gap:9px;">
+      <div style="width:30px;height:30px;background:#10B981;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="17" height="20" viewBox="0 0 40 46" fill="none"><path d="M10,2 H30 Q38,2 38,10 V28 Q38,36 30,36 H16 L6,46 L6,36 Q2,36 2,28 V10 Q2,2 10,2 Z" fill="white" opacity=".93"/><circle cx="12" cy="19" r="3" fill="#059669"/><path d="M12,13 A6,6 0 0,1 12,25" stroke="#059669" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M12,8 A11,11 0 0,1 12,30" stroke="#059669" stroke-width="2.2" stroke-linecap="round" fill="none" opacity=".6"/><path d="M12,3 A16,16 0 0,1 12,35" stroke="#059669" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".35"/></svg>
+      </div>
+      <span style="font-size:16px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">riplai</span>
+    </div>
+    <div style="display:flex;gap:28px;">
+      <a href="#" onclick="showPage('fitur');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Fitur</a>
+      <a href="#" onclick="showPage('harga');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Harga</a>
+      <a href="#" onclick="showPage('demo');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Demo</a>
+      <a href="#" onclick="showPage('tentang');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Tentang</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a href="login.html" style="font-size:14px;font-weight:600;color:var(--text-2);text-decoration:none;">Masuk</a>
+      <a href="register.html" style="font-size:14px;font-weight:700;color:#fff;background:#10B981;padding:8px 22px;border-radius:9999px;text-decoration:none;white-space:nowrap;">Coba Gratis</a>
+    </div>
+  </nav>
+
+  <!-- Hero v2 — Split Layout -->
+  <section class="hero-v2">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;max-width:1100px;margin:0 auto;">
+      <div>
+        <span style="display:inline-flex;align-items:center;gap:6px;background:var(--accent-sub);color:var(--accent-text);font-size:12px;font-weight:700;padding:5px 14px;border-radius:9999px;margin-bottom:24px;">
+          Admin Otomatis WhatsApp
+        </span>
+        <h1 class="hero-heading">
+          WhatsApp kamu aktif<br>
+          <span class="gradient-text">24 jam</span>,<br>
+          bahkan saat tidur.
+        </h1>
+        <p style="font-size:17px;color:var(--text-2);line-height:1.65;margin:0 0 32px;max-width:420px;">
+          Admin otomatis menjawab chat pelanggan berdasarkan data bisnis kamu. Kamu tidak perlu balas satu per satu.
+        </p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+          <a href="register.html" style="font-size:15px;font-weight:700;color:#fff;background:#10B981;padding:13px 28px;border-radius:9999px;text-decoration:none;white-space:nowrap;">Coba Gratis 14 Hari →</a>
+          <a href="#" onclick="showPage('demo');return false;" style="font-size:15px;font-weight:600;color:var(--text-1);background:var(--bg-subtle);border:1.5px solid var(--border);padding:13px 28px;border-radius:9999px;text-decoration:none;white-space:nowrap;">Lihat Demo</a>
+        </div>
+        <p style="font-size:12px;color:var(--text-3);margin:14px 0 0;">Tidak perlu kartu kredit · Setup dalam 5 menit</p>
+        <div style="margin-top:36px;display:flex;align-items:center;gap:12px;">
+          <div style="display:flex;">
+            <div style="width:28px;height:28px;border-radius:9999px;background:#10B981;border:2px solid white;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white;margin-right:-8px;">AS</div>
+            <div style="width:28px;height:28px;border-radius:9999px;background:#6366F1;border:2px solid white;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white;margin-right:-8px;">RM</div>
+            <div style="width:28px;height:28px;border-radius:9999px;background:#059669;border:2px solid white;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white;margin-right:-8px;">HB</div>
+            <div style="width:28px;height:28px;border-radius:9999px;background:#0F766E;border:2px solid white;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white;">KS</div>
+          </div>
+          <p style="font-size:13px;color:var(--text-2);margin:0;"><strong style="color:var(--text-1);">200+</strong> bisnis Indonesia sudah pakai Riplai</p>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;">
+        <div style="width:100%;max-width:360px;">
+          <div class="demo-wrap">
+            <div class="demo-widget">
+              <div class="demo-header-v2">
+                <div style="width:36px;height:36px;border-radius:9999px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="20" height="23" viewBox="0 0 40 46" fill="none"><path d="M10,2 H30 Q38,2 38,10 V28 Q38,36 30,36 H16 L6,46 L6,36 Q2,36 2,28 V10 Q2,2 10,2 Z" fill="white" opacity=".93"/><circle cx="12" cy="19" r="3" fill="#059669"/><path d="M12,13 A6,6 0 0,1 12,25" stroke="#059669" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M12,8 A11,11 0 0,1 12,30" stroke="#059669" stroke-width="2.2" stroke-linecap="round" fill="none" opacity=".6"/></svg>
+                </div>
+                <div>
+                  <p style="margin:0;font-size:14px;font-weight:700;color:#fff;">Villa Ubud Jiwa</p>
+                  <p style="margin:0;font-size:11px;color:#A7F3D0;">Penjawab 24 jam aktif</p>
+                </div>
+              </div>
+              <div class="demo-chat-area" id="hero-demo-msgs">
+                <p style="font-size:10px;color:var(--text-3);text-align:center;margin:0 0 8px;">Sabtu, 23:05</p>
+                <div style="display:flex;justify-content:flex-end;">
+                  <div class="demo-bubble-b"><p style="margin:0;font-size:13px;color:var(--text-1);">Halo, mau tanya kamar untuk besok. 2 orang dewasa</p><p style="margin:3px 0 0;font-size:10px;color:var(--text-3);text-align:right;">23:05</p></div>
+                </div>
+                <div style="display:flex;justify-content:flex-start;">
+                  <div class="demo-bubble-c"><p style="margin:0;font-size:13px;color:var(--text-1);">Halo, selamat malam! Pilihan kamar untuk besok:<br>🛏 <b>Deluxe</b> — Rp 750.000/malam<br>&nbsp;&nbsp;&nbsp;&nbsp;Balkon · view kebun · sarapan 2 orang<br>🛁 <b>Suite</b> — Rp 1.200.000/malam<br>&nbsp;&nbsp;&nbsp;&nbsp;Bathtub · view sawah · sarapan 2 orang<br><br>Kamar mana yang diminati?</p><p style="margin:4px 0 0;font-size:10px;color:#6366F1;text-align:right;font-weight:600;">Admin Otomatis · 23:05</p></div>
+                </div>
+              </div>
+              <div class="demo-footer">
+                <input id="hero-demo-input" type="text" placeholder="Tanya apa saja..." onkeypress="if(event.key==='Enter')sendHeroDemo()" style="flex:1;background:var(--bg-surface);border:1px solid var(--border);border-radius:9999px;padding:7px 13px;font-size:12.5px;outline:none;font-family:inherit;color:var(--text-1);">
+                <button onclick="sendHeroDemo()" style="width:32px;height:32px;background:#10B981;border:none;border-radius:9999px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;">
+                  <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+          <p style="font-size:11.5px;color:var(--text-3);text-align:center;margin-top:12px;">Ini yang tamu kamu terima jam 11 malam, dibalas otomatis. Coba tanya →</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Logo Strip -->
+  <section style="background:var(--bg-surface);padding:24px 64px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+    <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:40px;flex-wrap:wrap;justify-content:center;">
+      <p style="font-size:12px;font-weight:600;color:var(--text-3);white-space:nowrap;letter-spacing:.05em;text-transform:uppercase;">Dipercaya oleh</p>
+      <span style="font-size:14px;font-weight:700;color:var(--text-3);">Apotek Sehat</span>
+      <span style="font-size:14px;font-weight:700;color:var(--text-3);">Klinik Sehat Sentosa</span>
+      <span style="font-size:14px;font-weight:700;color:var(--text-3);">Restoran Padang Maju</span>
+      <span style="font-size:14px;font-weight:700;color:var(--text-3);">Villa Bintang Bali</span>
+      <span style="font-size:14px;font-weight:700;color:var(--text-3);">Toko Batik Nusantara</span>
+    </div>
+  </section>
+
+  <!-- Feature Grid -->
+  <section style="background:var(--bg-base);padding:64px 48px;">
+    <div style="max-width:960px;margin:0 auto;">
+      <div style="text-align:center;margin-bottom:44px;">
+        <h2 style="font-size:34px;font-weight:800;color:var(--text-1);margin:0 0 12px;letter-spacing:-.03em;">Semua yang bisnis kamu butuhkan</h2>
+        <p style="font-size:16px;color:var(--text-2);margin:0;">Dirancang khusus untuk bisnis Indonesia yang tidak punya waktu banyak.</p>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-card"><div style="width:44px;height:44px;background:var(--brand-sub);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#10B981" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/></svg></div><h3 style="font-size:15px;font-weight:700;color:var(--text-1);margin:0 0 8px;">Penjawab 24 Jam</h3><p style="font-size:13.5px;color:var(--text-2);margin:0;line-height:1.6;">Balas pesan pelanggan otomatis kapan saja. Bahkan saat kamu tidur.</p></div>
+        <div class="feature-card"><div style="width:44px;height:44px;background:var(--brand-sub);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#10B981" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0118 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg></div><h3 style="font-size:15px;font-weight:700;color:var(--text-1);margin:0 0 8px;">Data Bisnis Pintar</h3><p style="font-size:13.5px;color:var(--text-2);margin:0;line-height:1.6;">Ajarkan bisnis kamu sekali, admin otomatis langsung tahu segalanya.</p></div>
+        <div class="feature-card"><div style="width:44px;height:44px;background:var(--brand-sub);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#10B981" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg></div><h3 style="font-size:15px;font-weight:700;color:var(--text-1);margin:0 0 8px;">Analitik Percakapan</h3><p style="font-size:13.5px;color:var(--text-2);margin:0;line-height:1.6;">Lihat berapa pesan dibalas, topik terpopuler, dan waktu sibuk.</p></div>
+        <div class="feature-card"><div style="width:44px;height:44px;background:var(--accent-sub);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#6366F1" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg></div><h3 style="font-size:15px;font-weight:700;color:var(--text-1);margin:0 0 8px;">Notifikasi ke Kamu</h3><p style="font-size:13.5px;color:var(--text-2);margin:0;line-height:1.6;">Admin otomatis tidak bisa jawab? Kamu dapat notifikasi langsung.</p></div>
+        <div class="feature-card"><div style="width:44px;height:44px;background:var(--brand-sub);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#10B981" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 8.25h3"/></svg></div><h3 style="font-size:15px;font-weight:700;color:var(--text-1);margin:0 0 8px;">Tanpa Aplikasi Baru</h3><p style="font-size:13.5px;color:var(--text-2);margin:0;line-height:1.6;">Pelanggan tetap chat lewat WhatsApp biasa.</p></div>
+        <div class="feature-card"><div style="width:44px;height:44px;background:var(--accent-sub);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#6366F1" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><h3 style="font-size:15px;font-weight:700;color:var(--text-1);margin:0 0 8px;">Mudah Dikonfigurasi</h3><p style="font-size:13.5px;color:var(--text-2);margin:0;line-height:1.6;">Atur jam operasional, nama penjawab dalam hitungan menit.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section style="background:var(--brand-sub);padding:64px 48px;">
+    <div style="max-width:860px;margin:0 auto;">
+      <h2 style="text-align:center;font-size:34px;font-weight:800;color:var(--text-1);margin:0 0 48px;letter-spacing:-.03em;">Cara kerjanya sederhana</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;">
+        <div style="text-align:center;"><div style="width:56px;height:56px;background:var(--brand-sub2);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;"><svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="#10B981" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/></svg></div><h3 style="font-size:16px;font-weight:700;color:var(--text-1);margin:0 0 8px;">1. Pelanggan chat</h3><p style="font-size:13.5px;color:var(--text-2);margin:0;line-height:1.6;">Pelanggan kirim pesan WA kapan saja. Siang maupun malam.</p></div>
+        <div style="text-align:center;"><div style="width:56px;height:56px;background:var(--accent-sub);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;"><svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="#6366F1" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg></div><h3 style="font-size:16px;font-weight:700;color:var(--text-1);margin:0 0 8px;">2. Langsung dibalas</h3><p style="font-size:13.5px;color:var(--text-2);margin:0;line-height:1.6;">Riplai membaca data bisnis kamu dan menjawab dalam hitungan detik.</p></div>
+        <div style="text-align:center;"><div style="width:56px;height:56px;background:var(--brand-sub2);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;"><svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="#10B981" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg></div><h3 style="font-size:16px;font-weight:700;color:var(--text-1);margin:0 0 8px;">3. Kamu pantau</h3><p style="font-size:13.5px;color:var(--text-2);margin:0;line-height:1.6;">Monitor semua percakapan dari dashboard. Balas manual jika perlu.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section style="background:var(--bg-surface);padding:64px 48px;">
+    <div style="max-width:920px;margin:0 auto;">
+      <h2 style="text-align:center;font-size:34px;font-weight:800;color:var(--text-1);margin:0 0 44px;letter-spacing:-.03em;">Kata mereka yang sudah pakai</h2>
+      <div class="testi-grid">
+        <div class="card" style="padding:24px;"><div style="font-size:32px;color:var(--brand-sub2);font-weight:800;line-height:1;margin-bottom:12px;">"</div><p style="font-size:14px;color:var(--text-1);line-height:1.65;margin:0 0 20px;">Dulu saya jawab WA pasien jam 2 pagi. Sekarang admin otomatis yang kerja, saya bisa tidur tenang.</p><div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:9999px;background:#10B981;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;">IS</div><div><p style="margin:0;font-size:13px;font-weight:600;color:var(--text-1);">Ibu Sari</p><p style="margin:0;font-size:12px;color:var(--text-3);">Pemilik Klinik · Jakarta</p></div></div></div>
+        <div class="card" style="padding:24px;"><div style="font-size:32px;color:var(--brand-sub2);font-weight:800;line-height:1;margin-bottom:12px;">"</div><p style="font-size:14px;color:var(--text-1);line-height:1.65;margin:0 0 20px;">Pelanggan tanya menu dan jam buka? Sudah dibalas sebelum saya sempat buka HP.</p><div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:9999px;background:#6366F1;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;">PB</div><div><p style="margin:0;font-size:13px;font-weight:600;color:var(--text-1);">Pak Budi</p><p style="margin:0;font-size:12px;color:var(--text-3);">Restoran Padang · Bandung</p></div></div></div>
+        <div class="card" style="padding:24px;"><div style="font-size:32px;color:var(--brand-sub2);font-weight:800;line-height:1;margin-bottom:12px;">"</div><p style="font-size:14px;color:var(--text-1);line-height:1.65;margin:0 0 20px;">Tamu dari luar negeri tanya dalam bahasa Inggris pun dibalas dengan baik.</p><div style="display:flex;align-items:center;gap:10px;"><div style="width:36px;height:36px;border-radius:9999px;background:#059669;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;">MD</div><div><p style="margin:0;font-size:13px;font-weight:600;color:var(--text-1);">Mbak Dewi</p><p style="margin:0;font-size:12px;color:var(--text-3);">Villa & Homestay · Bali</p></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section style="background:var(--bg-base);padding:64px 48px;">
+    <div style="max-width:1020px;margin:0 auto;">
+      <h2 style="text-align:center;font-size:34px;font-weight:800;color:var(--text-1);margin:0 0 8px;letter-spacing:-.03em;">Harga jelas. Tumbuh sesuai skala bisnismu.</h2>
+      <p style="text-align:center;font-size:15px;color:var(--text-3);margin:0 0 48px;">Mulai gratis, upgrade kapan saja.</p>
+      <div class="pricing-grid">
+        <div class="pricing-card"><h3 style="margin:0 0 4px;font-size:14px;font-weight:700;color:var(--text-2);">Gratis</h3><p style="margin:0 0 2px;font-size:30px;font-weight:800;color:var(--text-1);">Rp 0</p><p style="margin:0 0 20px;font-size:12px;color:var(--text-3);">Selamanya gratis</p><ul style="margin:0 0 20px;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;flex:1;"><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>50 balasan / bulan</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>1 nomor WA</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>Data bisnis dasar</li></ul><button style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:9999px;background:transparent;font-size:13px;font-weight:700;color:var(--text-1);cursor:pointer;font-family:inherit;">Mulai Gratis</button></div>
+        <div class="pricing-card"><h3 style="margin:0 0 4px;font-size:14px;font-weight:700;color:var(--text-2);">Starter</h3><p style="margin:0 0 2px;font-size:30px;font-weight:800;color:var(--text-1);">Rp 199k</p><p style="margin:0 0 20px;font-size:12px;color:var(--text-3);">per bulan</p><ul style="margin:0 0 20px;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;flex:1;"><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>500 balasan / bulan</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>1 nomor WA</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>Data bisnis lengkap</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>Analytics dasar</li></ul><button style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:9999px;background:transparent;font-size:13px;font-weight:700;color:var(--text-1);cursor:pointer;font-family:inherit;">Pilih Starter</button></div>
+        <div class="pricing-card popular"><span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#10B981;color:#fff;font-size:11px;font-weight:700;padding:3px 14px;border-radius:9999px;white-space:nowrap;">Terpopuler</span><h3 style="margin:0 0 4px;font-size:14px;font-weight:700;color:#10B981;">Growth</h3><p style="margin:0 0 2px;font-size:30px;font-weight:800;color:var(--text-1);">Rp 499k</p><p style="margin:0 0 20px;font-size:12px;color:var(--text-3);">per bulan</p><ul style="margin:0 0 20px;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;flex:1;"><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>2.000 balasan / bulan</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>3 nomor WA</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>Analytics lengkap</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>Prioritas support</li></ul><button style="width:100%;padding:10px;border:none;border-radius:9999px;background:#10B981;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;">Coba 14 Hari Gratis</button></div>
+        <div class="pricing-card"><h3 style="margin:0 0 4px;font-size:14px;font-weight:700;color:var(--text-2);">Custom</h3><p style="margin:0 0 2px;font-size:22px;font-weight:800;color:var(--text-1);line-height:1.3;">Hubungi<br>Kami</p><p style="margin:0 0 20px;font-size:12px;color:var(--text-3);">Untuk jaringan & enterprise</p><ul style="margin:0 0 20px;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;flex:1;"><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>Balasan tidak terbatas</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>Nomor WA tidak terbatas</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>SLA + dedicated support</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>API akses</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>Onboarding khusus</li></ul><button style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:9999px;background:transparent;font-size:13px;font-weight:700;color:var(--text-2);cursor:pointer;font-family:inherit;">Hubungi Kami</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background:#0D1117;padding:44px 48px 24px;">
+    <div style="max-width:900px;margin:0 auto;">
+      <div style="display:flex;justify-content:space-between;gap:40px;margin-bottom:32px;flex-wrap:wrap;">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;"><div style="width:28px;height:28px;background:#10B981;border-radius:8px;display:flex;align-items:center;justify-content:center;"><svg width="14" height="17" viewBox="0 0 40 46" fill="none"><path d="M10,2 H30 Q38,2 38,10 V28 Q38,36 30,36 H16 L6,46 L6,36 Q2,36 2,28 V10 Q2,2 10,2 Z" fill="white" opacity=".93"/><circle cx="12" cy="19" r="3" fill="#059669"/><path d="M12,13 A6,6 0 0,1 12,25" stroke="#059669" stroke-width="3" stroke-linecap="round" fill="none"/></svg></div><span style="font-size:16px;font-weight:800;color:#E6EDF3;letter-spacing:-.02em;">riplai</span></div>
+          <p style="font-size:13px;color:#8B949E;max-width:200px;line-height:1.6;margin:0;">Penjawab 24 jam untuk bisnis Indonesia.</p>
+        </div>
+        <div style="display:flex;gap:48px;flex-wrap:wrap;">
+          <div><p style="font-size:12px;font-weight:700;color:#E6EDF3;margin:0 0 12px;text-transform:uppercase;letter-spacing:.05em;">Produk</p><div style="display:flex;flex-direction:column;gap:8px;"><a href="#" onclick="showPage('fitur');return false;" style="font-size:13px;color:#8B949E;text-decoration:none;">Fitur</a><a href="#" onclick="showPage('harga');return false;" style="font-size:13px;color:#8B949E;text-decoration:none;">Harga</a><a href="#" onclick="showPage('demo');return false;" style="font-size:13px;color:#8B949E;text-decoration:none;">Demo</a></div></div>
+          <div><p style="font-size:12px;font-weight:700;color:#E6EDF3;margin:0 0 12px;text-transform:uppercase;letter-spacing:.05em;">Perusahaan</p><div style="display:flex;flex-direction:column;gap:8px;"><a href="#" onclick="showPage('tentang');return false;" style="font-size:13px;color:#8B949E;text-decoration:none;">Tentang</a><a href="#" style="font-size:13px;color:#8B949E;text-decoration:none;">Blog</a></div></div>
+          <div><p style="font-size:12px;font-weight:700;color:#E6EDF3;margin:0 0 12px;text-transform:uppercase;letter-spacing:.05em;">Legal</p><div style="display:flex;flex-direction:column;gap:8px;"><a href="privacy.html" style="font-size:13px;color:#8B949E;text-decoration:none;">Kebijakan Privasi</a><a href="terms.html" style="font-size:13px;color:#8B949E;text-decoration:none;">Syarat & Ketentuan</a></div></div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #21262D;padding-top:18px;text-align:center;font-size:12px;color:#8B949E;">© 2026 Riplai. Dibuat di Indonesia 🇮🇩</div>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════ FITUR ══════════ -->
+<div id="pg-fitur" class="page-section">
+  <nav class="landing-nav">
+    <a href="#" onclick="showPage('home');return false;" style="display:flex;align-items:center;gap:9px;text-decoration:none;"><div style="width:30px;height:30px;background:#10B981;border-radius:8px;display:flex;align-items:center;justify-content:center;"><svg width="17" height="20" viewBox="0 0 40 46" fill="none"><path d="M10,2 H30 Q38,2 38,10 V28 Q38,36 30,36 H16 L6,46 L6,36 Q2,36 2,28 V10 Q2,2 10,2 Z" fill="white" opacity=".93"/><circle cx="12" cy="19" r="3" fill="#059669"/><path d="M12,13 A6,6 0 0,1 12,25" stroke="#059669" stroke-width="3" stroke-linecap="round" fill="none"/></svg></div><span style="font-size:16px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">riplai</span></a>
+    <div style="display:flex;gap:28px;"><a href="#" onclick="showPage('fitur');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Fitur</a><a href="#" onclick="showPage('harga');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Harga</a><a href="#" onclick="showPage('demo');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Demo</a><a href="#" onclick="showPage('tentang');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Tentang</a></div>
+    <div style="display:flex;align-items:center;gap:12px;"><a href="login.html" style="font-size:14px;font-weight:600;color:var(--text-2);text-decoration:none;">Masuk</a><a href="register.html" style="font-size:14px;font-weight:700;color:#fff;background:#10B981;padding:8px 22px;border-radius:9999px;text-decoration:none;">Coba Gratis</a></div>
+  </nav>
+  <div style="max-width:960px;margin:0 auto;padding:56px 48px 80px;">
+    <a class="page-back" onclick="showPage('home');return false;"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg> Beranda</a>
+    <h1 style="font-size:40px;font-weight:800;color:var(--text-1);margin:0 0 14px;letter-spacing:-.03em;">Fitur yang kamu butuhkan.<br>Tanpa yang tidak perlu.</h1>
+    <p style="font-size:17px;color:var(--text-2);margin:0 0 56px;max-width:560px;line-height:1.6;">Dirancang khusus untuk bisnis kecil Indonesia yang tidak punya waktu banyak.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div class="card" style="padding:28px;"><div style="width:48px;height:48px;background:var(--brand-sub);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#10B981" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/></svg></div><h3 style="font-size:17px;font-weight:700;color:var(--text-1);margin:0 0 8px;">Penjawab 24 Jam</h3><p style="font-size:14px;color:var(--text-2);margin:0;line-height:1.6;">Balas chat pelanggan otomatis kapan saja, termasuk tengah malam dan hari libur.</p></div>
+      <div class="card" style="padding:28px;"><div style="width:48px;height:48px;background:var(--accent-sub);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#6366F1" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0118 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg></div><h3 style="font-size:17px;font-weight:700;color:var(--text-1);margin:0 0 8px;">Data Bisnis Pintar</h3><p style="font-size:14px;color:var(--text-2);margin:0;line-height:1.6;">Isi satu kali: jam buka, produk, FAQ. Admin otomatis langsung paham bisnis kamu.</p></div>
+      <div class="card" style="padding:28px;"><div style="width:48px;height:48px;background:var(--brand-sub);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#10B981" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg></div><h3 style="font-size:17px;font-weight:700;color:var(--text-1);margin:0 0 8px;">Laporan Lengkap</h3><p style="font-size:14px;color:var(--text-2);margin:0;line-height:1.6;">Pantau berapa banyak chat dibalas, seberapa cepat, dan apa saja yang sering ditanya.</p></div>
+      <div class="card" style="padding:28px;"><div style="width:48px;height:48px;background:var(--accent-sub);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#6366F1" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/></svg></div><h3 style="font-size:17px;font-weight:700;color:var(--text-1);margin:0 0 8px;">Notifikasi Cerdas</h3><p style="font-size:14px;color:var(--text-2);margin:0;line-height:1.6;">Dapat notif WhatsApp kalau ada chat yang benar-benar perlu perhatian kamu.</p></div>
+      <div class="card" style="padding:28px;"><div style="width:48px;height:48px;background:var(--brand-sub);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#10B981" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 8.25h3"/></svg></div><h3 style="font-size:17px;font-weight:700;color:var(--text-1);margin:0 0 8px;">Tanpa Aplikasi Baru</h3><p style="font-size:14px;color:var(--text-2);margin:0;line-height:1.6;">Pelanggan tetap chat lewat WhatsApp. Kamu kelola dari dashboard Riplai di browser.</p></div>
+      <div class="card" style="padding:28px;"><div style="width:48px;height:48px;background:var(--accent-sub);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#6366F1" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div><h3 style="font-size:17px;font-weight:700;color:var(--text-1);margin:0 0 8px;">Mudah Dikonfigurasi</h3><p style="font-size:14px;color:var(--text-2);margin:0;line-height:1.6;">Atur dalam 5 menit. Tidak perlu keahlian teknis apapun.</p></div>
+    </div>
+    <div style="text-align:center;margin-top:48px;"><a href="register.html" class="btn btn-lg btn-primary">Coba Gratis 14 Hari →</a></div>
+  </div>
+</div>
+
+<!-- ══════════ HARGA ══════════ -->
+<div id="pg-harga" class="page-section">
+  <nav class="landing-nav">
+    <a href="#" onclick="showPage('home');return false;" style="display:flex;align-items:center;gap:9px;text-decoration:none;"><div style="width:30px;height:30px;background:#10B981;border-radius:8px;display:flex;align-items:center;justify-content:center;"><svg width="17" height="20" viewBox="0 0 40 46" fill="none"><path d="M10,2 H30 Q38,2 38,10 V28 Q38,36 30,36 H16 L6,46 L6,36 Q2,36 2,28 V10 Q2,2 10,2 Z" fill="white" opacity=".93"/><circle cx="12" cy="19" r="3" fill="#059669"/><path d="M12,13 A6,6 0 0,1 12,25" stroke="#059669" stroke-width="3" stroke-linecap="round" fill="none"/></svg></div><span style="font-size:16px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">riplai</span></a>
+    <div style="display:flex;gap:28px;"><a href="#" onclick="showPage('fitur');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Fitur</a><a href="#" onclick="showPage('harga');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Harga</a><a href="#" onclick="showPage('demo');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Demo</a><a href="#" onclick="showPage('tentang');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Tentang</a></div>
+    <div style="display:flex;align-items:center;gap:12px;"><a href="login.html" style="font-size:14px;font-weight:600;color:var(--text-2);text-decoration:none;">Masuk</a><a href="register.html" style="font-size:14px;font-weight:700;color:#fff;background:#10B981;padding:8px 22px;border-radius:9999px;text-decoration:none;">Coba Gratis</a></div>
+  </nav>
+  <div style="max-width:1020px;margin:0 auto;padding:56px 48px 80px;">
+    <a class="page-back" onclick="showPage('home');return false;"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg> Beranda</a>
+    <h1 style="font-size:40px;font-weight:800;color:var(--text-1);margin:0 0 10px;letter-spacing:-.03em;text-align:center;">Harga jelas. Tumbuh sesuai skala bisnismu.</h1>
+    <p style="font-size:16px;color:var(--text-3);margin:0 0 48px;text-align:center;">Mulai gratis, upgrade kapan saja. Tidak ada kontrak.</p>
+    <div class="pricing-grid" style="margin-bottom:56px;">
+      <div class="pricing-card"><h3 style="margin:0 0 4px;font-size:14px;font-weight:700;color:var(--text-2);">Gratis</h3><p style="margin:0 0 2px;font-size:30px;font-weight:800;color:var(--text-1);">Rp 0</p><p style="margin:0 0 20px;font-size:12px;color:var(--text-3);">Selamanya gratis</p><ul style="margin:0 0 20px;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;flex:1;"><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>50 balasan / bulan</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>1 nomor WA</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>Data bisnis dasar</li></ul><a href="register.html" class="btn btn-md btn-secondary" style="width:100%;justify-content:center;">Mulai Gratis</a></div>
+      <div class="pricing-card"><h3 style="margin:0 0 4px;font-size:14px;font-weight:700;color:var(--text-2);">Starter</h3><p style="margin:0 0 2px;font-size:30px;font-weight:800;color:var(--text-1);">Rp 199k</p><p style="margin:0 0 20px;font-size:12px;color:var(--text-3);">per bulan</p><ul style="margin:0 0 20px;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;flex:1;"><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>500 balasan / bulan</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>1 nomor WA</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>Data bisnis lengkap</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>Laporan dasar</li></ul><a href="register.html" class="btn btn-md btn-secondary" style="width:100%;justify-content:center;">Pilih Starter</a></div>
+      <div class="pricing-card popular"><span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#10B981;color:#fff;font-size:11px;font-weight:700;padding:3px 14px;border-radius:9999px;">Terpopuler</span><h3 style="margin:0 0 4px;font-size:14px;font-weight:700;color:#10B981;">Growth</h3><p style="margin:0 0 2px;font-size:30px;font-weight:800;color:var(--text-1);">Rp 499k</p><p style="margin:0 0 20px;font-size:12px;color:var(--text-3);">per bulan</p><ul style="margin:0 0 20px;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;flex:1;"><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>2.000 balasan / bulan</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>3 nomor WA</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>Laporan lengkap</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>Prioritas support</li></ul><a href="register.html" class="btn btn-md btn-primary" style="width:100%;justify-content:center;">Coba 14 Hari Gratis</a></div>
+      <div class="pricing-card"><h3 style="margin:0 0 4px;font-size:14px;font-weight:700;color:var(--text-2);">Custom</h3><p style="margin:0 0 2px;font-size:22px;font-weight:800;color:var(--text-1);line-height:1.3;">Hubungi<br>Kami</p><p style="margin:0 0 20px;font-size:12px;color:var(--text-3);">Untuk jaringan &amp; enterprise</p><ul style="margin:0 0 20px;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;flex:1;"><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>Tidak terbatas</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>SLA + dedicated support</li><li style="font-size:13px;color:var(--text-2);display:flex;gap:7px;"><span style="color:#10B981;font-weight:700;flex-shrink:0;">✓</span>API akses</li></ul><a href="mailto:hello@riplai.id" class="btn btn-md btn-secondary" style="width:100%;justify-content:center;">Hubungi Kami</a></div>
+    </div>
+    <!-- FAQ -->
+    <div style="max-width:640px;margin:0 auto;">
+      <h2 style="font-size:22px;font-weight:800;color:var(--text-1);margin:0 0 24px;text-align:center;">Pertanyaan Umum</h2>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="card" style="padding:18px 20px;"><p style="margin:0 0 6px;font-size:14px;font-weight:700;color:var(--text-1);">Apakah perlu kartu kredit untuk daftar?</p><p style="margin:0;font-size:13.5px;color:var(--text-2);line-height:1.6;">Tidak. Kamu bisa daftar dan mulai gratis tanpa kartu kredit apapun.</p></div>
+        <div class="card" style="padding:18px 20px;"><p style="margin:0 0 6px;font-size:14px;font-weight:700;color:var(--text-1);">Bisa upgrade atau downgrade kapan saja?</p><p style="margin:0;font-size:13.5px;color:var(--text-2);line-height:1.6;">Ya. Tidak ada kontrak. Upgrade kapan siap, downgrade atau batal kapan mau.</p></div>
+        <div class="card" style="padding:18px 20px;"><p style="margin:0 0 6px;font-size:14px;font-weight:700;color:var(--text-1);">Apa yang terjadi kalau kuota balasan habis?</p><p style="margin:0;font-size:13.5px;color:var(--text-2);line-height:1.6;">Admin otomatis berhenti menjawab sampai bulan berikutnya atau kamu upgrade paket.</p></div>
+        <div class="card" style="padding:18px 20px;"><p style="margin:0 0 6px;font-size:14px;font-weight:700;color:var(--text-1);">Apakah data pelanggan saya aman?</p><p style="margin:0;font-size:13.5px;color:var(--text-2);line-height:1.6;">Ya. Data dienkripsi dan tidak pernah dijual ke pihak ketiga. Lihat <a href="privacy.html" style="color:#10B981;font-weight:600;">Kebijakan Privasi</a> kami.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ DEMO ══════════ -->
+<div id="pg-demo" class="page-section">
+  <nav class="landing-nav">
+    <a href="#" onclick="showPage('home');return false;" style="display:flex;align-items:center;gap:9px;text-decoration:none;"><div style="width:30px;height:30px;background:#10B981;border-radius:8px;display:flex;align-items:center;justify-content:center;"><svg width="17" height="20" viewBox="0 0 40 46" fill="none"><path d="M10,2 H30 Q38,2 38,10 V28 Q38,36 30,36 H16 L6,46 L6,36 Q2,36 2,28 V10 Q2,2 10,2 Z" fill="white" opacity=".93"/><circle cx="12" cy="19" r="3" fill="#059669"/><path d="M12,13 A6,6 0 0,1 12,25" stroke="#059669" stroke-width="3" stroke-linecap="round" fill="none"/></svg></div><span style="font-size:16px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">riplai</span></a>
+    <div style="display:flex;gap:28px;"><a href="#" onclick="showPage('fitur');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Fitur</a><a href="#" onclick="showPage('harga');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Harga</a><a href="#" onclick="showPage('demo');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Demo</a><a href="#" onclick="showPage('tentang');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Tentang</a></div>
+    <div style="display:flex;align-items:center;gap:12px;"><a href="login.html" style="font-size:14px;font-weight:600;color:var(--text-2);text-decoration:none;">Masuk</a><a href="register.html" style="font-size:14px;font-weight:700;color:#fff;background:#10B981;padding:8px 22px;border-radius:9999px;text-decoration:none;">Coba Gratis</a></div>
+  </nav>
+  <div style="max-width:900px;margin:0 auto;padding:56px 48px 80px;">
+    <a class="page-back" onclick="showPage('home');return false;"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg> Beranda</a>
+    <div style="text-align:center;margin-bottom:48px;"><h1 style="font-size:40px;font-weight:800;color:var(--text-1);margin:0 0 14px;letter-spacing:-.03em;">Coba langsung</h1><p style="font-size:16px;color:var(--text-2);margin:0 auto;max-width:500px;">Kirim pesan seperti pelanggan sungguhan. Lihat bagaimana admin otomatis menjawab.</p></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;">
+      <div>
+        <div class="demo-wrap" style="transform:none;filter:drop-shadow(0 12px 32px rgba(0,0,0,.12));">
+          <div class="demo-widget">
+            <div class="demo-header-v2"><div style="width:36px;height:36px;border-radius:9999px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><svg width="20" height="23" viewBox="0 0 40 46" fill="none"><path d="M10,2 H30 Q38,2 38,10 V28 Q38,36 30,36 H16 L6,46 L6,36 Q2,36 2,28 V10 Q2,2 10,2 Z" fill="white" opacity=".93"/><circle cx="12" cy="19" r="3" fill="#059669"/><path d="M12,13 A6,6 0 0,1 12,25" stroke="#059669" stroke-width="3" stroke-linecap="round" fill="none"/></svg></div><div><p style="margin:0;font-size:14px;font-weight:700;color:#fff;">Villa Ubud Jiwa (demo)</p><p style="margin:0;font-size:11px;color:#A7F3D0;">Penjawab 24 jam aktif</p></div></div>
+            <div class="demo-chat-area" id="page-demo-msgs" style="min-height:260px;"><div style="display:flex;justify-content:flex-start;"><div class="demo-bubble-c"><p style="margin:0;font-size:13px;color:var(--text-1);">Halo! Silakan tanya apa saja tentang Villa Ubud Jiwa 😊</p><p style="margin:3px 0 0;font-size:10px;color:var(--text-3);text-align:right;">09:00</p></div></div></div>
+            <div class="demo-footer"><input id="page-demo-input" type="text" placeholder="Ketik pertanyaan..." onkeypress="if(event.key==='Enter')sendPageDemo()" style="flex:1;background:var(--bg-surface);border:1px solid var(--border);border-radius:9999px;padding:7px 13px;font-size:12.5px;outline:none;font-family:inherit;color:var(--text-1);"><button onclick="sendPageDemo()" style="width:32px;height:32px;background:#10B981;border:none;border-radius:9999px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></button></div>
+          </div>
+        </div>
+        <p style="font-size:11.5px;color:var(--text-3);text-align:center;margin-top:12px;">Ini demo. Data bisnis nyata bisa berbeda.</p>
+      </div>
+      <div>
+        <p style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin:0 0 16px;">Coba tanya ini:</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <button onclick="document.getElementById('page-demo-input').value=this.textContent;sendPageDemo();" class="btn btn-md btn-secondary" style="justify-content:flex-start;text-align:left;">Ada kamar malam Minggu ini?</button>
+          <button onclick="document.getElementById('page-demo-input').value=this.textContent;sendPageDemo();" class="btn btn-md btn-secondary" style="justify-content:flex-start;text-align:left;">Harga kamar Deluxe?</button>
+          <button onclick="document.getElementById('page-demo-input').value=this.textContent;sendPageDemo();" class="btn btn-md btn-secondary" style="justify-content:flex-start;text-align:left;">Fasilitas apa saja?</button>
+          <button onclick="document.getElementById('page-demo-input').value=this.textContent;sendPageDemo();" class="btn btn-md btn-secondary" style="justify-content:flex-start;text-align:left;">Cara booking kamar?</button>
+        </div>
+        <div style="margin-top:32px;padding:20px;background:var(--brand-sub);border-radius:16px;"><p style="margin:0 0 8px;font-size:14px;font-weight:700;color:var(--brand-text);">Siap coba dengan bisnis kamu?</p><p style="margin:0 0 14px;font-size:13px;color:var(--text-2);line-height:1.5;">Setup dalam 5 menit. Tidak perlu kartu kredit.</p><a href="register.html" class="btn btn-md btn-primary">Daftar Gratis</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ TENTANG ══════════ -->
+<div id="pg-tentang" class="page-section">
+  <nav class="landing-nav">
+    <a href="#" onclick="showPage('home');return false;" style="display:flex;align-items:center;gap:9px;text-decoration:none;"><div style="width:30px;height:30px;background:#10B981;border-radius:8px;display:flex;align-items:center;justify-content:center;"><svg width="17" height="20" viewBox="0 0 40 46" fill="none"><path d="M10,2 H30 Q38,2 38,10 V28 Q38,36 30,36 H16 L6,46 L6,36 Q2,36 2,28 V10 Q2,2 10,2 Z" fill="white" opacity=".93"/><circle cx="12" cy="19" r="3" fill="#059669"/><path d="M12,13 A6,6 0 0,1 12,25" stroke="#059669" stroke-width="3" stroke-linecap="round" fill="none"/></svg></div><span style="font-size:16px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">riplai</span></a>
+    <div style="display:flex;gap:28px;"><a href="#" onclick="showPage('fitur');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Fitur</a><a href="#" onclick="showPage('harga');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Harga</a><a href="#" onclick="showPage('demo');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Demo</a><a href="#" onclick="showPage('tentang');return false;" style="font-size:14px;color:var(--text-2);text-decoration:none;font-weight:500;">Tentang</a></div>
+    <div style="display:flex;align-items:center;gap:12px;"><a href="login.html" style="font-size:14px;font-weight:600;color:var(--text-2);text-decoration:none;">Masuk</a><a href="register.html" style="font-size:14px;font-weight:700;color:#fff;background:#10B981;padding:8px 22px;border-radius:9999px;text-decoration:none;">Coba Gratis</a></div>
+  </nav>
+  <div style="max-width:800px;margin:0 auto;padding:56px 48px 80px;">
+    <a class="page-back" onclick="showPage('home');return false;"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg> Beranda</a>
+    <h1 style="font-size:40px;font-weight:800;color:var(--text-1);margin:0 0 16px;letter-spacing:-.03em;">Tentang Riplai</h1>
+    <p style="font-size:17px;color:var(--text-2);margin:0 0 48px;line-height:1.65;max-width:560px;">Kami percaya pemilik bisnis kecil Indonesia tidak seharusnya harus pilih antara tidur dan melayani pelanggan.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:48px;">
+      <div class="card" style="text-align:center;padding:28px 20px;"><p style="margin:0;font-size:32px;font-weight:800;color:#10B981;letter-spacing:-.02em;">200+</p><p style="margin:6px 0 0;font-size:13.5px;color:var(--text-2);font-weight:500;">Bisnis aktif</p></div>
+      <div class="card" style="text-align:center;padding:28px 20px;"><p style="margin:0;font-size:32px;font-weight:800;color:#6366F1;letter-spacing:-.02em;">98%</p><p style="margin:6px 0 0;font-size:13.5px;color:var(--text-2);font-weight:500;">Akurasi jawaban</p></div>
+      <div class="card" style="text-align:center;padding:28px 20px;"><p style="margin:0;font-size:32px;font-weight:800;color:#10B981;letter-spacing:-.02em;">1,2dtk</p><p style="margin:6px 0 0;font-size:13.5px;color:var(--text-2);font-weight:500;">Rata-rata respons</p></div>
+    </div>
+    <div class="card" style="padding:28px;margin-bottom:24px;"><h2 style="font-size:18px;font-weight:700;color:var(--text-1);margin:0 0 12px;">Misi kami</h2><p style="font-size:14px;color:var(--text-2);line-height:1.7;margin:0;">Memberi bisnis kecil Indonesia akses ke teknologi yang sebelumnya hanya tersedia untuk perusahaan besar. Admin otomatis yang cerdas, harga yang terjangkau, tanpa keahlian teknis apapun.</p></div>
+    <div class="card" style="padding:28px;">
+      <h2 style="font-size:18px;font-weight:700;color:var(--text-1);margin:0 0 16px;">Informasi Perusahaan</h2>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:12px;"><p style="margin:0;font-size:13px;font-weight:600;color:var(--text-3);width:140px;flex-shrink:0;">Pengelola</p><p style="margin:0;font-size:13px;color:var(--text-1);">Riplai (pengembang perorangan)</p></div>
+        <div style="display:flex;gap:12px;"><p style="margin:0;font-size:13px;font-weight:600;color:var(--text-3);width:140px;flex-shrink:0;">Domisili</p><p style="margin:0;font-size:13px;color:var(--text-1);">Denpasar, Bali, Indonesia</p></div>
+        <div style="display:flex;gap:12px;"><p style="margin:0;font-size:13px;font-weight:600;color:var(--text-3);width:140px;flex-shrink:0;">Email</p><p style="margin:0;font-size:13px;color:#10B981;">agussuarya@gmail.com</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('pg-' + id);
+  if (el) { el.classList.add('active'); window.scrollTo(0,0); }
+}
+function toggleDark() {
+  const h = document.documentElement;
+  h.classList.toggle('dark');
+  document.getElementById('icon-sun').style.display = h.classList.contains('dark') ? 'block' : 'none';
+  document.getElementById('icon-moon').style.display = h.classList.contains('dark') ? 'none' : 'block';
+}
+const responses = {
+  'deluxe':'Kamar Deluxe:<br>• King bed, AC, balkon dengan view kebun<br>• Harga Rp 750.000 per malam<br>• Termasuk sarapan untuk 2 orang',
+  'suite':'Suite:<br>• King bed, bathtub private, ruang tamu<br>• View sawah · Harga Rp 1.200.000 per malam<br>• Termasuk sarapan untuk 2 orang',
+  'harga':'Harga Villa Ubud Jiwa:<br>🛏 Deluxe — Rp 750.000/malam<br>🛁 Suite — Rp 1.200.000/malam<br>Semua sudah termasuk sarapan.',
+  'fasilitas':'Fasilitas Villa Ubud Jiwa:<br>• Kolam renang infinity<br>• Sarapan untuk 2 orang<br>• WiFi di seluruh area<br>• Shuttle ke pusat Ubud',
+  'booking':'Untuk pemesanan, kirimkan:<br>1. Nama lengkap<br>2. Tanggal check-in & check-out<br>3. Tipe kamar<br>Tim kami akan konfirmasi.',
+  'kamar':'Villa Ubud Jiwa punya 2 tipe kamar:<br>🛏 <b>Deluxe</b> — Rp 750.000/malam<br>🛁 <b>Suite</b> — Rp 1.200.000/malam',
+  default:'Mohon maaf, kami belum dapat menjawab pertanyaan tersebut. Silakan tanya mengenai kamar, harga, fasilitas, atau cara pemesanan.'
+};
+function getResp(text) {
+  const t = text.toLowerCase();
+  for (const [k,v] of Object.entries(responses)) {
+    if (k !== 'default' && t.includes(k)) return v;
+  }
+  return responses.default;
+}
+function addMsg(containerId, text, isUser) {
+  const c = document.getElementById(containerId);
+  const d = document.createElement('div');
+  d.style.cssText = `display:flex;justify-content:${isUser?'flex-end':'flex-start'};margin-top:8px;`;
+  const t = new Date().toLocaleTimeString('id',{hour:'2-digit',minute:'2-digit'});
+  d.innerHTML = isUser
+    ? `<div class="demo-bubble-b"><p style="margin:0;font-size:13px;color:var(--text-1);">${text}</p><p style="margin:3px 0 0;font-size:10px;color:var(--text-3);text-align:right;">${t}</p></div>`
+    : `<div class="demo-bubble-c"><p style="margin:0;font-size:13px;color:var(--text-1);">${text}</p><p style="margin:3px 0 0;font-size:10px;color:var(--text-3);text-align:right;">${t}</p></div>`;
+  c.appendChild(d);
+  c.scrollTop = c.scrollHeight;
+}
+function sendHeroDemo() {
+  const inp = document.getElementById('hero-demo-input');
+  const text = inp.value.trim();
+  if (!text) return;
+  addMsg('hero-demo-msgs', text, true);
+  inp.value = '';
+  setTimeout(() => addMsg('hero-demo-msgs', getResp(text), false), 900);
+}
+function sendPageDemo() {
+  const inp = document.getElementById('page-demo-input');
+  const text = inp.value.trim();
+  if (!text) return;
+  addMsg('page-demo-msgs', text, true);
+  inp.value = '';
+  setTimeout(() => addMsg('page-demo-msgs', getResp(text), false), 900);
+}
+</script>
+</body>
+</html>
