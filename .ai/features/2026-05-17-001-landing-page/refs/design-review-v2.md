@@ -12,7 +12,7 @@
 | 1 | Hero layout | **Split layout** — headline + CTA left, demo widget right (Option B) |
 | 2 | Landing background | **Subtle mesh gradient** — brand-50 radial at top-left, fades to white; CSS grain noise on hero only |
 | 3 | Demo widget | **Hybrid** — WA bubble layout, riplai-branded header (brand-500, not #075E54) + riplai logo avatar for bot replies |
-| 4 | Typography | **Plus Jakarta Sans 800 only** — hero at 60px / -0.04em tracking; gradient text on "24 jam" (brand-500→brand-400) |
+| 4 | Typography | **Plus Jakarta Sans 800 only** — hero at 58px / -0.04em tracking; gradient text on "24 jam" (brand-500→brand-400) |
 | 5 | Pricing tiers on landing | **4 cards** — Free / Starter / Growth / Custom |
 | 6 | Illustration direction | **Micro-illustrations** — geometric SVG compositions, no characters, brand token colors |
 | 7 | Mobile partner dashboard | **In scope for MVP** — sidebar becomes 4-icon bottom tab bar on mobile |
@@ -39,9 +39,9 @@ Left column:
   ┌─────────────────────────────────┐
   │ [Pill badge: "Admin Otomatis"]  │
   │                                 │
-  │ WhatsApp kamu aktif             │  ← font-size: 60px
+  │ WhatsApp kamu aktif             │  ← font-size: 58px
   │ 24 jam, bahkan                  │  ← letter-spacing: -0.04em
-  │ saat kamu tidur.                │  ← line-height: 1.06
+  │ saat tidur.                     │  ← line-height: 1.06
   │ ("24 jam" = gradient brand-500→brand-400)
   │                                 │
   │ [sub 18px, max-w-sm]           │
@@ -98,7 +98,7 @@ Header bar (CHANGED):
   background: brand-500 (#10B981)      ← NOT #075E54
   padding: 12px 16px
   Avatar: riplai logo mark (white bubble on green circle)
-  Name: "Apotek Sehat" · white
+  Name: "Villa Ubud Jiwa" · white
   Sub: "Penjawab 24 jam aktif" · brand-200  ← NOT "online"
 
 Chat area:
@@ -385,7 +385,7 @@ Hero heading update (landing page only):
 
 ```css
 .hero-heading {
-  font-size: 60px;          /* was 46px in preview, 48px in spec */
+  font-size: 58px;          /* was 46px in preview, 48px in spec; 60px in design-review, 58px implemented */
   font-weight: 800;
   letter-spacing: -0.04em;  /* was -0.03em */
   line-height: 1.06;        /* was 1.13 */
@@ -412,8 +412,8 @@ Section headings (h2 on landing): `font-size: 32px`, `font-weight: 800`, `-0.03e
 
 | Task | File | Priority |
 |------|------|----------|
-| Fix hero: split layout, 60px heading, gradient "24 jam" | `Hero.tsx` | P0 |
-| Fix demo widget: brand-500 header, accent-100 bot bubbles | `DemoChat.tsx` | P0 |
+| Fix hero: split layout, 58px heading, gradient "24 jam" | `Hero.tsx` | P0 |
+| Fix demo widget: brand-500 header, "Villa Ubud Jiwa" persona, accent-100 bot bubbles | `DemoChat.tsx` | P0 |
 | Add hero background: radial gradient + grain | `globals.css` / `Hero.tsx` | P0 |
 | Fix HowItWorks: Heroicons replacing emoji | `HowItWorks.tsx` | P0 |
 | Add 4th pricing card (Custom) | `PricingCards.tsx` | P0 |

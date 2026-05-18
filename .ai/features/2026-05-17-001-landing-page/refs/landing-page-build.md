@@ -18,7 +18,7 @@
 | `/terms` | Syarat & Ketentuan | P0 (legal) | Full terms of service |
 
 **Language:** Bahasa Indonesia throughout (including legal pages).  
-**CTA destination:** "Coba Gratis" → waitlist email capture modal (no backend yet).
+**CTA destination:** "Coba Gratis" → registration form (signup page, `/daftar`).
 
 ---
 
@@ -48,7 +48,7 @@ Once you have paying partners, upgrade to single-person PT (UU Cipta Kerja).
 
 Privacy Policy and T&C identify the operator as:
 
-> *"Layanan riplai dioperasikan oleh **Riplai** (nama usaha terdaftar di Indonesia, NIB: **[NOMOR NIB]**). Untuk pertanyaan terkait privasi, hubungi kami di [legal@riplai.id](mailto:legal@riplai.id)."*
+> *"Layanan riplai dioperasikan oleh **Riplai** (pengembang perorangan berdomisili di Denpasar, Bali, Indonesia). Untuk pertanyaan terkait privasi, hubungi kami di agussuarya@gmail.com."*
 
 No physical address in the public legal pages — UU PDP allows a contact email as sufficient for small operators. Physical address is only required in formal regulatory filings, not on the consumer-facing website.
 
@@ -57,13 +57,13 @@ No physical address in the public legal pages — UU PDP allows a contact email 
 | Placeholder | What to fill |
 |-------------|-------------|
 | `[NOMOR NIB]` | NIB number from OSS after registration |
-| `[legal@riplai.id]` | Actual legal contact email (set up before launch) |
+| `agussuarya@gmail.com` | Personal email as contact (legal@riplai.id to replace this before launch) |
 | `[1 Juni 2026]` | Actual effective date of policies |
 
 Remove all references to `[PT RIPLAI TEKNOLOGI INDONESIA]` and physical address — not needed.
 
 Indonesian law basis: **UU PDP No. 27 Tahun 2022** (Perlindungan Data Pribadi).  
-Governing law: Hukum Negara Republik Indonesia. Dispute resolution: Pengadilan Negeri Jakarta.
+Governing law: Hukum Negara Republik Indonesia. Dispute resolution: Pengadilan Negeri Denpasar.
 
 ---
 
@@ -86,33 +86,32 @@ Four tiers in IDR. Monthly billing. Annual toggle: UI only for MVP, no logic yet
 
 ## 4. Demo Chat Script
 
-Persona: Visitor is a klinik owner previewing the bot from a pelanggan's perspective.
+Persona: Villa Ubud Jiwa — visitor (calon tamu) asking about room availability and pricing.
 
 ```
-Kamu (calon pelanggan):
-  "Halo, apakah klinik buka hari Minggu?"
+Tamu (calon pelanggan):
+  "Halo, mau tanya kamar untuk besok. 2 orang dewasa"
+
+Bot riplai ✦ (Admin Otomatis):
+  "Halo, selamat malam! Pilihan kamar untuk besok:
+   🛏 Deluxe — Rp 750.000/malam
+      Balkon · view kebun · sarapan 2 orang
+   🛁 Suite — Rp 1.200.000/malam
+      Bathtub · view sawah · sarapan 2 orang
+   
+   Kamar mana yang diminati? Boleh kami catat nama untuk konfirmasi."
+
+Tamu:
+  "Suite. Atas nama Rina"
 
 Bot riplai ✦:
-  "Halo! 👋 Klinik kami buka setiap Senin–Sabtu pukul 08.00–17.00 WIB. 
-   Hari Minggu kami libur. Ada yang bisa kami bantu?"
-
-Kamu:
-  "Berapa biaya konsultasi umum?"
-
-Bot riplai ✦:
-  "Biaya konsultasi umum Rp 75.000 per kunjungan. 
-   Ingin langsung buat jadwal? Balas 'YA' dan kami siapkan."
-
-Kamu:
-  "Apakah ada dokter anak?"
-
-Bot riplai ✦:
-  "Iya, kami punya dokter anak yang praktik setiap Selasa dan Kamis, 
-   pukul 09.00–12.00 WIB. Mau saya bantu daftarkan?"
+  "Baik, Ibu Rina. Permintaan Suite untuk besok sudah kami terima.
+   Tim akan menghubungi untuk konfirmasi ketersediaan dan detail
+   pembayaran sebentar lagi."
 ```
 
-Three scripted exchanges — hardcoded, no API. Typing animation on bot replies.  
-Beneath the demo: "Ini adalah contoh bot. Bot sungguhan dilatih dari data bisnis kamu."
+Interactive mode also available — visitor can type freely. Bot responds from villa knowledge base.  
+Beneath the demo: "Ini demo. Data bisnis nyata bisa berbeda."
 
 ---
 
@@ -170,7 +169,7 @@ apps/web/
 - Mobile: hamburger → full-height slide-down menu
 
 ### Hero (`/`)
-- Headline (800, 48px): "WhatsApp kamu aktif 24 jam, bahkan saat kamu tidur."
+- Headline (800, 58px): "WhatsApp kamu aktif 24 jam, bahkan saat tidur."
 - Sub (400, 18px): "Admin otomatis menjawab pertanyaan pelanggan berdasarkan data bisnis kamu — tanpa kamu perlu angkat telepon."
 - Dual CTA: `[Coba Gratis →]` (primary pill) + `[Lihat Demo]` (ghost)
 - Below CTAs: small social proof line — "Sudah dipakai 200+ bisnis di Indonesia" (placeholder)
@@ -181,8 +180,8 @@ Six features in a 3×2 grid, each card: icon (Heroicons) + title + 2-line descri
 
 | # | Icon | Feature title | Description |
 |---|------|---------------|-------------|
-| 1 | `ChatBubbleLeftRightIcon` | Penjawab 24 Jam | Balas pesan pelanggan otomatis, kapan saja — bahkan saat kamu tidur |
-| 2 | `BookOpenIcon` | Knowledge Base Pintar | Ajarkan bisnis kamu sekali, bot langsung tahu segalanya |
+| 1 | `ChatBubbleLeftRightIcon` | Penjawab 24 Jam | Balas pesan pelanggan otomatis, kapan saja — bahkan saat tidur |
+| 2 | `BookOpenIcon` | Data Bisnis Pintar | Ajarkan bisnis kamu sekali, admin otomatis langsung tahu segalanya |
 | 3 | `ChartBarIcon` | Analitik Percakapan | Lihat berapa pesan dibalas, topik terpopuler, dan waktu sibuk |
 | 4 | `BellIcon` | Notif ke Kamu | Bot tidak tahu jawabannya? Kamu dapat notifikasi WA langsung |
 | 5 | `DevicePhoneMobileIcon` | Tanpa Aplikasi Baru | Semua percakapan tetap di WhatsApp — pelanggan tidak perlu instal apapun |
@@ -223,7 +222,7 @@ Three quote cards. Persona archetypes for Indonesian SMB:
 
 Structure (under UU PDP No. 27/2022):
 
-1. **Identitas Pengontrol Data** — "Riplai (nama usaha terdaftar di Indonesia, NIB: [NOMOR NIB])", kontak: [legal@riplai.id] — no physical address published
+1. **Identitas Pengontrol Data** — "Riplai (pengembang perorangan berdomisili di Denpasar, Bali, Indonesia)", kontak: agussuarya@gmail.com
 2. **Data yang Kami Kumpulkan**
    - Dari partner (pelanggan riplai): nama bisnis, nomor WhatsApp, email, data penggunaan layanan
    - Dari percakapan WhatsApp: nomor WA pelanggan akhir, isi pesan (untuk fungsi bot)
@@ -235,12 +234,12 @@ Structure (under UU PDP No. 27/2022):
    - Peningkatan layanan dan analitik agregat
 4. **Dasar Hukum** — Pelaksanaan perjanjian (Pasal 20 UU PDP), kepentingan sah (legitimate interest)
 5. **Hak Subjek Data** — Akses, koreksi, penghapusan, pembatasan, portabilitas
-6. **Retensi Data** — Data percakapan: 12 bulan aktif + 6 bulan setelah penghentian akun
+6. **Retensi Data** — Data percakapan: 90 hari kalender, dihapus otomatis. Setelah akun ditutup: seluruh data dihapus dalam 30 hari kerja
 7. **Pengungkapan Pihak Ketiga** — WhatsApp Business API provider (Meta), layanan hosting, analitik
 8. **Keamanan** — Enkripsi in-transit (TLS 1.3), enkripsi at-rest, kontrol akses
 9. **Cookie** — Fungsional (sesi, preferensi), analitik (Google Analytics / privacy-first alt)
 10. **Perubahan Kebijakan** — 30 hari pemberitahuan via email untuk perubahan material
-11. **Kontak** — [legal@riplai.id]
+11. **Kontak** — agussuarya@gmail.com
 
 ### Terms & Conditions (`/terms`) — Syarat & Ketentuan
 
@@ -347,6 +346,6 @@ Font: Plus Jakarta Sans for everything. JetBrains Mono for `/knowledge-base` edi
 - [ ] **Blog / Artikel?** Footer has placeholder — even an empty blog route is fine to ship
 - [ ] **Analytics tool?** Google Analytics or privacy-first alt (Umami, Plausible) — affects cookie policy wording
 - [ ] **NIB registration** — register at oss.go.id then fill `[NOMOR NIB]` in legal pages before launch
-- [ ] **legal@riplai.id mailbox** — set up email forwarding before launch (required by UU PDP)
+- [ ] **legal@riplai.id mailbox** — set up before launch and replace agussuarya@gmail.com in legal pages (required by UU PDP)
 - [ ] **Refund policy** — confirm "no refund for current month" stance before publishing T&C
 - [ ] **Custom plan contact** — does "Hubungi Kami" open mailto or a contact form? (mailto is fine for MVP)
