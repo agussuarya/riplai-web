@@ -502,14 +502,43 @@ textarea.input-base{resize:vertical;min-height:100px;}
       </div>
 
       <div class="settings-section">
-        <p style="font-size:13px;font-weight:700;color:var(--text-3);margin:0 0 12px;text-transform:uppercase;letter-spacing:.06em;">Langganan</p>
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-          <span class="badge badge-brand" style="font-size:12px;">Paket Starter</span>
-          <p style="margin:0;font-size:13px;color:var(--text-2);">Aktif hingga <strong style="color:var(--text-1);">16 Jun 2026</strong></p>
+        <p style="font-size:13px;font-weight:700;color:var(--text-3);margin:0 0 16px;text-transform:uppercase;letter-spacing:.06em;">Langganan</p>
+
+        <!-- Current plan summary -->
+        <div style="background:var(--brand-sub);border:1.5px solid var(--brand-sub2);border-radius:14px;padding:16px 18px;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="badge badge-brand">Paket Starter</span>
+              <p style="margin:0;font-size:13px;color:var(--text-2);">Aktif hingga <strong style="color:var(--text-1);">16 Jun 2026</strong></p>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+              <span style="font-size:12px;color:var(--text-2);">Balasan bulan ini</span>
+              <span style="font-size:12px;font-weight:700;color:var(--text-1);">347 / 500</span>
+            </div>
+            <div style="height:5px;background:var(--brand-sub2);border-radius:9999px;overflow:hidden;">
+              <div style="width:69%;height:100%;background:#10B981;border-radius:9999px;"></div>
+            </div>
+          </div>
         </div>
-        <div style="display:flex;gap:8px;">
-          <button class="btn btn-md btn-primary">Upgrade Paket</button>
-          <button class="btn btn-md btn-ghost" style="color:#EF4444;">Batalkan Langganan</button>
+
+        <!-- Upgrade CTA -->
+        <button class="btn btn-md btn-primary" style="width:100%;justify-content:center;gap:10px;margin-bottom:6px;">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18"/></svg>
+          Upgrade ke Growth — Rp 499k / bln
+        </button>
+        <p style="font-size:12px;color:var(--text-3);text-align:center;margin:0 0 16px;line-height:1.5;">2.000 balasan · 3 nomor WA · Analytics lengkap · Prioritas support</p>
+
+        <!-- Danger zone -->
+        <div style="border:1.5px solid rgba(239,68,68,.35);border-radius:12px;padding:14px 16px;background:var(--needs-bg);">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+            <div>
+              <p style="margin:0 0 3px;font-size:13px;font-weight:700;color:var(--needs-c);">Batalkan Langganan</p>
+              <p style="margin:0;font-size:12px;color:var(--needs-c);opacity:.8;line-height:1.5;">Akses berakhir 16 Jun 2026. Data dihapus dalam 30 hari.</p>
+            </div>
+            <button class="btn btn-sm btn-danger" style="flex-shrink:0;">Batalkan</button>
+          </div>
         </div>
       </div>
 
