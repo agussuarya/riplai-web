@@ -1,4 +1,7 @@
-import { EyeIcon, CheckIcon } from '@heroicons/react/24/outline';
+'use client';
+
+import { useState } from 'react';
+import { EyeIcon, EyeSlashIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { Input } from '@riplai/ui';
 
 const benefits = [
@@ -10,6 +13,9 @@ const benefits = [
 ];
 
 export default function SignupPage() {
+  const [showPwd, setShowPwd] = useState(false);
+  const [agreed, setAgreed] = useState(false);
+
   return (
     <div className="py-10 px-6 min-h-[calc(100vh-64px)] flex items-start justify-center">
       <div className="w-full max-w-[900px] grid grid-cols-1 md:grid-cols-2 gap-14 items-start">
@@ -78,21 +84,33 @@ export default function SignupPage() {
             <label className="block text-sm font-medium text-gray-700 mb-1">Kata sandi</label>
             <div className="relative">
               <Input
-                type="password"
+                type={showPwd ? 'text' : 'password'}
                 placeholder="Minimal 8 karakter"
                 className="pr-10"
               />
-              <div className="absolute right-3 bottom-2.5 pointer-events-none">
-                <EyeIcon className="w-4 h-4 text-gray-400" />
-              </div>
+              <button
+                type="button"
+                onClick={() => setShowPwd((v) => !v)}
+                className="absolute right-3 bottom-2.5 cursor-pointer text-gray-400 hover:text-gray-600"
+              >
+                {showPwd
+                  ? <EyeSlashIcon className="w-4 h-4" />
+                  : <EyeIcon className="w-4 h-4" />}
+              </button>
             </div>
           </div>
 
           {/* Checkbox */}
           <div className="flex items-start gap-2.5 mb-5">
-            <div className="w-4 h-4 rounded bg-brand-500 border border-brand-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <CheckIcon className="w-3 h-3 text-white" strokeWidth={3} />
-            </div>
+            <button
+              type="button"
+              onClick={() => setAgreed((v) => !v)}
+              className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors cursor-pointer ${
+                agreed ? 'bg-brand-500 border-brand-500' : 'bg-white border-gray-300 hover:border-brand-400'
+              }`}
+            >
+              {agreed && <CheckIcon className="w-3 h-3 text-white" strokeWidth={3} />}
+            </button>
             <p className="text-sm text-gray-600">
               Saya setuju dengan{' '}
               <a href="/terms" className="text-accent-500 font-semibold">

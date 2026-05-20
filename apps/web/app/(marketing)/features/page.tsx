@@ -26,8 +26,8 @@ const features: Feature[] = [
   },
   {
     icon: BookOpenIcon,
-    iconBg: 'bg-brand-50',
-    iconColor: 'text-brand-500',
+    iconBg: 'bg-accent-100',
+    iconColor: 'text-accent-500',
     title: 'Data Bisnis Pintar',
     desc: 'Ajarkan bisnis kamu sekali, admin otomatis langsung tahu segalanya. Produk, harga, jam operasional, dan lebih banyak lagi.',
   },

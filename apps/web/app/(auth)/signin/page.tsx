@@ -1,8 +1,13 @@
-import { EyeIcon } from '@heroicons/react/24/outline';
+'use client';
+
+import { useState } from 'react';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { Input } from '@riplai/ui';
 import { RiplaiLogo } from '@/components/logo/RiplaiLogo';
 
 export default function SigninPage() {
+  const [showPwd, setShowPwd] = useState(false);
+
   return (
     <div className="flex-1 flex items-center justify-center py-10 px-6 min-h-[calc(100vh-64px)]">
       <div className="w-full max-w-[400px]">
@@ -36,13 +41,19 @@ export default function SigninPage() {
           </div>
           <div className="relative">
             <Input
-              type="password"
+              type={showPwd ? 'text' : 'password'}
               placeholder="••••••••"
               className="pr-10"
             />
-            <div className="absolute right-3 bottom-2.5 pointer-events-none">
-              <EyeIcon className="w-4 h-4 text-gray-400" />
-            </div>
+            <button
+              type="button"
+              onClick={() => setShowPwd((v) => !v)}
+              className="absolute right-3 bottom-2.5 cursor-pointer text-gray-400 hover:text-gray-600"
+            >
+              {showPwd
+                ? <EyeSlashIcon className="w-4 h-4" />
+                : <EyeIcon className="w-4 h-4" />}
+            </button>
           </div>
         </div>
 
