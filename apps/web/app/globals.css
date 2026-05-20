@@ -12,6 +12,7 @@
   --text-3: #9CA3AF;
   --brand-sub: #ECFDF5;
   --brand-sub2: #D1FAE5;
+  --brand-text: #047857;
   --accent-sub: #E0E7FF;
 }
 
@@ -25,7 +26,16 @@ html.dark {
   --text-3: #6E7681;
   --brand-sub: rgba(16,185,129,.13);
   --brand-sub2: rgba(16,185,129,.22);
+  --brand-text: #34D399;
   --accent-sub: rgba(99,102,241,.16);
+}
+
+.demo-chat-area {
+  background: #F0F4F0;
+}
+
+html.dark .demo-chat-area {
+  background: #131C24;
 }
 
 .gradient-text {
@@ -50,6 +60,87 @@ html.dark .hero-section {
   inset: 0;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+.doc-layout {
+  display: flex;
+  gap: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 48px 80px;
+}
+
+.doc-toc {
+  width: 200px;
+  flex-shrink: 0;
+}
+
+.doc-toc-inner {
+  position: sticky;
+  top: 16px;
+}
+
+.doc-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.toc-link {
+  display: block;
+  font-size: 13px;
+  color: var(--text-3);
+  text-decoration: none;
+  padding: 5px 0 5px 12px;
+  border-left: 2px solid transparent;
+  transition: color 0.12s, border-color 0.12s;
+}
+
+.toc-link:hover {
+  color: var(--brand-text);
+  border-left-color: #10B981;
+}
+
+.doc-h1 {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-1);
+  margin: 0 0 6px;
+  letter-spacing: -0.02em;
+}
+
+.doc-h2 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-1);
+  margin: 28px 0 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.doc-p {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.75;
+  margin: 0 0 12px;
+}
+
+.doc-ul {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.75;
+  padding-left: 20px;
+  margin: 0 0 12px;
+}
+
+.doc-ul li {
+  margin-bottom: 6px;
+}
+
+.doc-card {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border);
+  border-radius: 18px;
+  padding: 16px 20px;
 }
 
 @theme {

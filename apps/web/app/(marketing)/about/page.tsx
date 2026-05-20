@@ -1,6 +1,15 @@
 export default function AboutPage() {
   return (
     <div className="max-w-[800px] mx-auto px-12 py-14">
+      <a
+        href="/"
+        className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-[var(--text-2)] hover:text-[var(--text-1)] mb-6 transition-colors"
+      >
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        </svg>
+        Beranda
+      </a>
       <h1
         className="font-extrabold tracking-[-0.03em] text-gray-900 mb-4"
         style={{ fontSize: '40px' }}

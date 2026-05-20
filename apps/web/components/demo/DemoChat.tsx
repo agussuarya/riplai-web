@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, KeyboardEvent } from 'react';
+import { useState, useRef, useEffect, useImperativeHandle, forwardRef, KeyboardEvent } from 'react';
 import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
 
 type Message =
@@ -36,14 +36,22 @@ function getReply(text: string): string {
   return 'Terima kasih pesannya! Tim kami akan segera membalas lebih lanjut. Ada yang bisa dibantu sekarang?';
 }
 
+export interface DemoChatHandle {
+  sendSuggestion: (text: string) => void;
+}
+
 interface DemoChatProps {
   minHeight?: string;
 }
 
-export function DemoChat({ minHeight = '175px' }: DemoChatProps) {
+export const DemoChat = forwardRef<DemoChatHandle, DemoChatProps>(function DemoChat({ minHeight = '175px' }, ref) {
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [input, setInput] = useState('');
   const chatRef = useRef<HTMLDivElement>(null);
+
+  useImperativeHandle(ref, () => ({
+    sendSuggestion: (text: string) => send(text),
+  }));
 
   useEffect(() => {
     if (chatRef.current) {
@@ -51,14 +59,14 @@ export function DemoChat({ minHeight = '175px' }: DemoChatProps) {
     }
   }, [messages]);
 
-  function send() {
-    const text = input.trim();
-    if (!text) return;
+  function send(text?: string) {
+    const msg = (text ?? input).trim();
+    if (!msg) return;
 
     const now = new Date();
     const time = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
 
-    setMessages((prev) => [...prev, { type: 'customer', text, time }]);
+    setMessages((prev) => [...prev, { type: 'customer', text: msg, time }]);
     setInput('');
 
     setMessages((prev) => [...prev, { type: 'typing' }]);
@@ -66,7 +74,7 @@ export function DemoChat({ minHeight = '175px' }: DemoChatProps) {
     setTimeout(() => {
       setMessages((prev) => {
         const withoutTyping = prev.filter((m) => m.type !== 'typing');
-        return [...withoutTyping, { type: 'bot', text: getReply(text), time }];
+        return [...withoutTyping, { type: 'bot', text: getReply(msg), time }];
       });
     }, 600);
   }
@@ -76,7 +84,7 @@ export function DemoChat({ minHeight = '175px' }: DemoChatProps) {
   }
 
   return (
-    <div className="border border-gray-200 rounded-[22px] overflow-hidden bg-white">
+    <div className="border border-[var(--border)] rounded-[22px] overflow-hidden bg-[var(--bg-surface)]" >
       {/* Header */}
       <div className="bg-brand-500 px-4 py-3 flex items-center gap-2.5">
         <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
@@ -96,13 +104,13 @@ export function DemoChat({ minHeight = '175px' }: DemoChatProps) {
       {/* Chat area */}
       <div
         ref={chatRef}
-        className="bg-[#F0F4F0] p-3.5 flex flex-col gap-2.5 overflow-y-auto"
+        className="demo-chat-area p-3.5 flex flex-col gap-2.5 overflow-y-auto"
         style={{ minHeight }}
       >
         {messages.map((msg, i) => {
           if (msg.type === 'timestamp') {
             return (
-              <p key={i} className="text-[10px] text-gray-400 text-center">
+              <p key={i} className="text-[10px] text-[var(--text-3)] text-center">
                 {msg.text}
               </p>
             );
@@ -111,10 +119,13 @@ export function DemoChat({ minHeight = '175px' }: DemoChatProps) {
             return (
               <div key={i} className="flex justify-end">
                 <div>
-                  <div className="bg-[#E0E7FF] rounded-[8px_8px_2px_8px] p-2 max-w-[220px]">
-                    <p className="text-sm text-gray-800">{msg.text}</p>
+                  <div
+                    className="bg-[#E0E7FF] rounded-[8px_8px_2px_8px] px-[11px] py-2 max-w-[240px]"
+                    style={{ boxShadow: '0 1px 2px rgba(0,0,0,.08)' }}
+                  >
+                    <p className="text-[13px] text-gray-800">{msg.text}</p>
                   </div>
-                  <p className="text-[10px] text-gray-400 text-right mt-1">{msg.time}</p>
+                  <p className="text-[10px] text-[var(--text-3)] text-right mt-1">{msg.time}</p>
                 </div>
               </div>
             );
@@ -123,8 +134,11 @@ export function DemoChat({ minHeight = '175px' }: DemoChatProps) {
             return (
               <div key={i} className="flex justify-start">
                 <div>
-                  <div className="bg-white rounded-[8px_8px_8px_2px] p-2 max-w-[240px]">
-                    <p className="text-sm text-gray-800 whitespace-pre-line">{msg.text}</p>
+                  <div
+                    className="bg-[var(--bg-surface)] rounded-[8px_8px_8px_2px] px-[11px] py-2 max-w-[220px]"
+                    style={{ boxShadow: '0 1px 2px rgba(0,0,0,.08)' }}
+                  >
+                    <p className="text-[13px] text-[var(--text-1)] whitespace-pre-line">{msg.text}</p>
                   </div>
                   <p className="text-[10px] text-accent-500 font-semibold text-right mt-1">
                     Admin Otomatis · {msg.time}
@@ -136,19 +150,13 @@ export function DemoChat({ minHeight = '175px' }: DemoChatProps) {
           if (msg.type === 'typing') {
             return (
               <div key={i} className="flex justify-start">
-                <div className="bg-white rounded-[8px_8px_8px_2px] p-2.5 flex gap-1 items-center">
-                  <span
-                    className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce"
-                    style={{ animationDelay: '0ms' }}
-                  />
-                  <span
-                    className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce"
-                    style={{ animationDelay: '150ms' }}
-                  />
-                  <span
-                    className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce"
-                    style={{ animationDelay: '300ms' }}
-                  />
+                <div
+                  className="bg-[var(--bg-surface)] rounded-[8px_8px_8px_2px] p-2.5 flex gap-1 items-center"
+                  style={{ boxShadow: '0 1px 2px rgba(0,0,0,.08)' }}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '300ms' }} />
                 </div>
               </div>
             );
@@ -158,22 +166,22 @@ export function DemoChat({ minHeight = '175px' }: DemoChatProps) {
       </div>
 
       {/* Input bar */}
-      <div className="bg-gray-50 border-t border-gray-200 px-3 py-2.5 flex gap-2">
+      <div className="bg-[var(--bg-subtle)] border-t border-[var(--border)] px-3 py-[10px] flex gap-2 items-center">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKey}
           placeholder="Tanya apa saja..."
-          className="flex-1 text-sm text-gray-700 bg-transparent outline-none"
+          className="flex-1 bg-[var(--bg-surface)] border border-[var(--border)] rounded-full px-[13px] py-[7px] text-[12.5px] text-[var(--text-1)] outline-none font-[inherit]"
         />
         <button
-          onClick={send}
-          className="w-8 h-8 bg-brand-500 rounded-full flex items-center justify-center hover:bg-brand-600 transition-colors"
+          onClick={() => send()}
+          className="w-8 h-8 bg-brand-500 rounded-full flex items-center justify-center hover:bg-brand-600 transition-colors cursor-pointer flex-shrink-0"
         >
           <PaperAirplaneIcon className="w-4 h-4 text-white" />
         </button>
       </div>
     </div>
   );
-}
+});

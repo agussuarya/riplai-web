@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id" className={`${jakarta.variable} ${mono.variable}`}>
-      <body className="bg-white dark:bg-[#0D1117] font-sans text-gray-900 dark:text-[#E6EDF3] antialiased">
+      <body className="bg-white dark:bg-[#0D1117] font-sans text-gray-900 dark:text-[#E6EDF3]">
         <ThemeToggle />
         {children}
       </body>

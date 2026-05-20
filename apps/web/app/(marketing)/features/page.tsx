@@ -64,28 +64,36 @@ const features: Feature[] = [
 export default function FeaturesPage() {
   return (
     <div className="max-w-[1000px] mx-auto px-12 py-16">
+      <a
+        href="/"
+        className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-[var(--text-2)] hover:text-[var(--text-1)] mb-6 transition-colors"
+      >
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        </svg>
+        Beranda
+      </a>
+
       <div className="text-center mb-12">
         <h1
-          className="font-extrabold tracking-[-0.03em] text-gray-900 mb-4"
+          className="font-extrabold tracking-[-0.03em] text-[var(--text-1)] mb-4"
           style={{ fontSize: '40px' }}
         >
           Fitur yang kamu butuhkan. Tanpa yang tidak perlu.
         </h1>
-        <p className="text-gray-500 max-w-[560px] mx-auto" style={{ fontSize: '17px' }}>
+        <p className="text-[var(--text-2)] max-w-[560px] mx-auto" style={{ fontSize: '17px' }}>
           Dirancang khusus untuk bisnis kecil Indonesia yang tidak punya waktu banyak.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-14">
         {features.map((f) => (
-          <div key={f.title} className="bg-white border border-gray-100 rounded-[18px] p-7">
-            <div
-              className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${f.iconBg}`}
-            >
+          <div key={f.title} className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-[18px] p-7">
+            <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${f.iconBg}`}>
               <f.icon className={`w-[48px] h-[48px] ${f.iconColor}`} style={{ width: '28px', height: '28px' }} />
             </div>
-            <h3 className="text-base font-bold text-gray-900 mb-2">{f.title}</h3>
-            <p className="text-sm text-gray-500 leading-[1.65]">{f.desc}</p>
+            <h3 className="text-base font-bold text-[var(--text-1)] mb-2">{f.title}</h3>
+            <p className="text-sm text-[var(--text-2)] leading-[1.65]">{f.desc}</p>
           </div>
         ))}
       </div>
@@ -95,7 +103,7 @@ export default function FeaturesPage() {
           href="/signup"
           className="inline-block text-[15px] font-bold text-white bg-brand-500 hover:bg-brand-600 px-8 py-3.5 rounded-full transition-colors"
         >
-          Coba Gratis →
+          Coba Gratis &rarr;
         </a>
       </div>
     </div>

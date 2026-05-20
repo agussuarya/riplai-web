@@ -29,9 +29,9 @@ export function Hero() {
           <div className="flex gap-3 flex-wrap items-center">
             <a
               href="/signup"
-              className="text-[15px] font-bold text-white bg-brand-500 hover:bg-brand-600 px-7 py-3 rounded-full transition-colors"
+              className="text-[15px] font-bold text-white bg-brand-500 hover:bg-brand-600 px-7 py-[13px] rounded-full transition-colors"
             >
-              Coba Gratis →
+              Coba Gratis &rarr;
             </a>
             <a
               href="/demo"
@@ -59,8 +59,8 @@ export function Hero() {
                 </div>
               ))}
             </div>
-            <p className="text-sm text-gray-500">
-              <strong>200+</strong> bisnis Indonesia sudah pakai Riplai
+            <p className="text-[13px] text-[var(--text-2)]">
+              <strong className="text-[var(--text-1)]">200+</strong> bisnis Indonesia sudah pakai Riplai
             </p>
           </div>
         </div>

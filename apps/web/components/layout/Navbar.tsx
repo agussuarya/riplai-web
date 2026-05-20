@@ -14,8 +14,8 @@ interface NavbarProps {
 
 export function Navbar({ variant = 'full' }: NavbarProps) {
   return (
-    <header className="sticky top-0 z-10 bg-white/95 backdrop-blur border-b border-gray-100 dark:bg-[#161B22] dark:border-[#30394A]">
-      <div className="max-w-[1100px] mx-auto px-6 flex h-16 items-center justify-between">
+    <header className="sticky top-0 z-10 bg-[var(--bg-surface)] border-b border-[var(--border)]">
+      <div className="flex h-16 items-center justify-between px-12 pl-[48px] pr-[60px]">
         <a href="/">
           <RiplaiLogo size={30} variant="default" />
         </a>
@@ -24,7 +24,7 @@ export function Navbar({ variant = 'full' }: NavbarProps) {
             <a
               key={link.label}
               href={link.href}
-              className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors dark:text-[#8B949E] dark:hover:text-[#E6EDF3]"
+              className="text-[14px] font-medium text-[var(--text-2)] hover:text-[var(--text-1)] transition-colors"
             >
               {link.label}
             </a>
@@ -35,19 +35,19 @@ export function Navbar({ variant = 'full' }: NavbarProps) {
             <>
               <a
                 href="/signin"
-                className="hidden md:block text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors dark:text-[#8B949E] dark:hover:text-[#E6EDF3]"
+                className="hidden md:block text-[14px] font-semibold text-[var(--text-2)] hover:text-[var(--text-1)] transition-colors"
               >
                 Masuk
               </a>
               <a
                 href="/signup"
-                className="hidden md:block bg-brand-500 hover:bg-brand-600 text-white text-sm font-bold px-5 py-2 rounded-full transition-colors"
+                className="hidden md:block bg-brand-500 hover:bg-brand-600 text-white text-[14px] font-bold px-[22px] py-2 rounded-full transition-colors"
               >
                 Coba Gratis
               </a>
             </>
           )}
-          <button className="md:hidden p-1 text-gray-500 dark:text-[#8B949E]" aria-label="Menu">
+          <button className="md:hidden p-1 text-[var(--text-2)]" aria-label="Menu">
             <Bars3Icon className="w-6 h-6" />
           </button>
         </div>
