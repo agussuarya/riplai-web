@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect, KeyboardEvent } from 'react';
 import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
-import { RiplaiLogo } from '@/components/logo/RiplaiLogo';
 
 type Message =
   | { type: 'timestamp'; text: string }
@@ -38,10 +37,10 @@ function getReply(text: string): string {
 }
 
 interface DemoChatProps {
-  maxHeight?: string;
+  minHeight?: string;
 }
 
-export function DemoChat({ maxHeight = '220px' }: DemoChatProps) {
+export function DemoChat({ minHeight = '175px' }: DemoChatProps) {
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [input, setInput] = useState('');
   const chatRef = useRef<HTMLDivElement>(null);
@@ -81,7 +80,12 @@ export function DemoChat({ maxHeight = '220px' }: DemoChatProps) {
       {/* Header */}
       <div className="bg-brand-500 px-4 py-3 flex items-center gap-2.5">
         <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
-          <RiplaiLogo size={18} variant="white" />
+          <svg width="20" height="23" viewBox="0 0 40 46" fill="none">
+            <path d="M10,2 H30 Q38,2 38,10 V28 Q38,36 30,36 H16 L6,46 L6,36 Q2,36 2,28 V10 Q2,2 10,2 Z" fill="white" opacity=".93" />
+            <circle cx="12" cy="19" r="3" fill="#059669" />
+            <path d="M12,13 A6,6 0 0,1 12,25" stroke="#059669" strokeWidth="3" strokeLinecap="round" fill="none" />
+            <path d="M12,8 A11,11 0 0,1 12,30" stroke="#059669" strokeWidth="2.2" strokeLinecap="round" fill="none" opacity=".6" />
+          </svg>
         </div>
         <div>
           <p className="text-sm font-bold text-white">Villa Ubud Jiwa</p>
@@ -93,7 +97,7 @@ export function DemoChat({ maxHeight = '220px' }: DemoChatProps) {
       <div
         ref={chatRef}
         className="bg-[#F0F4F0] p-3.5 flex flex-col gap-2.5 overflow-y-auto"
-        style={{ maxHeight }}
+        style={{ minHeight }}
       >
         {messages.map((msg, i) => {
           if (msg.type === 'timestamp') {

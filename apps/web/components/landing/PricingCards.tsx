@@ -64,37 +64,37 @@ const plans: Plan[] = [
 
 const ctaClasses: Record<Plan['ctaStyle'], string> = {
   primary: 'bg-brand-500 hover:bg-brand-600 text-white font-bold',
-  secondary: 'bg-white border border-gray-200 hover:bg-gray-50 text-gray-900 font-semibold',
-  ghost: 'bg-white border border-brand-500 hover:bg-brand-50 text-brand-600 font-semibold',
+  secondary: 'bg-white dark:bg-[#1C2330] border border-gray-200 dark:border-[#30394A] hover:bg-gray-50 dark:hover:bg-[#21293A] text-gray-900 dark:text-[#E6EDF3] font-semibold',
+  ghost: 'bg-white dark:bg-[#1C2330] border border-brand-500 hover:bg-brand-50 dark:hover:bg-[rgba(16,185,129,0.1)] text-brand-600 font-semibold',
 };
 
 export function PricingCards() {
   return (
-    <section className="bg-gray-50 py-16 px-12">
+    <section className="bg-gray-50 dark:bg-[#0D1117] py-16 px-12">
       <h2
-        className="font-extrabold tracking-[-0.03em] text-center mb-3 text-gray-900"
+        className="font-extrabold tracking-[-0.03em] text-center mb-3 text-gray-900 dark:text-[#E6EDF3]"
         style={{ fontSize: '34px' }}
       >
         Harga jelas. Tumbuh sesuai skala bisnismu.
       </h2>
-      <p className="text-sm text-gray-500 text-center mb-8">Mulai gratis, upgrade kapan saja.</p>
+      <p className="text-sm text-gray-500 dark:text-[#8B949E] text-center mb-8">Mulai gratis, upgrade kapan saja.</p>
 
       {/* Annual toggle — visual only, no click handlers */}
-      <div className="flex items-center justify-center gap-1 mb-10 bg-gray-100 w-fit mx-auto rounded-full p-1">
-        <span className="bg-white shadow-sm rounded-full font-semibold text-gray-900 px-4 py-1.5 text-sm">
+      <div className="flex items-center justify-center gap-1 mb-10 bg-gray-100 dark:bg-[#1C2330] w-fit mx-auto rounded-full p-1">
+        <span className="bg-white dark:bg-[#161B22] shadow-sm rounded-full font-semibold text-gray-900 dark:text-[#E6EDF3] px-4 py-1.5 text-sm">
           Bulanan
         </span>
-        <span className="text-gray-500 px-4 py-1.5 text-sm">Tahunan -20%</span>
+        <span className="text-gray-500 dark:text-[#6E7681] px-4 py-1.5 text-sm">Tahunan -20%</span>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-3.5 max-w-[1000px] mx-auto">
         {plans.map((plan) => (
           <div
             key={plan.name}
-            className={`bg-white border rounded-[20px] p-5 flex flex-col relative ${
+            className={`bg-white dark:bg-[#161B22] border rounded-[20px] p-5 flex flex-col relative ${
               plan.popular
                 ? 'border-2 border-brand-500 shadow-[0_8px_32px_rgba(16,185,129,.15)] scale-[1.03] z-10'
-                : 'border-gray-100'
+                : 'border-gray-100 dark:border-[#30394A]'
             }`}
           >
             {plan.popular && (
@@ -103,17 +103,17 @@ export function PricingCards() {
               </span>
             )}
             <div className="mb-4">
-              <h3 className="text-sm font-bold text-gray-900 mb-1">{plan.name}</h3>
-              <p className="text-xl font-extrabold text-gray-900 tracking-tight">{plan.price}</p>
-              {plan.priceSub && <p className="text-xs text-gray-400 mt-0.5">{plan.priceSub}</p>}
+              <h3 className={`text-sm font-bold mb-1 ${plan.popular ? 'text-brand-500' : 'text-gray-900 dark:text-[#E6EDF3]'}`}>{plan.name}</h3>
+              <p className="text-xl font-extrabold text-gray-900 dark:text-[#E6EDF3] tracking-tight">{plan.price}</p>
+              {plan.priceSub && <p className="text-xs text-gray-400 dark:text-[#6E7681] mt-0.5">{plan.priceSub}</p>}
             </div>
-            <div className="text-xs text-gray-500 mb-4 space-y-1">
+            <div className="text-xs text-gray-500 dark:text-[#8B949E] mb-4 space-y-1">
               <p>{plan.cap}</p>
               <p>{plan.wa}</p>
             </div>
             <ul className="flex-1 space-y-2 mb-6">
               {plan.features.map((f) => (
-                <li key={f} className="flex items-start gap-2 text-xs text-gray-600">
+                <li key={f} className="flex items-start gap-2 text-xs text-gray-600 dark:text-[#8B949E]">
                   <CheckIcon className="w-4 h-4 text-brand-500 flex-shrink-0 mt-0.5" />
                   {f}
                 </li>

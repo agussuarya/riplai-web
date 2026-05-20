@@ -2,8 +2,8 @@ import { DemoChat } from '@/components/demo/DemoChat';
 
 export function Hero() {
   return (
-    <section className="hero-section">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-14 max-w-[1100px] mx-auto py-24 px-16 items-center">
+    <section className="hero-section py-[72px] px-16 pb-20">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-14 max-w-[1100px] mx-auto items-center">
         {/* Left */}
         <div>
           <span className="inline-flex items-center gap-1.5 bg-accent-100 text-accent-600 text-xs font-bold px-3.5 py-1 rounded-full mb-6">
@@ -35,7 +35,7 @@ export function Hero() {
             </a>
             <a
               href="/demo"
-              className="text-[15px] font-semibold text-gray-900 bg-gray-100 border border-gray-200 hover:bg-gray-200 px-7 py-3 rounded-full transition-colors"
+              className="text-[15px] font-semibold text-gray-900 dark:text-[#E6EDF3] bg-gray-100 dark:bg-[#1C2330] border border-gray-200 dark:border-[#30394A] hover:bg-gray-200 dark:hover:bg-[#21293A] px-7 py-3 rounded-full transition-colors"
             >
               Lihat Demo
             </a>
@@ -75,7 +75,7 @@ export function Hero() {
               borderRadius: '22px',
             }}
           >
-            <DemoChat maxHeight="220px" />
+            <DemoChat minHeight="175px" />
           </div>
           <p className="text-[11.5px] text-gray-400 text-center mt-3">
             Ini yang tamu kamu terima jam 11 malam, dibalas otomatis. Coba tanya →

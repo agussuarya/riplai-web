@@ -14,7 +14,7 @@ interface NavbarProps {
 
 export function Navbar({ variant = 'full' }: NavbarProps) {
   return (
-    <header className="sticky top-0 z-10 bg-white/95 backdrop-blur border-b border-gray-100">
+    <header className="sticky top-0 z-10 bg-white/95 backdrop-blur border-b border-gray-100 dark:bg-[#161B22] dark:border-[#30394A]">
       <div className="max-w-[1100px] mx-auto px-6 flex h-16 items-center justify-between">
         <a href="/">
           <RiplaiLogo size={30} variant="default" />
@@ -24,7 +24,7 @@ export function Navbar({ variant = 'full' }: NavbarProps) {
             <a
               key={link.label}
               href={link.href}
-              className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
+              className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors dark:text-[#8B949E] dark:hover:text-[#E6EDF3]"
             >
               {link.label}
             </a>
@@ -35,7 +35,7 @@ export function Navbar({ variant = 'full' }: NavbarProps) {
             <>
               <a
                 href="/signin"
-                className="hidden md:block text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors"
+                className="hidden md:block text-sm font-semibold text-gray-500 hover:text-gray-900 transition-colors dark:text-[#8B949E] dark:hover:text-[#E6EDF3]"
               >
                 Masuk
               </a>
@@ -47,7 +47,7 @@ export function Navbar({ variant = 'full' }: NavbarProps) {
               </a>
             </>
           )}
-          <button className="md:hidden p-1 text-gray-500" aria-label="Menu">
+          <button className="md:hidden p-1 text-gray-500 dark:text-[#8B949E]" aria-label="Menu">
             <Bars3Icon className="w-6 h-6" />
           </button>
         </div>

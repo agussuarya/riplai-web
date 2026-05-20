@@ -1,5 +1,33 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --bg-base: #F9FAFB;
+  --bg-surface: #FFFFFF;
+  --bg-subtle: #F3F4F6;
+  --border: #E5E7EB;
+  --text-1: #111827;
+  --text-2: #6B7280;
+  --text-3: #9CA3AF;
+  --brand-sub: #ECFDF5;
+  --brand-sub2: #D1FAE5;
+  --accent-sub: #E0E7FF;
+}
+
+html.dark {
+  --bg-base: #0D1117;
+  --bg-surface: #161B22;
+  --bg-subtle: #1C2330;
+  --border: #30394A;
+  --text-1: #E6EDF3;
+  --text-2: #8B949E;
+  --text-3: #6E7681;
+  --brand-sub: rgba(16,185,129,.13);
+  --brand-sub2: rgba(16,185,129,.22);
+  --accent-sub: rgba(99,102,241,.16);
+}
+
 .gradient-text {
   background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
   -webkit-background-clip: text;
@@ -10,6 +38,10 @@
 .hero-section {
   position: relative;
   background: radial-gradient(ellipse 65% 90% at 0% 0%, #ECFDF5 0%, transparent 60%), #ffffff;
+}
+
+html.dark .hero-section {
+  background: radial-gradient(ellipse 65% 90% at 0% 0%, rgba(16,185,129,.07) 0%, transparent 60%), #0D1117;
 }
 
 .hero-section::before {

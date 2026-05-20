@@ -17,7 +17,7 @@ export default function DemoPage() {
       </div>
 
       <div className="max-w-[440px] mx-auto mb-6">
-        <DemoChat maxHeight="420px" />
+        <DemoChat minHeight="420px" />
       </div>
 
       <p className="text-xs text-gray-400 text-center mb-6">
