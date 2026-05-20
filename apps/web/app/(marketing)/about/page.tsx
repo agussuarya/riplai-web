@@ -25,28 +25,28 @@ export default function AboutPage() {
       </p>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-5 mb-12">
-        <div className="text-center bg-white border border-gray-100 rounded-[18px] p-7">
-          <p className="font-extrabold text-brand-500" style={{ fontSize: '32px' }}>
+      <div className="grid grid-cols-3 gap-3 md:gap-5 mb-12">
+        <div className="text-center bg-white border border-gray-100 rounded-[14px] md:rounded-[18px] p-3 md:p-7">
+          <p className="font-extrabold text-brand-500 text-[22px] md:text-[32px]">
             200+
           </p>
-          <p className="text-gray-500 font-medium mt-1.5" style={{ fontSize: '13.5px' }}>
+          <p className="text-gray-500 font-medium mt-1 text-[11px] md:text-[13.5px]">
             Bisnis aktif
           </p>
         </div>
-        <div className="text-center bg-white border border-gray-100 rounded-[18px] p-7">
-          <p className="font-extrabold text-accent-500" style={{ fontSize: '32px' }}>
+        <div className="text-center bg-white border border-gray-100 rounded-[14px] md:rounded-[18px] p-3 md:p-7">
+          <p className="font-extrabold text-accent-500 text-[22px] md:text-[32px]">
             98%
           </p>
-          <p className="text-gray-500 font-medium mt-1.5" style={{ fontSize: '13.5px' }}>
+          <p className="text-gray-500 font-medium mt-1 text-[11px] md:text-[13.5px]">
             Akurasi jawaban
           </p>
         </div>
-        <div className="text-center bg-white border border-gray-100 rounded-[18px] p-7">
-          <p className="font-extrabold text-brand-500" style={{ fontSize: '32px' }}>
+        <div className="text-center bg-white border border-gray-100 rounded-[14px] md:rounded-[18px] p-3 md:p-7">
+          <p className="font-extrabold text-brand-500 text-[20px] md:text-[32px]">
             1,2dtk
           </p>
-          <p className="text-gray-500 font-medium mt-1.5" style={{ fontSize: '13.5px' }}>
+          <p className="text-gray-500 font-medium mt-1 text-[11px] md:text-[13.5px]">
             Rata-rata respons
           </p>
         </div>

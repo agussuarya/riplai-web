@@ -27,10 +27,8 @@ export default function SignupPage() {
             <Input
               label="Nama lengkap"
               type="text"
-              defaultValue="Budi Santoso"
-              className="border-brand-500 focus:ring-brand-500"
+              placeholder="Nama kamu"
             />
-            <p className="text-xs text-brand-600 mt-1">✓ Terlihat bagus!</p>
           </div>
 
           {/* Email */}
@@ -62,7 +60,7 @@ export default function SignupPage() {
             </p>
           </div>
 
-          {/* Jenis bisnis — raw select per spec */}
+          {/* Jenis bisnis */}
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-1">Jenis bisnis</label>
             <select className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white">
@@ -81,13 +79,13 @@ export default function SignupPage() {
             <div className="relative">
               <Input
                 type="password"
-                className="border-red-300 focus:ring-red-300 pr-10"
+                placeholder="Minimal 8 karakter"
+                className="pr-10"
               />
               <div className="absolute right-3 bottom-2.5 pointer-events-none">
                 <EyeIcon className="w-4 h-4 text-gray-400" />
               </div>
             </div>
-            <p className="text-xs text-red-500 mt-1">Minimal 8 karakter</p>
           </div>
 
           {/* Checkbox */}
@@ -108,18 +106,14 @@ export default function SignupPage() {
             </p>
           </div>
 
-          {/* CTA — loading state, non-interactive */}
-          <a className="flex w-full items-center justify-center gap-2 rounded-full bg-brand-500 px-8 py-3 text-base font-bold text-white pointer-events-none opacity-70">
-            <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-              />
-            </svg>
-            Membuat akun...
-          </a>
+          {/* CTA */}
+          <button
+            type="button"
+            disabled
+            className="flex w-full items-center justify-center rounded-full bg-brand-500 px-8 py-3 text-base font-bold text-white cursor-not-allowed opacity-70"
+          >
+            Mulai 14 Hari Gratis
+          </button>
 
           <p className="text-center text-[13.5px] text-gray-400 mt-4">
             Sudah punya akun?{' '}

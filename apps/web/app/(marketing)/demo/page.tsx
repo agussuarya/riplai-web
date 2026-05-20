@@ -4,10 +4,10 @@ import { useRef } from 'react';
 import { DemoChat, DemoChatHandle } from '@/components/demo/DemoChat';
 
 const suggestions = [
-  'Ada kamar malam Minggu ini?',
-  'Harga kamar Deluxe?',
-  'Fasilitas apa saja?',
-  'Cara booking kamar?',
+  'Kamar kosong malam ini?',
+  'Berapa harga kamar Deluxe?',
+  'Apa saja fasilitasnya?',
+  'Gimana cara booking?',
 ];
 
 export default function DemoPage() {
@@ -79,7 +79,7 @@ export default function DemoPage() {
               href="/signup"
               className="inline-block bg-brand-500 hover:bg-brand-600 text-white text-sm font-bold px-5 py-2 rounded-full transition-colors"
             >
-              Coba Gratis
+              Coba Gratis &rarr;
             </a>
           </div>
         </div>

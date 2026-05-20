@@ -1,4 +1,4 @@
-import { ExclamationCircleIcon, EyeIcon } from '@heroicons/react/24/outline';
+import { EyeIcon } from '@heroicons/react/24/outline';
 import { Input } from '@riplai/ui';
 import { RiplaiLogo } from '@/components/logo/RiplaiLogo';
 
@@ -17,37 +17,27 @@ export default function SigninPage() {
           Masuk ke dashboard Riplai kamu.
         </p>
 
-        {/* Error banner */}
-        <div className="bg-[#FEF2F2] border border-[#FECACA] rounded-[12px] p-3 flex items-center gap-2 mb-5">
-          <ExclamationCircleIcon className="w-4 h-4 text-[#991B1B] flex-shrink-0" />
-          <p className="text-sm text-[#991B1B] font-medium">
-            Email atau kata sandi salah. Coba lagi.
-          </p>
-        </div>
-
         {/* Email field */}
         <div className="mb-4">
           <Input
             label="Email"
             type="email"
-            defaultValue="budi@apotek.id"
-            className="border-red-300 focus:ring-red-300"
+            placeholder="email@bisnis.com"
           />
-          <p className="text-xs text-red-500 mt-1">Email tidak ditemukan.</p>
         </div>
 
         {/* Password field */}
         <div className="mb-2">
           <div className="flex items-center justify-between mb-1">
             <label className="text-sm font-medium text-gray-700">Kata sandi</label>
-            <a href="#" className="text-[12.5px] text-accent-500 font-semibold">
+            <a href="#" className="text-[12.5px] text-accent-500 font-semibold pointer-events-none">
               Lupa kata sandi?
             </a>
           </div>
           <div className="relative">
             <Input
               type="password"
-              defaultValue="password123"
+              placeholder="••••••••"
               className="pr-10"
             />
             <div className="absolute right-3 bottom-2.5 pointer-events-none">
@@ -57,12 +47,13 @@ export default function SigninPage() {
         </div>
 
         {/* CTA */}
-        <a
-          href="#"
-          className="mt-5 flex w-full items-center justify-center rounded-full bg-brand-500 px-8 py-3 text-base font-bold text-white pointer-events-none opacity-75"
+        <button
+          type="button"
+          disabled
+          className="mt-5 flex w-full items-center justify-center rounded-full bg-brand-500 px-8 py-3 text-base font-bold text-white cursor-not-allowed opacity-70"
         >
           Masuk
-        </a>
+        </button>
 
         <p className="text-center text-[13.5px] text-gray-400 mt-5">
           Belum punya akun?{' '}

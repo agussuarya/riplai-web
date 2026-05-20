@@ -33,19 +33,22 @@ function renderBotText(text: string): React.ReactNode {
 
 function getReply(text: string): string {
   const lower = text.toLowerCase();
-  if (/kamar|room|harga|price|tarif|berapa/.test(lower)) {
-    return 'Pilihan kamar kami:\n🛏 **Deluxe** — Rp 750.000/malam (Balkon, sarapan 2 orang)\n🛁 **Suite** — Rp 1.200.000/malam (Bathtub, view sawah, sarapan 2 orang)\n\nKamar mana yang diminati?';
+  if (/kosong|available|ada kamar|malam ini|malam minggu|hari ini|cek|check/.test(lower)) {
+    return 'Halo Kak! Boleh tahu mau check-in tanggal berapa dan berapa malam? Nanti kami cek ketersediaan kamarnya ya 😊';
   }
-  if (/booking|pesan|reservasi|book/.test(lower)) {
-    return 'Untuk reservasi, kami perlu: nama tamu, tanggal check-in & check-out, dan tipe kamar. Silakan kirimkan detailnya.';
+  if (/berapa|harga|tarif|price|cost/.test(lower)) {
+    return 'Ini harga kamar kami:\n🛏 **Deluxe** — Rp 750.000/malam\n   Balkon, view kebun, sarapan 2 orang\n🛁 **Suite** — Rp 1.200.000/malam\n   Bathtub, view sawah, sarapan 2 orang\n\nMau yang mana, Kak?';
   }
-  if (/tersedia|available|ada|kosong|cek|check/.test(lower)) {
-    return 'Ketersediaan kamar untuk tanggal yang Anda inginkan bisa kami cek segera. Mohon kirimkan tanggal check-in dan check-out.';
+  if (/booking|pesan|reservasi|book|gimana|cara/.test(lower)) {
+    return 'Booking bisa langsung di sini ya, Kak! Kami perlu:\n📅 Tanggal check-in & check-out\n👥 Jumlah tamu\n🛏 Tipe kamar\n\nKirimkan detailnya dan kami proses segera!';
   }
-  if (/sarapan|breakfast|fasilitas|wifi|kolam/.test(lower)) {
-    return 'Semua kamar sudah termasuk sarapan untuk 2 orang. Fasilitas lengkap: WiFi gratis, kolam renang, parkir. Ada yang ingin ditanyakan lagi?';
+  if (/fasilitas|wifi|kolam|pool|sarapan|breakfast|parkir/.test(lower)) {
+    return 'Fasilitas villa kami:\n✅ WiFi gratis kencang\n✅ Kolam renang pribadi\n✅ Sarapan 2 orang sudah termasuk\n✅ Parkir luas\n✅ AC di semua kamar\n\nAda yang mau ditanyakan lagi?';
   }
-  return 'Terima kasih pesannya! Tim kami akan segera membalas lebih lanjut. Ada yang bisa dibantu sekarang?';
+  if (/kamar|room|tipe|suite|deluxe/.test(lower)) {
+    return 'Kami punya 2 tipe kamar:\n🛏 **Deluxe** — Rp 750.000/malam\n   Balkon, view kebun, sarapan 2 orang\n🛁 **Suite** — Rp 1.200.000/malam\n   Bathtub, view sawah, sarapan 2 orang\n\nMau info lebih lanjut?';
+  }
+  return 'Halo Kak, ada yang bisa dibantu? Tanya soal kamar, fasilitas, atau reservasi ya 😊';
 }
 
 export interface DemoChatHandle {
