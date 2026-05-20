@@ -15,10 +15,10 @@ export default function SigninPage() {
         <div className="flex justify-center mb-6">
           <RiplaiLogo size={44} />
         </div>
-        <h1 className="text-[24px] font-extrabold tracking-[-0.02em] text-gray-900 text-center mb-1">
+        <h1 className="text-[24px] font-extrabold tracking-[-0.02em] text-[var(--text-1)] text-center mb-1">
           Selamat datang kembali
         </h1>
-        <p className="text-sm text-gray-400 text-center mb-6">
+        <p className="text-sm text-[var(--text-2)] text-center mb-6">
           Masuk ke dashboard Riplai kamu.
         </p>
 
@@ -34,7 +34,7 @@ export default function SigninPage() {
         {/* Password field */}
         <div className="mb-2">
           <div className="flex items-center justify-between mb-1">
-            <label className="text-sm font-medium text-gray-700">Kata sandi</label>
+            <label className="text-sm font-medium text-[var(--text-1)]">Kata sandi</label>
             <a href="#" className="text-[12.5px] text-accent-500 font-semibold pointer-events-none">
               Lupa kata sandi?
             </a>
@@ -48,7 +48,7 @@ export default function SigninPage() {
             <button
               type="button"
               onClick={() => setShowPwd((v) => !v)}
-              className="absolute right-3 bottom-2.5 cursor-pointer text-gray-400 hover:text-gray-600"
+              className="absolute right-3 bottom-2.5 cursor-pointer text-[var(--text-3)] hover:text-[var(--text-2)]"
             >
               {showPwd
                 ? <EyeSlashIcon className="w-4 h-4" />
@@ -66,7 +66,7 @@ export default function SigninPage() {
           Masuk
         </button>
 
-        <p className="text-center text-[13.5px] text-gray-400 mt-5">
+        <p className="text-center text-[13.5px] text-[var(--text-2)] mt-5">
           Belum punya akun?{' '}
           <a href="/signup" className="text-brand-500 font-bold">
             Daftar gratis

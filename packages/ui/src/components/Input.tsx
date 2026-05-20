@@ -31,13 +31,13 @@ export function Input({ label, id, className = "", ...props }: InputProps) {
   return (
     <div className="flex flex-col gap-1">
       {label && (
-        <label htmlFor={id} className="text-sm font-medium text-gray-700">
+        <label htmlFor={id} className="text-sm font-medium text-gray-700 dark:text-[#C9D1D9]">
           {label}
         </label>
       )}
       <input
         id={id}
-        className={`rounded-xl border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 ${className}`}
+        className={`rounded-xl border border-gray-300 dark:border-[#30394A] bg-white dark:bg-[#1C2330] text-gray-900 dark:text-[#E6EDF3] placeholder-gray-400 dark:placeholder-[#6E7681] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 ${className}`}
         {...props}
       />
     </div>

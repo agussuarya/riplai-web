@@ -6,11 +6,11 @@ export function Hero() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-14 max-w-[1100px] mx-auto items-center">
         {/* Left */}
         <div>
-          <span className="inline-flex items-center gap-1.5 bg-accent-100 text-accent-600 text-xs font-bold px-3.5 py-1 rounded-full mb-6">
+          <span className="inline-flex items-center gap-1.5 bg-[var(--accent-sub)] text-accent-500 text-xs font-bold px-3.5 py-1 rounded-full mb-6">
             Admin Otomatis WhatsApp
           </span>
           <h1
-            className="font-extrabold tracking-[-0.04em] leading-[1.06] mb-5 text-gray-900"
+            className="font-extrabold tracking-[-0.04em] leading-[1.06] mb-5 text-[var(--text-1)]"
             style={{ fontSize: '58px' }}
           >
             WhatsApp kamu aktif
@@ -20,7 +20,7 @@ export function Hero() {
             bahkan saat tidur.
           </h1>
           <p
-            className="text-gray-500 leading-[1.65] max-w-[420px] mb-8"
+            className="text-[var(--text-2)] leading-[1.65] max-w-[420px] mb-8"
             style={{ fontSize: '17px' }}
           >
             Admin otomatis menjawab chat pelanggan berdasarkan data bisnis kamu. Kamu tidak perlu
@@ -35,12 +35,12 @@ export function Hero() {
             </a>
             <a
               href="/demo"
-              className="text-[15px] font-semibold text-gray-900 dark:text-[#E6EDF3] bg-gray-100 dark:bg-[#1C2330] border border-gray-200 dark:border-[#30394A] hover:bg-gray-200 dark:hover:bg-[#21293A] px-7 py-3 rounded-full transition-colors"
+              className="text-[15px] font-semibold text-[var(--text-1)] bg-[var(--bg-subtle)] border border-[var(--border)] hover:bg-[var(--border)] px-7 py-3 rounded-full transition-colors"
             >
               Lihat Demo
             </a>
           </div>
-          <p className="text-xs text-gray-400 mt-3.5">
+          <p className="text-xs text-[var(--text-3)] mt-3.5">
             Tidak perlu kartu kredit · Setup dalam 5 menit
           </p>
           <div className="mt-9 flex items-center gap-3">
@@ -53,7 +53,7 @@ export function Hero() {
               ].map((avatar, i) => (
                 <div
                   key={avatar.initials}
-                  className={`w-7 h-7 rounded-full border-2 border-white text-[9px] font-bold text-white flex items-center justify-center ${avatar.bg} ${i > 0 ? '-ml-2' : ''}`}
+                  className={`w-7 h-7 rounded-full border-2 border-[var(--bg-surface)] text-[9px] font-bold text-white flex items-center justify-center ${avatar.bg} ${i > 0 ? '-ml-2' : ''}`}
                 >
                   {avatar.initials}
                 </div>
@@ -70,7 +70,7 @@ export function Hero() {
           <div className="demo-wrap max-w-[360px] w-full">
             <DemoChat minHeight="175px" />
           </div>
-          <p className="text-[11.5px] text-gray-400 text-center mt-3">
+          <p className="text-[11.5px] text-[var(--text-3)] text-center mt-3">
             Ini yang tamu kamu terima jam 11 malam, dibalas otomatis. Coba tanya →
           </p>
         </div>
