@@ -1,10 +1,10 @@
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
+import { Navbar } from '@/components/layout/Navbar';
+import { Footer } from '@/components/layout/Footer';
 
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <Navbar />
+      <Navbar variant="full" />
       <main>{children}</main>
       <Footer />
     </>

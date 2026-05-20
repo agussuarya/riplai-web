@@ -8,28 +8,28 @@ interface Testimonial {
 
 const testimonials: Testimonial[] = [
   {
-    avatarBg: "bg-brand-500",
-    initials: "IS",
-    name: "Ibu Sari",
-    role: "Pemilik Klinik · Jakarta",
+    avatarBg: 'bg-brand-500',
+    initials: 'KW',
+    name: 'Kadek Wira',
+    role: 'Pemilik Villa · Seminyak, Bali',
     quote:
-      "Dulu saya jawab WA pasien jam 2 pagi. Sekarang admin otomatis yang kerja, saya bisa tidur tenang.",
+      'Tamu WA malam-malam tanya ketersediaan kamar. Sudah dibalas otomatis sebelum saya sempat lihat HP.',
   },
   {
-    avatarBg: "bg-accent-500",
-    initials: "PB",
-    name: "Pak Budi",
-    role: "Restoran Padang · Bandung",
+    avatarBg: 'bg-accent-500',
+    initials: 'NM',
+    name: 'Nyoman Mega',
+    role: 'Warung & Café · Ubud, Bali',
     quote:
-      "Pelanggan tanya menu dan jam buka? Bot sudah jawab sebelum saya sempat buka HP.",
+      'Tamu asing tanya menu dan harga dalam bahasa Inggris, langsung dibalas dengan tepat. Sangat membantu.',
   },
   {
-    avatarBg: "bg-brand-600",
-    initials: "MD",
-    name: "Mbak Dewi",
-    role: "Villa & Homestay · Bali",
+    avatarBg: 'bg-brand-600',
+    initials: 'MD',
+    name: 'Mbak Dewi',
+    role: 'Villa & Homestay · Canggu, Bali',
     quote:
-      "Tamu dari luar negeri tanya dalam bahasa Inggris pun dibalas dengan baik. Sangat membantu.",
+      'Booking villa naik 30% sejak pakai Riplai. Tamu yang WA tengah malam pun terlayani dengan baik.',
   },
 ];
 
@@ -38,7 +38,7 @@ export function Testimonials() {
     <section className="bg-white py-16 px-12">
       <h2
         className="font-extrabold tracking-[-0.03em] text-center mb-11 text-gray-900"
-        style={{ fontSize: "34px" }}
+        style={{ fontSize: '34px' }}
       >
         Kata mereka yang sudah pakai
       </h2>

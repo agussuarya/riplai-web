@@ -1,5 +1,6 @@
-import { ExclamationCircleIcon, EyeIcon } from "@heroicons/react/24/outline";
-import { RiplaiLogo } from "@/components/logo/RiplaiLogo";
+import { ExclamationCircleIcon, EyeIcon } from '@heroicons/react/24/outline';
+import { Input } from '@riplai/ui';
+import { RiplaiLogo } from '@/components/logo/RiplaiLogo';
 
 export default function SigninPage() {
   return (
@@ -7,15 +8,13 @@ export default function SigninPage() {
       <div className="w-full max-w-[400px]">
         {/* Logo */}
         <div className="flex justify-center mb-6">
-          <div className="w-11 h-11 bg-brand-500 rounded-[12px] flex items-center justify-center">
-            <RiplaiLogo size={22} variant="white" />
-          </div>
+          <RiplaiLogo size={44} />
         </div>
         <h1 className="text-[24px] font-extrabold tracking-[-0.02em] text-gray-900 text-center mb-1">
           Selamat datang kembali
         </h1>
-        <p className="text-sm text-gray-400 text-center mb-7">
-          Masuk ke akun Riplai kamu
+        <p className="text-sm text-gray-400 text-center mb-6">
+          Masuk ke dashboard Riplai kamu.
         </p>
 
         {/* Error banner */}
@@ -28,13 +27,11 @@ export default function SigninPage() {
 
         {/* Email field */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Email
-          </label>
-          <input
+          <Input
+            label="Email"
             type="email"
             defaultValue="budi@apotek.id"
-            className="w-full rounded-xl border border-red-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-300"
+            className="border-red-300 focus:ring-red-300"
           />
           <p className="text-xs text-red-500 mt-1">Email tidak ditemukan.</p>
         </div>
@@ -48,12 +45,12 @@ export default function SigninPage() {
             </a>
           </div>
           <div className="relative">
-            <input
+            <Input
               type="password"
               defaultValue="password123"
-              className="w-full rounded-xl border border-gray-300 px-3 py-2.5 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="pr-10"
             />
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+            <div className="absolute right-3 bottom-2.5 pointer-events-none">
               <EyeIcon className="w-4 h-4 text-gray-400" />
             </div>
           </div>
@@ -61,13 +58,14 @@ export default function SigninPage() {
 
         {/* CTA */}
         <a
-          className="mt-5 flex w-full items-center justify-center rounded-full bg-brand-500 px-8 py-3 text-base font-bold text-white pointer-events-none opacity-80"
+          href="#"
+          className="mt-5 flex w-full items-center justify-center rounded-full bg-brand-500 px-8 py-3 text-base font-bold text-white pointer-events-none opacity-75"
         >
           Masuk
         </a>
 
         <p className="text-center text-[13.5px] text-gray-400 mt-5">
-          Belum punya akun?{" "}
+          Belum punya akun?{' '}
           <a href="/signup" className="text-brand-500 font-bold">
             Daftar gratis
           </a>

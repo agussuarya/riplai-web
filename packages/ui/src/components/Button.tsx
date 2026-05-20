@@ -1,11 +1,29 @@
-import type { ButtonHTMLAttributes } from "react";
-
 type ButtonVariant = "primary" | "secondary" | "danger" | "ghost" | "ai";
 type ButtonSize = "sm" | "md" | "lg";
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps {
   variant?: ButtonVariant;
   size?: ButtonSize;
+  className?: string;
+  children?: any;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
+  onClick?: (event: any) => void;
+  onFocus?: (event: any) => void;
+  onBlur?: (event: any) => void;
+  onMouseEnter?: (event: any) => void;
+  onMouseLeave?: (event: any) => void;
+  tabIndex?: number;
+  id?: string;
+  name?: string;
+  value?: string;
+  form?: string;
+  "aria-label"?: string;
+  "aria-expanded"?: boolean | "true" | "false";
+  "aria-controls"?: string;
+  "aria-describedby"?: string;
+  "aria-pressed"?: boolean | "true" | "false" | "mixed";
+  "aria-haspopup"?: boolean | "true" | "false" | "menu" | "listbox" | "tree" | "grid" | "dialog";
 }
 
 export function Button({ variant = "primary", size = "md", className = "", ...props }: ButtonProps) {
