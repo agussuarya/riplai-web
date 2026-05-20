@@ -18,7 +18,7 @@
 | `/terms` | Syarat & Ketentuan | P0 (legal) | Full terms of service |
 
 **Language:** Bahasa Indonesia throughout (including legal pages).  
-**CTA destination:** "Coba Gratis" → registration form (signup page, `/daftar`).
+**CTA destination:** "Coba Gratis" → registration form (signup page, `/signup`).
 
 ---
 
@@ -48,7 +48,7 @@ Once you have paying partners, upgrade to single-person PT (UU Cipta Kerja).
 
 Privacy Policy and T&C identify the operator as:
 
-> *"Layanan riplai dioperasikan oleh **Riplai** (pengembang perorangan berdomisili di Denpasar, Bali, Indonesia). Untuk pertanyaan terkait privasi, hubungi kami di agussuarya@gmail.com."*
+> *"Layanan riplai dioperasikan oleh **Riplai** (pengembang perorangan berdomisili di Denpasar, Bali, Indonesia). Untuk pertanyaan terkait privasi, hubungi kami di hello.riplai@gmail.com."*
 
 No physical address in the public legal pages — UU PDP allows a contact email as sufficient for small operators. Physical address is only required in formal regulatory filings, not on the consumer-facing website.
 
@@ -57,7 +57,7 @@ No physical address in the public legal pages — UU PDP allows a contact email 
 | Placeholder | What to fill |
 |-------------|-------------|
 | `[NOMOR NIB]` | NIB number from OSS after registration |
-| `agussuarya@gmail.com` | Personal email as contact (legal@riplai.id to replace this before launch) |
+| `hello.riplai@gmail.com` | Personal email as contact (legal@riplai.id to replace this before launch) |
 | `[1 Juni 2026]` | Actual effective date of policies |
 
 Remove all references to `[PT RIPLAI TEKNOLOGI INDONESIA]` and physical address — not needed.
@@ -222,7 +222,7 @@ Three quote cards. Persona archetypes for Indonesian SMB:
 
 Structure (under UU PDP No. 27/2022):
 
-1. **Identitas Pengontrol Data** — "Riplai (pengembang perorangan berdomisili di Denpasar, Bali, Indonesia)", kontak: agussuarya@gmail.com
+1. **Identitas Pengontrol Data** — "Riplai (pengembang perorangan berdomisili di Denpasar, Bali, Indonesia)", kontak: hello.riplai@gmail.com
 2. **Data yang Kami Kumpulkan**
    - Dari partner (pelanggan riplai): nama bisnis, nomor WhatsApp, email, data penggunaan layanan
    - Dari percakapan WhatsApp: nomor WA pelanggan akhir, isi pesan (untuk fungsi bot)
@@ -239,7 +239,7 @@ Structure (under UU PDP No. 27/2022):
 8. **Keamanan** — Enkripsi in-transit (TLS 1.3), enkripsi at-rest, kontrol akses
 9. **Cookie** — Fungsional (sesi, preferensi), analitik (Google Analytics / privacy-first alt)
 10. **Perubahan Kebijakan** — 30 hari pemberitahuan via email untuk perubahan material
-11. **Kontak** — agussuarya@gmail.com
+11. **Kontak** — hello.riplai@gmail.com
 
 ### Terms & Conditions (`/terms`) — Syarat & Ketentuan
 
@@ -346,6 +346,6 @@ Font: Plus Jakarta Sans for everything. JetBrains Mono for `/knowledge-base` edi
 - [ ] **Blog / Artikel?** Footer has placeholder — even an empty blog route is fine to ship
 - [ ] **Analytics tool?** Google Analytics or privacy-first alt (Umami, Plausible) — affects cookie policy wording
 - [ ] **NIB registration** — register at oss.go.id then fill `[NOMOR NIB]` in legal pages before launch
-- [ ] **legal@riplai.id mailbox** — set up before launch and replace agussuarya@gmail.com in legal pages (required by UU PDP)
+- [ ] **legal@riplai.id mailbox** — set up before launch and replace hello.riplai@gmail.com in legal pages (required by UU PDP)
 - [ ] **Refund policy** — confirm "no refund for current month" stance before publishing T&C
 - [ ] **Custom plan contact** — does "Hubungi Kami" open mailto or a contact form? (mailto is fine for MVP)
