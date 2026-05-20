@@ -33,22 +33,25 @@ function renderBotText(text: string): React.ReactNode {
 
 function getReply(text: string): string {
   const lower = text.toLowerCase();
-  if (/kosong|available|ada kamar|malam ini|malam minggu|hari ini|cek|check/.test(lower)) {
-    return 'Halo Kak! Boleh tahu mau check-in tanggal berapa dan berapa malam? Nanti kami cek ketersediaan kamarnya ya 😊';
+  if (/kosong|available|ada kamar|malam ini|hari ini|tersedia/.test(lower)) {
+    return 'Untuk malam ini masih tersedia Kak 😊\n🛏 **Deluxe** — Rp 750.000/malam\n🛁 **Suite** — Rp 1.200.000/malam\n\nMau langsung booking atau butuh info lebih dulu?';
+  }
+  if (/tipe|jenis|pilihan kamar|ada apa|apa saja kamar/.test(lower)) {
+    return 'Villa kami punya 2 tipe kamar Kak:\n🛏 **Deluxe** — Rp 750.000/malam\n   Balkon, view kebun, sarapan 2 orang\n🛁 **Suite** — Rp 1.200.000/malam\n   Bathtub, view sawah, sarapan 2 orang\n\nDua-duanya include sarapan ya! Mau pilih yang mana?';
   }
   if (/berapa|harga|tarif|price|cost/.test(lower)) {
-    return 'Ini harga kamar kami:\n🛏 **Deluxe** — Rp 750.000/malam\n   Balkon, view kebun, sarapan 2 orang\n🛁 **Suite** — Rp 1.200.000/malam\n   Bathtub, view sawah, sarapan 2 orang\n\nMau yang mana, Kak?';
+    return 'Harga kamar kami:\n🛏 **Deluxe** — Rp 750.000/malam\n🛁 **Suite** — Rp 1.200.000/malam\n\nSudah include sarapan 2 orang. Mau yang mana, Kak?';
   }
   if (/booking|pesan|reservasi|book|gimana|cara/.test(lower)) {
-    return 'Booking bisa langsung di sini ya, Kak! Kami perlu:\n📅 Tanggal check-in & check-out\n👥 Jumlah tamu\n🛏 Tipe kamar\n\nKirimkan detailnya dan kami proses segera!';
+    return 'Booking gampang, Kak! Cukup kirim:\n📅 Tanggal check-in & check-out\n👥 Jumlah tamu\n🛏 Tipe kamar\n\nNanti kami konfirmasi dan kirim detail pembayaran ya!';
   }
   if (/fasilitas|wifi|kolam|pool|sarapan|breakfast|parkir/.test(lower)) {
-    return 'Fasilitas villa kami:\n✅ WiFi gratis kencang\n✅ Kolam renang pribadi\n✅ Sarapan 2 orang sudah termasuk\n✅ Parkir luas\n✅ AC di semua kamar\n\nAda yang mau ditanyakan lagi?';
+    return 'Fasilitas villa kami:\n✅ WiFi gratis\n✅ Kolam renang pribadi\n✅ Sarapan 2 orang\n✅ Parkir luas\n✅ AC semua kamar\n\nAda yang mau ditanyakan lagi?';
   }
-  if (/kamar|room|tipe|suite|deluxe/.test(lower)) {
-    return 'Kami punya 2 tipe kamar:\n🛏 **Deluxe** — Rp 750.000/malam\n   Balkon, view kebun, sarapan 2 orang\n🛁 **Suite** — Rp 1.200.000/malam\n   Bathtub, view sawah, sarapan 2 orang\n\nMau info lebih lanjut?';
+  if (/kamar|room|suite|deluxe/.test(lower)) {
+    return 'Villa kami punya 2 tipe:\n🛏 **Deluxe** — Rp 750.000/malam\n🛁 **Suite** — Rp 1.200.000/malam\n\nMau tanya detail yang mana, Kak?';
   }
-  return 'Halo Kak, ada yang bisa dibantu? Tanya soal kamar, fasilitas, atau reservasi ya 😊';
+  return 'Halo Kak, ada yang bisa dibantu? Tanya soal kamar, fasilitas, atau booking ya 😊';
 }
 
 export interface DemoChatHandle {
@@ -135,10 +138,10 @@ export const DemoChat = forwardRef<DemoChatHandle, DemoChatProps>(function DemoC
               <div key={i} className="flex justify-end">
                 <div>
                   <div
-                    className="bg-[#E0E7FF] rounded-[8px_8px_2px_8px] px-[11px] py-2 max-w-[240px]"
-                    style={{ boxShadow: '0 1px 2px rgba(0,0,0,.08)' }}
+                    className="bg-[#E0E7FF] dark:bg-[#2D3F6B] rounded-[8px_8px_2px_8px] px-[11px] py-2 max-w-[240px]"
+                    style={{ boxShadow: '0 1px 2px rgba(0,0,0,.12)' }}
                   >
-                    <p className="text-[13px] text-gray-800">{msg.text}</p>
+                    <p className="text-[13px] text-gray-800 dark:text-[#E6EDF3]">{msg.text}</p>
                   </div>
                   <p className="text-[10px] text-[var(--text-3)] text-right mt-1">{msg.time}</p>
                 </div>
@@ -150,8 +153,8 @@ export const DemoChat = forwardRef<DemoChatHandle, DemoChatProps>(function DemoC
               <div key={i} className="flex justify-start">
                 <div>
                   <div
-                    className="bg-[var(--bg-surface)] rounded-[8px_8px_8px_2px] px-[11px] py-2 max-w-[220px]"
-                    style={{ boxShadow: '0 1px 2px rgba(0,0,0,.08)' }}
+                    className="bg-white dark:bg-[#1E2D3D] rounded-[8px_8px_8px_2px] px-[11px] py-2 max-w-[220px] border border-transparent dark:border-[#2D4060]"
+                    style={{ boxShadow: '0 1px 3px rgba(0,0,0,.12)' }}
                   >
                     <p className="text-[13px] text-[var(--text-1)]">{renderBotText(msg.text)}</p>
                   </div>
@@ -166,8 +169,8 @@ export const DemoChat = forwardRef<DemoChatHandle, DemoChatProps>(function DemoC
             return (
               <div key={i} className="flex justify-start">
                 <div
-                  className="bg-[var(--bg-surface)] rounded-[8px_8px_8px_2px] p-2.5 flex gap-1 items-center"
-                  style={{ boxShadow: '0 1px 2px rgba(0,0,0,.08)' }}
+                  className="bg-white dark:bg-[#1E2D3D] border border-transparent dark:border-[#2D4060] rounded-[8px_8px_8px_2px] p-2.5 flex gap-1 items-center"
+                  style={{ boxShadow: '0 1px 3px rgba(0,0,0,.12)' }}
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '0ms' }} />
                   <span className="w-1.5 h-1.5 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '150ms' }} />

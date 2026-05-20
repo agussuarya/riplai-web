@@ -19,42 +19,42 @@ interface Feature {
 const features: Feature[] = [
   {
     icon: ChatBubbleLeftRightIcon,
-    iconBg: 'bg-brand-50',
+    iconBg: 'bg-[var(--brand-sub)]',
     iconColor: 'text-brand-500',
     title: 'Penjawab 24 Jam',
     desc: 'Balas pesan pelanggan otomatis kapan saja. Bahkan saat kamu tidur. Tidak ada pesan yang terlewat.',
   },
   {
     icon: BookOpenIcon,
-    iconBg: 'bg-accent-100',
+    iconBg: 'bg-[var(--accent-sub)]',
     iconColor: 'text-accent-500',
     title: 'Data Bisnis Pintar',
     desc: 'Ajarkan bisnis kamu sekali, admin otomatis langsung tahu segalanya. Produk, harga, jam operasional, dan lebih banyak lagi.',
   },
   {
     icon: ChartBarIcon,
-    iconBg: 'bg-brand-50',
+    iconBg: 'bg-[var(--brand-sub)]',
     iconColor: 'text-brand-500',
     title: 'Analitik Percakapan',
     desc: 'Lihat berapa pesan dibalas, topik terpopuler, dan waktu sibuk. Ambil keputusan bisnis berdasarkan data nyata.',
   },
   {
     icon: BellIcon,
-    iconBg: 'bg-accent-100',
+    iconBg: 'bg-[var(--accent-sub)]',
     iconColor: 'text-accent-500',
     title: 'Notifikasi ke Kamu',
     desc: 'Admin otomatis tidak bisa jawab? Kamu dapat notifikasi langsung. Tidak ada pelanggan yang dibiarkan menunggu.',
   },
   {
     icon: DevicePhoneMobileIcon,
-    iconBg: 'bg-brand-50',
+    iconBg: 'bg-[var(--brand-sub)]',
     iconColor: 'text-brand-500',
     title: 'Tanpa Aplikasi Baru',
     desc: 'Pelanggan tetap chat lewat WhatsApp biasa. Kamu kelola dari dashboard. Tidak perlu mengajari pelanggan cara baru.',
   },
   {
     icon: Cog6ToothIcon,
-    iconBg: 'bg-accent-100',
+    iconBg: 'bg-[var(--accent-sub)]',
     iconColor: 'text-accent-500',
     title: 'Mudah Dikonfigurasi',
     desc: 'Atur jam operasional, nama penjawab, dan balasan khusus dalam hitungan menit. Tanpa keahlian teknis apapun.',
@@ -103,7 +103,7 @@ export default function FeaturesPage() {
       <div className="text-center">
         <a
           href="/signup"
-          className="inline-block text-[15px] font-bold text-white bg-brand-500 hover:bg-brand-600 px-8 py-3.5 rounded-full transition-colors"
+          className="inline-block text-[15px] font-bold text-white bg-[var(--brand-sub)]0 hover:bg-brand-600 px-8 py-3.5 rounded-full transition-colors"
         >
           Coba Gratis &rarr;
         </a>

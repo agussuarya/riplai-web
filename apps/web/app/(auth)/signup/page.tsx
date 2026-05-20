@@ -132,7 +132,7 @@ export default function SignupPage() {
             disabled
             className="flex w-full items-center justify-center rounded-full bg-brand-500 px-8 py-3 text-base font-bold text-white cursor-not-allowed opacity-70"
           >
-            Mulai 14 Hari Gratis
+            Daftar Gratis Sekarang
           </button>
 
           <p className="text-center text-[13.5px] text-[var(--text-2)] mt-4">
