@@ -100,14 +100,6 @@ export default function FeaturesPage() {
         ))}
       </div>
 
-      <div className="text-center">
-        <a
-          href="/signup"
-          className="inline-block text-[15px] font-bold text-white bg-[var(--brand-sub)]0 hover:bg-brand-600 px-8 py-3.5 rounded-full transition-colors"
-        >
-          Coba Gratis &rarr;
-        </a>
-      </div>
     </div>
   );
 }

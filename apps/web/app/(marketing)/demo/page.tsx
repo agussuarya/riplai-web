@@ -4,8 +4,8 @@ import { useRef } from 'react';
 import { DemoChat, DemoChatHandle } from '@/components/demo/DemoChat';
 
 const suggestions = [
-  'Tipe kamar apa saja?',
   'Kamar kosong malam ini?',
+  'Tipe kamar apa saja?',
   'Berapa harga kamar Deluxe?',
   'Apa saja fasilitasnya?',
   'Gimana cara booking?',
