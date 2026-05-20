@@ -1,6 +1,6 @@
 export default function AboutPage() {
   return (
-    <div className="max-w-[800px] mx-auto px-12 py-14">
+    <div className="max-w-[800px] mx-auto px-5 md:px-12 py-14">
       <a
         href="/"
         className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-[var(--text-2)] hover:text-[var(--text-1)] mb-6 transition-colors"
@@ -101,7 +101,7 @@ export default function AboutPage() {
             </span>
             <a
               href="mailto:hello.riplai@gmail.com"
-              className="text-brand-500"
+              className="text-brand-500 break-all"
               style={{ fontSize: '13px' }}
             >
               hello.riplai@gmail.com

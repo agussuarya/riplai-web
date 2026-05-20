@@ -8,8 +8,8 @@ const benefits = [
   'Admin otomatis aktif 24 jam, 7 hari',
   'Setup dalam 5 menit, langsung aktif',
   'Tidak perlu keahlian teknis',
-  '14 hari gratis, tidak perlu kartu kredit',
-  'Batalkan kapan saja',
+  'Gratis selamanya · 50 balasan/bulan',
+  'Upgrade atau batalkan kapan saja',
 ];
 
 export default function SignupPage() {

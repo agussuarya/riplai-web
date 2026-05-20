@@ -124,6 +124,12 @@ export default function PricingPage() {
         </button>
       </div>
 
+      {yearly && (
+        <p className="text-center text-[12px] text-[var(--text-3)] mb-6">
+          Tagihan dilakukan sekali di awal tahun · Hemat hingga 20% dibanding bulanan
+        </p>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-4 gap-3.5 max-w-[1000px] mx-auto">
         {plans.map((plan) => {
           const isYearlyPlan = yearly && plan.yearlyPrice;
