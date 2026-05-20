@@ -1,5 +1,5 @@
 # Spec: Landing Page v2 — `apps/web` Full Build
-> Status: draft
+> Status: final — reviewed 2026-05-20
 
 ## Goal
 Build all public-facing pages for `apps/web` (port 3001) — landing home + inner pages + legal — with v2 redesign: split hero, riplai-branded DemoChat (interactive), 4-tier pricing, and complete route set.
@@ -174,12 +174,12 @@ Bot bubble (left, bg-white rounded-[8px_8px_8px_2px]):
 **Interaction flow:**
 1. Visitor types in input → press Enter or click send button
 2. Customer bubble appended immediately (right-aligned, bg-[#E0E7FF])
-3. Typing indicator shown (3 animated dots, 600ms delay)
+3. Typing indicator shown immediately (3 animated dots); bot reply appended 600ms after indicator appears
 4. Bot reply appended (left-aligned, bg-white) after typing indicator
 5. Chat area scrolls to bottom on each new message
 6. Input cleared after send
 
-**Disclaimer** below widget: `text-[11.5px] text-gray-400 text-center mt-3`: "Ini demo. Data bisnis nyata bisa berbeda."
+**Disclaimer:** DemoChat renders no disclaimer — caller is responsible.
 
 ---
 
@@ -192,7 +192,7 @@ Bot bubble (left, bg-white rounded-[8px_8px_8px_2px]):
 `bg-gray-50 py-16 px-12`
 - H2 `text-[34px] font-extrabold tracking-[-0.03em] text-center mb-3`: "Semua yang bisnis kamu butuhkan"
 - Sub: "Dirancang khusus untuk bisnis Indonesia yang tidak punya waktu banyak."
-- Grid `grid grid-cols-3 md:grid-cols-1 gap-4 max-w-[960px] mx-auto` — wait, should collapse: `grid-cols-1 md:grid-cols-3`
+- Grid `grid grid-cols-1 md:grid-cols-3 gap-4 max-w-[960px] mx-auto`
 - Card `bg-white border border-gray-100 rounded-[18px] p-5`
 
 | # | Heroicon | Icon bg | Icon color | Title | Desc |
@@ -235,7 +235,7 @@ Icon container: `w-14 h-14 rounded-2xl mx-auto mb-4`.
 `bg-gray-50 py-16 px-12`
 - H2: "Harga jelas. Tumbuh sesuai skala bisnismu."
 - Sub: "Mulai gratis, upgrade kapan saja."
-- Annual toggle: UI display only — 2 `<span>` pills (Bulanan / Tahunan -20%), no state change, no onClick
+- Annual toggle: UI display only — 2 `<span>` pills, no state change, no onClick. Default: Bulanan active (`bg-white shadow-sm rounded-full font-semibold text-gray-900 px-4 py-1.5`); Tahunan inactive (`text-gray-500 px-4 py-1.5`). Copy: "Bulanan" / "Tahunan -20%"
 - Grid `grid grid-cols-1 md:grid-cols-4 gap-3.5 max-w-[1000px] mx-auto`
 
 | Plan | Price | Reply cap | WA# | Features | CTA | CTA style |
@@ -267,7 +267,7 @@ SVG `viewBox="0 0 40 46"`, width auto-scaled from height:
 - Arc r=6: `M12,13 A6,6 0 0,1 12,25` sw=2.5 stroke `#059669`
 - Arc r=11: `M12,8 A11,11 0 0,1 12,30` sw=1.8 stroke `#059669` opacity=0.65
 - Arc r=16: `M12,3 A16,16 0 0,1 12,35` sw=1.2 stroke `#059669` opacity=0.35
-- Wordmark: "riplai" `font-extrabold tracking-[-0.02em]` — color: `text-gray-900` (default) / `text-white` (white) / `text-gray-600` (mono)
+- Wordmark: sibling `<span>` outside SVG — "riplai" `font-extrabold tracking-[-0.02em]`; color via Tailwind: `text-gray-900` (default) / `text-white` (white) / `text-gray-600` (mono)
 
 ---
 
@@ -275,12 +275,12 @@ SVG `viewBox="0 0 40 46"`, width auto-scaled from height:
 Navbar variant: `minimal`. Full-page centered layout `flex-1 flex items-center justify-center py-10 px-6`.
 
 Card `w-full max-w-[400px]`:
-- Logo mark centered `w-11 h-11 bg-brand-500 rounded-[12px]`
+- `<RiplaiLogo size={44} />` centered
 - H1 `text-[24px] font-extrabold tracking-[-0.02em] text-center mt-4 mb-1`: "Selamat datang kembali"
-- Sub `text-sm text-gray-400 text-center mb-6`
+- Sub `text-sm text-gray-400 text-center mb-6`: "Masuk ke dashboard Riplai kamu."
 - Email field (`Input` from `@riplai/ui`) + Password field (with eye icon visual)
 - "Lupa kata sandi?" link `text-[12.5px] text-accent-500 font-semibold float-right`
-- CTA: `<a href="/signup" class="...rounded-full bg-brand-500 w-full text-center block pointer-events-none opacity-80">Masuk</a>` — visual only
+- CTA: `<a href="#" class="...rounded-full bg-brand-500 w-full text-center block pointer-events-none opacity-75">Masuk</a>` — visual only
 - Footer: "Belum punya akun? `<a href="/signup" class="text-brand-500 font-bold">Daftar gratis</a>`"
 
 ---
@@ -292,7 +292,7 @@ Navbar variant: `minimal`. 2-col layout `grid grid-cols-1 md:grid-cols-2 gap-14 
 - H1 `text-[26px] font-extrabold tracking-[-0.02em] mb-1.5`: "Coba gratis 14 hari"
 - Sub `text-sm text-gray-400 mb-7`: "Tidak perlu kartu kredit. Setup dalam 5 menit."
 - Fields (in order): Nama lengkap · Email bisnis · Nomor WhatsApp bisnis ("+62" prefix icon-l) · Jenis bisnis (`<select>`: Apotek/Toko Obat · Klinik/Dokter · Restoran/F&B · Villa/Penginapan · Toko Retail · Lainnya) · Kata sandi (eye icon visual, static)
-- Use `Input` from `@riplai/ui` for all fields; `defaultValue` for design states, not `value`
+- Use `Input` from `@riplai/ui` for all text inputs; Jenis bisnis is raw `<select>` styled with Tailwind (no `@riplai/ui` Select); `defaultValue` for design states, not `value`
 - T&C checkbox: "Saya setuju dengan `<a href="/terms">Syarat & Ketentuan</a>` dan `<a href="/privacy">Kebijakan Privasi</a>` Riplai"
 - CTA: loading state visual `pointer-events-none opacity-70` + spinner SVG + "Membuat akun..." — no action
 - Footer: "Sudah punya akun? `<a href="/signin" class="text-brand-500 font-bold">Masuk</a>`"
@@ -324,7 +324,20 @@ Full pricing table. Navbar (full) + Footer.
 - Annual toggle: UI only, same behavior as home section
 - Below cards: feature comparison table (Gratis / Starter / Growth / Custom columns × feature rows, ✓ / — cells)
 
-Feature comparison rows: Jumlah balasan/bln · Nomor WA · Knowledge Base · Analytics · Notifikasi · Multi-nomor · Prioritas support · API akses · SLA · Onboarding khusus
+Feature comparison table (below cards):
+
+| Feature | Gratis | Starter | Growth | Custom |
+|---------|--------|---------|--------|--------|
+| Jumlah balasan/bln | 50 | 500 | 2.000 | Tidak terbatas |
+| Nomor WA | 1 | 1 | 3 | ∞ |
+| Knowledge Base | Dasar | Lengkap | Lengkap | Lengkap |
+| Analytics | — | Dasar | Lengkap | Lengkap |
+| Notifikasi | — | ✓ | ✓ | ✓ |
+| Multi-nomor | — | — | ✓ | ✓ |
+| Prioritas support | — | — | ✓ | ✓ |
+| API akses | — | — | — | ✓ |
+| SLA | — | — | — | ✓ |
+| Onboarding khusus | — | — | — | ✓ |
 
 ---
 
@@ -341,11 +354,26 @@ Standalone interactive DemoChat. Navbar (full) + Footer.
 ### About (`/about`)
 Navbar (full) + Footer. Placeholder content — replace before launch.
 
-Sections:
-1. **Misi** — "Kami percaya setiap bisnis kecil Indonesia berhak punya tim siaga 24 jam — tanpa harus merekrut orang baru."
-2. **Kisah Kami** — founder story paragraph (placeholder)
-3. **Nilai Kami** — 3 cards: Sederhana · Jujur · Mendukung UMKM Indonesia
-4. **Kontak** — email: hello.riplai@gmail.com
+Layout `max-w-[800px] mx-auto px-12 py-14`:
+- H1 `text-[40px] font-extrabold tracking-[-0.03em] mb-4`: "Tentang Riplai"
+- Sub `text-[17px] text-gray-500 leading-[1.65] max-w-[560px] mb-12`: "Kami percaya pemilik bisnis kecil Indonesia tidak seharusnya harus pilih antara tidur dan melayani pelanggan."
+- Stats row `grid grid-cols-3 gap-5 mb-12` — 3 cards `text-center bg-white border border-gray-100 rounded-[18px] p-7`:
+  - `text-[32px] font-extrabold text-brand-500`: "200+" · sub `text-[13.5px] text-gray-500 font-medium mt-1.5`: "Bisnis aktif"
+  - `text-[32px] font-extrabold text-accent-500`: "98%" · sub: "Akurasi jawaban"
+  - `text-[32px] font-extrabold text-brand-500`: "1,2dtk" · sub: "Rata-rata respons"
+
+**Minimum required sections (must render with exact copy):**
+
+**Misi** card `bg-white border border-gray-100 rounded-[18px] p-7 mb-6`:
+- H2 `text-[18px] font-bold mb-3`: "Misi kami"
+- Body `text-sm text-gray-500 leading-[1.7]`: "Memberi bisnis kecil Indonesia akses ke teknologi yang sebelumnya hanya tersedia untuk perusahaan besar. Admin otomatis yang cerdas, harga yang terjangkau, tanpa keahlian teknis apapun."
+
+**Informasi Perusahaan** card `bg-white border border-gray-100 rounded-[18px] p-7`:
+- H2 `text-[18px] font-bold mb-4`: "Informasi Perusahaan"
+- 3 rows `flex gap-3` each: label `text-[13px] font-semibold text-gray-400 w-[140px] shrink-0` + value `text-[13px] text-gray-900`:
+  - Pengelola · "Riplai (pengembang perorangan)"
+  - Domisili · "Bali, Indonesia"
+  - Email · `<a href="mailto:hello.riplai@gmail.com" class="text-brand-500">hello.riplai@gmail.com</a>`
 
 ---
 
@@ -390,7 +418,7 @@ Navbar: full. Footer: standard.
 - Navbar `variant="minimal"` on `/signin` and `/signup`
 - Privacy/Terms: `[1 Juni 2026]` and `[NOMOR NIB]` as visible placeholders — do not fill
 - `@heroicons/react: "^2"` in `apps/web/package.json`
-- Mobile hero: DemoChat widget hidden on mobile (`hidden md:block`) or stacked below copy
+- Mobile hero: DemoChat widget hidden on mobile (`hidden md:block`)
 - DemoChat in Hero: same component as `/demo` page, smaller height (`max-h-[220px]`)
 - All routes in Navbar use correct hrefs (not `href="#"`) except Blog footer link
 
