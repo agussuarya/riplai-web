@@ -63,7 +63,7 @@ const features: Feature[] = [
 
 export default function FeaturesPage() {
   return (
-    <div className="max-w-[1000px] mx-auto px-12 py-16">
+    <div className="max-w-[960px] mx-auto px-12 py-14">
       <a
         href="/"
         className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-[var(--text-2)] hover:text-[var(--text-1)] mb-6 transition-colors"
@@ -74,26 +74,28 @@ export default function FeaturesPage() {
         Beranda
       </a>
 
-      <div className="text-center mb-12">
-        <h1
-          className="font-extrabold tracking-[-0.03em] text-[var(--text-1)] mb-4"
-          style={{ fontSize: '40px' }}
-        >
-          Fitur yang kamu butuhkan. Tanpa yang tidak perlu.
-        </h1>
-        <p className="text-[var(--text-2)] max-w-[560px] mx-auto" style={{ fontSize: '17px' }}>
-          Dirancang khusus untuk bisnis kecil Indonesia yang tidak punya waktu banyak.
-        </p>
-      </div>
+      <h1
+        className="font-extrabold tracking-[-0.03em] text-[var(--text-1)] mb-3.5"
+        style={{ fontSize: '40px' }}
+      >
+        Fitur yang kamu butuhkan.<br />Tanpa yang tidak perlu.
+      </h1>
+      <p className="text-[var(--text-2)] max-w-[560px] leading-[1.6] mb-14" style={{ fontSize: '17px' }}>
+        Dirancang khusus untuk bisnis kecil Indonesia yang tidak punya waktu banyak.
+      </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-14">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
         {features.map((f) => (
-          <div key={f.title} className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-[18px] p-7">
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${f.iconBg}`}>
-              <f.icon className={`w-[48px] h-[48px] ${f.iconColor}`} style={{ width: '28px', height: '28px' }} />
+          <div
+            key={f.title}
+            className="bg-[var(--bg-surface)] rounded-[18px] p-7"
+            style={{ border: '1.5px solid var(--border)' }}
+          >
+            <div className={`w-12 h-12 rounded-[14px] flex items-center justify-center mb-4 ${f.iconBg}`}>
+              <f.icon className={`${f.iconColor}`} style={{ width: '24px', height: '24px' }} />
             </div>
-            <h3 className="text-base font-bold text-[var(--text-1)] mb-2">{f.title}</h3>
-            <p className="text-sm text-[var(--text-2)] leading-[1.65]">{f.desc}</p>
+            <h3 className="font-bold text-[var(--text-1)] mb-2" style={{ fontSize: '17px' }}>{f.title}</h3>
+            <p className="text-[14px] text-[var(--text-2)] leading-[1.6]">{f.desc}</p>
           </div>
         ))}
       </div>

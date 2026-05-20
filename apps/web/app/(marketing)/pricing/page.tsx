@@ -126,7 +126,8 @@ export default function PricingPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-3.5 max-w-[1000px] mx-auto">
         {plans.map((plan) => {
-          const displayPrice = yearly && plan.yearlyPrice ? plan.yearlyPrice : plan.monthlyPrice;
+          const isYearlyPlan = yearly && plan.yearlyPrice;
+          const displayPrice = isYearlyPlan ? plan.yearlyPrice! : plan.monthlyPrice;
           return (
             <div
               key={plan.name}
@@ -143,7 +144,17 @@ export default function PricingPage() {
               )}
               <div className="mb-4">
                 <h3 className={`text-sm font-bold mb-1 ${plan.popular ? 'text-brand-500' : 'text-[var(--text-1)]'}`}>{plan.name}</h3>
-                <p className="text-xl font-extrabold text-[var(--text-1)] tracking-tight">{displayPrice}</p>
+                {isYearlyPlan ? (
+                  <div>
+                    <p className="text-sm text-[var(--text-3)] line-through leading-none mb-0.5">{plan.monthlyPrice}</p>
+                    <div className="flex items-baseline gap-2">
+                      <p className="text-xl font-extrabold text-[var(--text-1)] tracking-tight">{displayPrice}</p>
+                      <span className="text-[10px] font-bold bg-[var(--brand-sub)] text-[var(--brand-text)] px-1.5 py-0.5 rounded-full">Hemat 20%</span>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-xl font-extrabold text-[var(--text-1)] tracking-tight">{displayPrice}</p>
+                )}
                 {plan.priceSub && <p className="text-xs text-[var(--text-3)] mt-0.5">{plan.priceSub}</p>}
               </div>
               <div className="text-xs text-[var(--text-2)] mb-4 space-y-1">

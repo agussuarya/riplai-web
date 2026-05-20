@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, useImperativeHandle, forwardRef, KeyboardEvent } from 'react';
+import React, { useState, useRef, useEffect, useImperativeHandle, forwardRef, KeyboardEvent } from 'react';
 import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
 
 type Message =
@@ -14,15 +14,27 @@ const INITIAL_MESSAGES: Message[] = [
   { type: 'customer', text: 'Halo, mau tanya kamar untuk besok. 2 orang dewasa', time: '23:05' },
   {
     type: 'bot',
-    text: 'Halo, selamat malam! Pilihan kamar untuk besok:\n🛏 Deluxe — Rp 750.000/malam\n   Balkon · view kebun · sarapan 2 orang\n🛁 Suite — Rp 1.200.000/malam\n   Bathtub · view sawah · sarapan 2 orang\n\nKamar mana yang diminati?',
+    text: 'Halo, selamat malam! Pilihan kamar untuk besok:\n🛏 **Deluxe** — Rp 750.000/malam\n   Balkon · view kebun · sarapan 2 orang\n🛁 **Suite** — Rp 1.200.000/malam\n   Bathtub · view sawah · sarapan 2 orang\n\nKamar mana yang diminati?',
     time: '23:05',
   },
 ];
 
+function renderBotText(text: string): React.ReactNode {
+  return text.split('\n').map((line, i, arr) => {
+    const parts = line.split(/\*\*(.+?)\*\*/g);
+    return (
+      <span key={i}>
+        {parts.map((part, j) => j % 2 === 1 ? <strong key={j}>{part}</strong> : part)}
+        {i < arr.length - 1 && <br />}
+      </span>
+    );
+  });
+}
+
 function getReply(text: string): string {
   const lower = text.toLowerCase();
   if (/kamar|room|harga|price|tarif|berapa/.test(lower)) {
-    return 'Pilihan kamar kami:\n🛏 Deluxe — Rp 750.000/malam (Balkon, sarapan 2 orang)\n🛁 Suite — Rp 1.200.000/malam (Bathtub, view sawah, sarapan 2 orang)\n\nKamar mana yang diminati?';
+    return 'Pilihan kamar kami:\n🛏 **Deluxe** — Rp 750.000/malam (Balkon, sarapan 2 orang)\n🛁 **Suite** — Rp 1.200.000/malam (Bathtub, view sawah, sarapan 2 orang)\n\nKamar mana yang diminati?';
   }
   if (/booking|pesan|reservasi|book/.test(lower)) {
     return 'Untuk reservasi, kami perlu: nama tamu, tanggal check-in & check-out, dan tipe kamar. Silakan kirimkan detailnya.';
@@ -138,7 +150,7 @@ export const DemoChat = forwardRef<DemoChatHandle, DemoChatProps>(function DemoC
                     className="bg-[var(--bg-surface)] rounded-[8px_8px_8px_2px] px-[11px] py-2 max-w-[220px]"
                     style={{ boxShadow: '0 1px 2px rgba(0,0,0,.08)' }}
                   >
-                    <p className="text-[13px] text-[var(--text-1)] whitespace-pre-line">{msg.text}</p>
+                    <p className="text-[13px] text-[var(--text-1)]">{renderBotText(msg.text)}</p>
                   </div>
                   <p className="text-[10px] text-accent-500 font-semibold text-right mt-1">
                     Admin Otomatis · {msg.time}

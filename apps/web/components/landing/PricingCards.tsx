@@ -112,7 +112,8 @@ export function PricingCards() {
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-3.5 max-w-[1000px] mx-auto">
         {plans.map((plan) => {
-          const displayPrice = yearly && plan.yearlyPrice ? plan.yearlyPrice : plan.monthlyPrice;
+          const isYearlyPlan = yearly && plan.yearlyPrice;
+          const displayPrice = isYearlyPlan ? plan.yearlyPrice! : plan.monthlyPrice;
           return (
             <div
               key={plan.name}
@@ -129,7 +130,17 @@ export function PricingCards() {
               )}
               <div className="mb-4">
                 <h3 className={`text-sm font-bold mb-1 ${plan.popular ? 'text-brand-500' : 'text-gray-900 dark:text-[#E6EDF3]'}`}>{plan.name}</h3>
-                <p className="text-xl font-extrabold text-gray-900 dark:text-[#E6EDF3] tracking-tight">{displayPrice}</p>
+                {isYearlyPlan ? (
+                  <div>
+                    <p className="text-sm text-gray-400 dark:text-[#6E7681] line-through leading-none mb-0.5">{plan.monthlyPrice}</p>
+                    <div className="flex items-baseline gap-2">
+                      <p className="text-xl font-extrabold text-gray-900 dark:text-[#E6EDF3] tracking-tight">{displayPrice}</p>
+                      <span className="text-[10px] font-bold bg-brand-50 dark:bg-[rgba(16,185,129,.13)] text-brand-600 px-1.5 py-0.5 rounded-full">Hemat 20%</span>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-xl font-extrabold text-gray-900 dark:text-[#E6EDF3] tracking-tight">{displayPrice}</p>
+                )}
                 {plan.priceSub && <p className="text-xs text-gray-400 dark:text-[#6E7681] mt-0.5">{plan.priceSub}</p>}
               </div>
               <div className="text-xs text-gray-500 dark:text-[#8B949E] mb-4 space-y-1">

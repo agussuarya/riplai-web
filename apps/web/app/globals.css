@@ -30,6 +30,16 @@ html.dark {
   --accent-sub: rgba(99,102,241,.16);
 }
 
+.demo-wrap {
+  transform: rotate(-0.8deg);
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 20px 40px rgba(0,0,0,.12));
+}
+
+.demo-wrap:hover {
+  transform: rotate(0deg) scale(1.01);
+}
+
 .demo-chat-area {
   background: #F0F4F0;
 }

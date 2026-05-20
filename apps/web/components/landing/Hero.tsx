@@ -67,14 +67,7 @@ export function Hero() {
 
         {/* Right — hidden on mobile */}
         <div className="hidden md:flex flex-col items-center">
-          <div
-            className="max-w-[360px] w-full"
-            style={{
-              transform: 'rotate(-0.8deg)',
-              filter: 'drop-shadow(0 20px 40px rgba(0,0,0,.12))',
-              borderRadius: '22px',
-            }}
-          >
+          <div className="demo-wrap max-w-[360px] w-full">
             <DemoChat minHeight="175px" />
           </div>
           <p className="text-[11.5px] text-gray-400 text-center mt-3">
