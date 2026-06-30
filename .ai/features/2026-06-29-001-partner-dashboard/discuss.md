@@ -143,8 +143,8 @@ Tombol di thread header:
 
 ### 9. "Sarankan Balasan"
 
-Tombol indigo di atas reply input. Saat diklik → isi input dengan AI-generated suggestion.
-**Gap:** Endpoint belum ada di domain. Perlu POST endpoint yang terima `conversationId` dan return `suggested_reply string`.
+**Ditunda — tidak masuk Phase 1.**
+Endpoint belum ada. Akan diimplementasi di fase berikutnya setelah POST endpoint tersedia (`conversationId` → `suggested_reply string`).
 
 ---
 

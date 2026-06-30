@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Riplai — Partner Dashboard v2 (Mobile-first)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── Tokens ── */
+:root{
+  --bg-base:#F9FAFB;--bg-surface:#FFFFFF;--bg-subtle:#F3F4F6;--bg-hover:#F0F0F0;
+  --border:#E5E7EB;--border-sub:#F3F4F6;
+  --text-1:#111827;--text-2:#6B7280;--text-3:#9CA3AF;
+  --brand-sub:#ECFDF5;--brand-sub2:#D1FAE5;--brand-text:#047857;
+  --accent-sub:#E0E7FF;--accent-text:#4F46E5;
+  --bubble-in:#FFFFFF;--bubble-in-b:#E5E7EB;
+  --bubble-bot:#E0E7FF;--bubble-area:#F0F3F0;
+  --needs-bg:#FEE2E2;--needs-c:#B91C1C;
+  --handled-bg:#D1FAE5;--handled-c:#047857;
+  --waiting-bg:#FEF3C7;--waiting-c:#92400E;
+  --bottom-nav-h:60px;
+}
+html.dark{
+  --bg-base:#0D1117;--bg-surface:#161B22;--bg-subtle:#1C2330;--bg-hover:#21293A;
+  --border:#30394A;--border-sub:#1C2330;
+  --text-1:#E6EDF3;--text-2:#8B949E;--text-3:#6E7681;
+  --brand-sub:rgba(16,185,129,.13);--brand-sub2:rgba(16,185,129,.22);--brand-text:#34D399;
+  --accent-sub:rgba(99,102,241,.16);--accent-text:#818CF8;
+  --bubble-in:#1C2330;--bubble-in-b:#30394A;
+  --bubble-bot:rgba(99,102,241,.18);--bubble-area:#131C24;
+  --needs-bg:rgba(239,68,68,.15);--needs-c:#F87171;
+  --handled-bg:rgba(16,185,129,.15);--handled-c:#34D399;
+  --waiting-bg:rgba(245,158,11,.15);--waiting-c:#FCD34D;
+}
+*{box-sizing:border-box;}
+body{font-family:'Plus Jakarta Sans',system-ui;margin:0;background:var(--bg-base);height:100dvh;overflow:hidden;transition:background .2s;}
+
+/* ── Root layout ── */
+.dashboard-root{display:flex;height:100dvh;overflow:hidden;position:relative;}
+
+/* ── Sidebar — desktop ── */
+.sidebar{
+  width:228px;min-width:228px;background:var(--bg-surface);
+  border-right:1px solid var(--border);display:flex;flex-direction:column;
+  height:100%;transition:background .2s,border-color .2s,width .2s,min-width .2s;
+  position:relative;z-index:20;overflow:hidden;
+}
+.sidebar-logo{padding:16px 16px 12px;border-bottom:1px solid var(--border-sub);flex-shrink:0;}
+.sidebar-logo-inner{display:flex;align-items:center;gap:9px;}
+.logo-wordmark{font-size:16px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;white-space:nowrap;transition:opacity .15s,width .15s;}
+.sidebar-nav{flex:1;padding:6px 4px;display:flex;flex-direction:column;gap:2px;overflow:hidden;}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;
+  font-size:13.5px;font-weight:500;color:var(--text-2);text-decoration:none;
+  cursor:pointer;transition:background .12s;user-select:none;white-space:nowrap;
+}
+.nav-item:hover{background:var(--bg-hover);}
+.nav-item.active{background:var(--brand-sub);color:var(--brand-text);font-weight:600;border-radius:9999px;margin-left:4px;margin-right:4px;}
+.nav-item.active svg{color:#10B981;}
+.nav-label{transition:opacity .15s;}
+.nav-badge{margin-left:auto;background:#EF4444;color:#fff;font-size:11px;font-weight:700;padding:1px 7px;border-radius:9999px;flex-shrink:0;}
+.sidebar-footer{padding:12px 16px;border-top:1px solid var(--border-sub);flex-shrink:0;}
+.profile-trigger{
+  display:flex;align-items:center;gap:10px;cursor:pointer;
+  padding:6px 8px;border-radius:12px;transition:background .12s;user-select:none;
+}
+.profile-trigger:hover{background:var(--bg-hover);}
+.profile-trigger-text{min-width:0;flex:1;overflow:hidden;transition:opacity .15s,width .15s;}
+
+/* ── Tablet sidebar (icon-only) ── */
+@media(min-width:641px) and (max-width:1023px){
+  .sidebar{width:64px;min-width:64px;}
+  .logo-wordmark{opacity:0;width:0;overflow:hidden;}
+  .nav-label{opacity:0;width:0;overflow:hidden;}
+  .nav-item{justify-content:center;padding:10px;margin-left:0!important;margin-right:0!important;}
+  .nav-item.active{border-radius:12px;}
+  .nav-badge{display:none;}
+  .profile-trigger-text{opacity:0;width:0;overflow:hidden;}
+  .profile-trigger{justify-content:center;padding:6px;}
+  .sidebar-footer{padding:10px 8px;}
+  .sidebar-logo{padding:14px 10px 10px;}
+}
+
+/* ── Mobile header (hidden on ≥641px) ── */
+.mobile-header{
+  display:none;position:fixed;top:0;left:0;right:0;z-index:30;
+  height:52px;background:var(--bg-surface);border-bottom:1px solid var(--border);
+  align-items:center;justify-content:space-between;padding:0 16px;
+  transition:background .2s,border-color .2s;
+}
+.mobile-header-logo{display:flex;align-items:center;gap:8px;}
+
+/* ── Bottom nav (hidden on ≥641px) ── */
+.bottom-nav{
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:30;
+  height:var(--bottom-nav-h);background:var(--bg-surface);
+  border-top:1px solid var(--border);
+  align-items:stretch;transition:background .2s,border-color .2s;
+}
+.bottom-nav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;color:var(--text-3);font-size:10px;font-weight:600;cursor:pointer;
+  position:relative;transition:color .12s;padding:6px 0 8px;
+  text-decoration:none;
+}
+.bottom-nav-item.active{color:var(--brand-text);}
+.bottom-nav-item.active svg{color:#10B981;}
+.bottom-nav-badge{
+  position:absolute;top:6px;right:calc(50% - 18px);
+  background:#EF4444;color:#fff;font-size:9px;font-weight:700;
+  padding:1px 5px;border-radius:9999px;min-width:16px;text-align:center;
+}
+
+@media(max-width:640px){
+  body{overflow:hidden;}
+  .mobile-header{display:flex;}
+  .bottom-nav{display:flex;}
+  .sidebar{display:none!important;}
+  .dashboard-root{
+    flex-direction:column;
+    padding-top:52px;
+    padding-bottom:var(--bottom-nav-h);
+    height:100dvh;
+  }
+}
+
+/* ── Content area ── */
+.main-content{flex:1;display:flex;min-width:0;overflow:hidden;height:100%;}
+
+/* ── Dash views ── */
+.dash-view{flex:1;display:none;min-width:0;}
+
+/* ── Inbox view ── */
+#dv-inbox{flex-direction:row;}
+
+/* Conv list panel */
+.conv-list{
+  width:276px;min-width:276px;background:var(--bg-surface);
+  border-right:1px solid var(--border);display:flex;flex-direction:column;
+  height:100%;transition:background .2s,border-color .2s;
+}
+.conv-list-header{padding:14px 14px 10px;border-bottom:1px solid var(--border-sub);flex-shrink:0;}
+.conv-items{flex:1;overflow-y:auto;}
+.conv-item{padding:11px 13px;border-bottom:1px solid var(--border-sub);cursor:pointer;transition:background .12s;}
+.conv-item:hover{background:var(--bg-hover);}
+.conv-item.active{background:var(--brand-sub);}
+.search-input{
+  width:100%;padding:7px 10px 7px 30px;font-size:12.5px;
+  background:var(--bg-subtle);border:1px solid var(--border);border-radius:9999px;
+  outline:none;color:var(--text-1);font-family:inherit;
+  transition:background .2s,border-color .2s,box-shadow .15s;
+}
+.search-input:focus{border-color:#10B981;box-shadow:0 0 0 3px rgba(16,185,129,.18);}
+
+/* Filter tabs */
+.filter-tabs{display:flex;padding:0 14px;border-bottom:1px solid var(--border-sub);flex-shrink:0;}
+.filter-tab{
+  font-size:12.5px;font-weight:600;padding:8px 10px;cursor:pointer;
+  color:var(--text-3);border-bottom:2px solid transparent;margin-bottom:-1px;
+  transition:color .12s,border-color .12s;user-select:none;
+  display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.filter-tab.active{color:var(--brand-text);border-bottom-color:#10B981;}
+
+/* Thread panel */
+.thread{flex:1;display:flex;flex-direction:column;height:100%;min-width:0;}
+.thread-header{
+  background:var(--bg-surface);border-bottom:1px solid var(--border);
+  padding:10px 16px;display:flex;align-items:center;
+  justify-content:space-between;flex-shrink:0;gap:12px;
+  transition:background .2s,border-color .2s;
+}
+.thread-body{
+  flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;
+  gap:16px;background:var(--bubble-area);transition:background .2s;
+}
+.thread-reply{
+  background:var(--bg-surface);border-top:1px solid var(--border);
+  padding:12px 16px;flex-shrink:0;transition:background .2s,border-color .2s;
+}
+.reply-box{flex:1;background:var(--bg-subtle);border:1px solid var(--border);border-radius:9999px;padding:9px 16px;transition:background .2s,border-color .2s;}
+.reply-input{width:100%;background:transparent;border:none;outline:none;font-size:13.5px;color:var(--text-1);font-family:inherit;}
+.reply-input::placeholder{color:var(--text-3);}
+
+/* Mobile inbox: panels toggle */
+@media(max-width:640px){
+  #dv-inbox{flex-direction:column;}
+  .conv-list{
+    width:100%!important;min-width:0!important;
+    border-right:none;height:100%;
+  }
+  .conv-list-header h1{font-size:15px;}
+  /* thread panel takes full screen when active */
+  .thread{
+    position:fixed;top:0;left:0;right:0;bottom:0;z-index:40;
+    background:var(--bg-base);display:none;
+  }
+  .thread.mobile-open{display:flex;}
+  /* hide conv-list when thread open */
+  .conv-list.mobile-hidden{display:none;}
+  /* back button in thread header */
+  .thread-back-btn{
+    display:flex;align-items:center;justify-content:center;
+    width:32px;height:32px;border-radius:9999px;border:none;
+    background:transparent;cursor:pointer;color:var(--text-2);flex-shrink:0;
+    margin-right:4px;
+  }
+  .thread-back-btn:hover{background:var(--bg-hover);}
+  /* reply area adjusts for keyboard */
+  .thread-reply{padding-bottom:max(12px, env(safe-area-inset-bottom));}
+  /* bottom nav sits above thread overlay? No - thread is z-index:40, bottom-nav:30 → thread covers it, which is correct */
+}
+@media(min-width:641px){
+  .thread-back-btn{display:none!important;}
+}
+
+/* ── Bubbles ── */
+.bubble-in{background:var(--bubble-in);border:1px solid var(--bubble-in-b);border-radius:18px 18px 18px 4px;padding:10px 14px;max-width:290px;box-shadow:0 1px 2px rgba(0,0,0,.06);}
+.bubble-bot{background:var(--bubble-bot);border-radius:18px 18px 4px 18px;padding:10px 14px;max-width:320px;box-shadow:0 1px 2px rgba(0,0,0,.06);}
+.bubble-out{background:#10B981;border-radius:18px 18px 4px 18px;padding:10px 14px;max-width:290px;box-shadow:0 1px 2px rgba(0,0,0,.06);}
+.bubble-text{margin:0;font-size:13.5px;color:var(--text-1);line-height:1.55;}
+.bubble-out .bubble-text,.bubble-out .bubble-meta{color:rgba(255,255,255,.9);}
+.bubble-meta{margin:4px 0 0;font-size:11px;color:var(--text-3);}
+@media(max-width:640px){
+  .bubble-in,.bubble-bot,.bubble-out{max-width:78vw;}
+}
+
+/* ── Badges ── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:9999px;font-size:11.5px;font-weight:600;}
+.badge-needs{background:var(--needs-bg);color:var(--needs-c);}
+.badge-handled{background:var(--handled-bg);color:var(--handled-c);}
+.badge-waiting{background:var(--waiting-bg);color:var(--waiting-c);}
+.badge-ai{background:var(--accent-sub);color:var(--accent-text);}
+.badge-brand{background:#10B981;color:#fff;}
+.badge-muted{background:var(--bg-subtle);color:var(--text-2);}
+
+/* ── Cards ── */
+.card{background:var(--bg-surface);border:1.5px solid var(--border);border-radius:18px;padding:18px 20px;transition:background .2s,border-color .2s;}
+.stat-card{background:var(--bg-surface);border:1.5px solid var(--border);border-radius:16px;padding:16px 18px;transition:background .2s,border-color .2s;}
+
+/* ── Action buttons ── */
+.action-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border-radius:9999px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:inherit;white-space:nowrap;transition:background .12s,color .12s;}
+.action-btn-ghost{background:transparent;color:var(--brand-text);border:1.5px solid var(--brand-sub2);}
+.action-btn-ghost:hover{background:var(--brand-sub);}
+.action-btn-ai{background:#6366F1;color:#fff;border:1.5px solid transparent;}
+.action-btn-ai:hover{background:#4F46E5;}
+@media(max-width:640px){
+  .action-btn-ghost span{display:none;}/* hide label on mobile, icon only */
+}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;gap:7px;border-radius:9999px;font-family:inherit;cursor:pointer;font-weight:600;border:none;transition:background .15s,color .15s,opacity .15s;white-space:nowrap;}
+.btn-sm{padding:7px 16px;font-size:12.5px;}
+.btn-md{padding:10px 22px;font-size:13.5px;}
+.btn-primary{background:#10B981;color:#fff;}
+.btn-primary:hover{background:#059669;}
+.btn-secondary{background:var(--bg-surface);color:var(--text-1);border:1.5px solid var(--border)!important;}
+.btn-secondary:hover{background:var(--bg-subtle);}
+.btn-ghost{background:transparent;color:var(--text-2);}
+.btn-ghost:hover{background:var(--bg-subtle);}
+.btn-danger{background:#EF4444;color:#fff;}
+.btn-danger:hover{background:#DC2626;}
+.btn:disabled{opacity:.45;cursor:not-allowed;}
+
+/* ── Toggle ── */
+.toggle-track{width:44px;height:24px;border-radius:9999px;background:#D1D5DB;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;}
+.toggle-track.on{background:#10B981;}
+.toggle-knob{width:20px;height:20px;border-radius:9999px;background:#fff;position:absolute;top:2px;left:2px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.toggle-track.on .toggle-knob{transform:translateX(20px);}
+
+/* ── Form ── */
+.field-group{margin-bottom:16px;}
+.field-label{display:block;font-size:13px;font-weight:600;color:var(--text-1);margin-bottom:6px;}
+.field-helper{font-size:12px;color:var(--text-3);margin-top:4px;}
+.input-base{width:100%;padding:10px 14px;font-size:14px;border:1.5px solid var(--border);border-radius:12px;outline:none;color:var(--text-1);background:var(--bg-surface);font-family:inherit;transition:border-color .15s,box-shadow .15s;}
+.input-base:focus{border-color:#10B981;box-shadow:0 0 0 3px rgba(16,185,129,.3);}
+.input-base::placeholder{color:var(--text-3);}
+textarea.input-base{resize:vertical;min-height:100px;}
+select.input-base{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' viewBox='0 0 24 24' stroke='%236B7280' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;}
+
+/* ── Settings ── */
+.settings-section{background:var(--bg-surface);border:1.5px solid var(--border);border-radius:18px;padding:20px 22px;margin-bottom:14px;transition:background .2s,border-color .2s;}
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border-sub);}
+.settings-row:last-child{border-bottom:none;padding-bottom:0;}
+
+/* ── Schedule ── */
+.schedule-grid{display:flex;flex-direction:column;gap:10px;}
+.schedule-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.schedule-day-label{display:flex;align-items:center;gap:7px;width:90px;flex-shrink:0;cursor:pointer;}
+.schedule-day-label span{font-size:13px;font-weight:600;color:var(--text-1);}
+.time-sep{font-size:12px;color:var(--text-3);}
+.time-input{padding:7px 10px;font-size:13px;border:1.5px solid var(--border);border-radius:8px;outline:none;color:var(--text-1);background:var(--bg-surface);font-family:inherit;transition:border-color .15s;width:90px;}
+.time-input:focus{border-color:#10B981;}
+.time-input:disabled{background:var(--bg-subtle);color:var(--text-3);cursor:not-allowed;}
+@media(max-width:400px){
+  .schedule-row{flex-direction:column;align-items:flex-start;gap:6px;padding-bottom:10px;border-bottom:1px solid var(--border-sub);}
+  .schedule-row:last-child{border-bottom:none;}
+  .schedule-day-label{width:auto;}
+  .schedule-times{display:flex;align-items:center;gap:8px;}
+}
+
+/* ── Reports stats grid ── */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+@media(max-width:1023px){.stats-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:400px){.stats-grid{grid-template-columns:repeat(2,1fr);gap:8px;}}
+
+/* ── Scrollable page views ── */
+.page-scroll{flex:1;overflow-y:auto;background:var(--bg-base);flex-direction:column;}
+.page-inner{padding:24px 24px 48px;max-width:960px;width:100%;}
+@media(max-width:640px){
+  .page-inner{padding:16px 16px 48px;}
+}
+
+/* ── Profile dropdown / bottom sheet ── */
+.profile-dropdown{
+  position:fixed;bottom:80px;left:12px;width:220px;
+  background:var(--bg-surface);border:1.5px solid var(--border);
+  border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.16);
+  z-index:100;overflow:hidden;display:none;
+  transition:background .2s,border-color .2s;
+}
+.profile-dropdown.open{display:block;}
+.dropdown-item{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:13.5px;color:var(--text-1);cursor:pointer;transition:background .12s;}
+.dropdown-item:hover{background:var(--bg-hover);}
+.dropdown-item.danger{color:#EF4444;}
+.dropdown-divider{border:none;border-top:1px solid var(--border-sub);margin:4px 0;}
+
+/* Mobile: bottom sheet */
+@media(max-width:640px){
+  .profile-dropdown{
+    bottom:0;left:0;right:0;width:100%;
+    border-radius:20px 20px 0 0;
+    padding-bottom:max(4px, env(safe-area-inset-bottom));
+    /* slide up animation */
+    transform:translateY(100%);
+    transition:transform .25s cubic-bezier(.32,.72,0,1), background .2s, border-color .2s;
+    display:block;pointer-events:none;
+  }
+  .profile-dropdown.open{transform:translateY(0);pointer-events:auto;}
+  /* scrim */
+  .dropdown-scrim{
+    display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:99;
+  }
+  .dropdown-scrim.open{display:block;}
+}
+
+/* ── Thread more menu ── */
+.thread-more-menu{position:fixed;background:var(--bg-surface);border:1.5px solid var(--border);border-radius:14px;box-shadow:0 8px 28px rgba(0,0,0,.14);z-index:200;overflow:hidden;min-width:180px;display:none;}
+.thread-more-menu.open{display:block;}
+.more-menu-item{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:13.5px;color:var(--text-1);cursor:pointer;transition:background .12s;}
+.more-menu-item:hover{background:var(--bg-hover);}
+.more-menu-item.danger{color:#EF4444;}
+
+/* ── Empty thread ── */
+.thread-empty{flex:1;display:flex;align-items:center;justify-content:center;background:var(--bubble-area);flex-direction:column;gap:8px;}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:9999px;}
+
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* ── Settings master-detail ── */
+#dv-settings{flex-direction:row;}
+.sett-menu{width:240px;min-width:240px;background:var(--bg-surface);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column;transition:background .2s,border-color .2s;}
+.sett-detail{flex:1;overflow-y:auto;background:var(--bg-base);display:flex;flex-direction:column;}
+.sett-panel{display:none;flex-direction:column;min-height:100%;}
+.sett-panel.active{display:flex;}
+.sett-menu-header{padding:20px 16px 8px;flex-shrink:0;}
+.sett-menu-item{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer;transition:background .12s;font-size:13.5px;font-weight:500;color:var(--text-1);border-bottom:1px solid var(--border-sub);}
+.sett-menu-item:hover{background:var(--bg-hover);}
+.sett-menu-item.active{background:var(--brand-sub);color:var(--brand-text);font-weight:600;}
+.sett-menu-item.danger-item{color:#EF4444;}
+.sett-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.sett-panel-inner{padding:24px 24px 48px;max-width:540px;width:100%;margin:0 auto;}
+.sett-panel-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;}
+.sett-back-btn{display:none;align-items:center;justify-content:center;width:32px;height:32px;border-radius:9999px;border:none;background:transparent;cursor:pointer;color:var(--text-2);flex-shrink:0;}
+.sett-back-btn:hover{background:var(--bg-hover);}
+.wa-connect-state{display:flex;flex-direction:column;align-items:center;padding:40px 24px;text-align:center;gap:16px;}
+@media(max-width:640px){
+  #dv-settings{flex-direction:column;}
+  .sett-menu{width:100%;min-width:0;border-right:none;height:100%;}
+  .sett-detail{position:fixed;inset:0;z-index:40;padding-top:52px;padding-bottom:var(--bottom-nav-h);display:none;}
+  .sett-detail.mobile-open{display:flex;}
+  .sett-back-btn{display:flex!important;}
+  .sett-panel-inner{padding:16px 16px 48px;}
+}
+@media(min-width:641px){
+  .sett-detail{display:flex;}
+}
+@media(min-width:641px) and (max-width:1023px){
+  .sett-menu{width:200px;min-width:200px;}
+}
+
+/* ── Badge: manual reply ── */
+.badge-manual{background:#DBEAFE;color:#1D4ED8;}
+html.dark .badge-manual{background:rgba(59,130,246,.15);color:#60A5FA;}
+
+/* ── Bubble meta INSIDE bubble ── */
+.bubble-meta-inside{font-size:10.5px;margin-top:5px;display:flex;align-items:center;gap:3px;justify-content:flex-end;line-height:1;flex-wrap:wrap;}
+.bubble-in .bubble-meta-inside{color:var(--text-3);}
+.bubble-bot .bubble-meta-inside{color:var(--text-3);}
+.bubble-out .bubble-meta-inside{color:rgba(255,255,255,.75);}
+.bubble-out .bubble-meta-inside svg{opacity:.75;}
+
+/* ── Tooltip ── */
+.field-label-row{display:flex;align-items:center;margin-bottom:6px;}
+.field-label-row .field-label{margin-bottom:0;}
+.tooltip-anchor{position:relative;display:inline-flex;align-items:center;}
+.tooltip-i{width:14px;height:14px;border-radius:9999px;border:1px solid var(--border);background:var(--bg-subtle);color:var(--text-3);font-size:9px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;margin-left:5px;cursor:default;line-height:1;flex-shrink:0;transition:border-color .15s;}
+.tooltip-anchor:hover .tooltip-i{border-color:var(--text-3);}
+.tooltip-popup{position:absolute;left:50%;bottom:calc(100% + 7px);transform:translateX(-50%);background:#111827;color:#F9FAFB;font-size:11.5px;font-weight:500;line-height:1.5;padding:7px 11px;border-radius:9px;pointer-events:none;opacity:0;transition:opacity .15s;z-index:300;min-width:160px;max-width:220px;text-align:center;white-space:normal;}
+.tooltip-anchor:hover .tooltip-popup{opacity:1;}
+html.dark .tooltip-popup{background:#1F2937;color:#F3F4F6;}
+
+/* ── Mode pill toggle (Otomatis / Manual) ── */
+.mode-pill-wrap{display:flex;align-items:center;background:var(--bg-subtle);border:1px solid var(--border);border-radius:9999px;padding:2px;gap:1px;flex-shrink:0;}
+.mode-pill{font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:9999px;border:none;background:transparent;color:var(--text-3);cursor:pointer;font-family:inherit;transition:all .12s;white-space:nowrap;letter-spacing:.01em;}
+.mode-pill:hover:not(.active-pill){background:var(--bg-hover);}
+.mode-pill.active-pill{background:var(--bg-surface);color:var(--text-1);box-shadow:0 1px 3px rgba(0,0,0,.12);}
+
+/* ── Confirm sheet / modal ── */
+.confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:499;}
+.confirm-overlay.open{display:block;}
+.confirm-sheet{position:fixed;z-index:500;background:var(--bg-surface);border:1.5px solid var(--border);transition:background .2s,border-color .2s;}
+@media(max-width:640px){
+  .confirm-sheet{bottom:0;left:0;right:0;border-radius:20px 20px 0 0;border-bottom:none;padding-bottom:max(16px,env(safe-area-inset-bottom));transform:translateY(100%);transition:transform .25s cubic-bezier(.32,.72,0,1),background .2s,border-color .2s;}
+  .confirm-sheet.open{transform:translateY(0);}
+}
+@media(min-width:641px){
+  .confirm-sheet{top:50%;left:50%;transform:translate(-50%,-50%) scale(.96);width:400px;border-radius:20px;box-shadow:0 16px 48px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s,background .2s;}
+  .confirm-sheet.open{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══ Mobile header (≤640px only) ══ -->
+<header class="mobile-header">
+  <div class="mobile-header-logo">
+    <div style="width:28px;height:28px;background:#10B981;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <svg width="15" height="18" viewBox="0 0 40 46" fill="none"><path d="M10,2 H30 Q38,2 38,10 V28 Q38,36 30,36 H16 L6,46 L6,36 Q2,36 2,28 V10 Q2,2 10,2 Z" fill="white" opacity=".93"/><circle cx="12" cy="19" r="3" fill="#059669"/><path d="M12,13 A6,6 0 0,1 12,25" stroke="#059669" stroke-width="3" stroke-linecap="round" fill="none"/></svg>
+    </div>
+    <span style="font-size:15px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">riplai</span>
+  </div>
+  <button onclick="toggleDropdown()" style="width:34px;height:34px;border-radius:9999px;background:#10B981;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;flex-shrink:0;">VJ</button>
+</header>
+
+<!-- ══ Scrim for mobile dropdown ══ -->
+<div class="dropdown-scrim" id="dropdown-scrim" onclick="closeDropdown()"></div>
+
+<div class="dashboard-root">
+
+  <!-- ══════════════ SIDEBAR ══════════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-inner">
+        <div style="width:32px;height:32px;background:#10B981;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="18" height="21" viewBox="0 0 40 46" fill="none">
+            <path d="M10,2 H30 Q38,2 38,10 V28 Q38,36 30,36 H16 L6,46 L6,36 Q2,36 2,28 V10 Q2,2 10,2 Z" fill="white" opacity=".93"/>
+            <circle cx="12" cy="19" r="3" fill="#059669"/>
+            <path d="M12,13 A6,6 0 0,1 12,25" stroke="#059669" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <path d="M12,8 A11,11 0 0,1 12,30" stroke="#059669" stroke-width="2.2" stroke-linecap="round" fill="none" opacity=".6"/>
+            <path d="M12,3 A16,16 0 0,1 12,35" stroke="#059669" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".35"/>
+          </svg>
+        </div>
+        <span class="logo-wordmark">riplai</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-item active" id="nav-inbox" onclick="showView('inbox');return false;" href="#">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/></svg>
+        <span class="nav-label">Pesan</span>
+        <span class="nav-badge" id="sidebar-badge-inbox">2</span>
+      </a>
+      <a class="nav-item" id="nav-reports" onclick="showView('reports');return false;" href="#">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
+        <span class="nav-label">Laporan</span>
+      </a>
+      <a class="nav-item" id="nav-knowledge" onclick="showView('knowledge');return false;" href="#">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0118 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
+        <span class="nav-label">Data Bisnis</span>
+      </a>
+      <a class="nav-item" id="nav-settings" onclick="showView('settings');return false;" href="#">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        <span class="nav-label">Pengaturan</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="profile-trigger" id="profile-trigger" onclick="toggleDropdown()">
+        <div style="width:32px;height:32px;border-radius:9999px;background:#10B981;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;flex-shrink:0;">VJ</div>
+        <div class="profile-trigger-text">
+          <p style="margin:0;font-size:13px;font-weight:600;color:var(--text-1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Villa Ubud Jiwa</p>
+          <p style="margin:0;font-size:11px;font-weight:700;color:#6366F1;">Paket Starter</p>
+        </div>
+        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="var(--text-3)" stroke-width="2.5" style="flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"/></svg>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══════════════ MAIN CONTENT ══════════════ -->
+  <div class="main-content">
+
+    <!-- ══ VIEW: PESAN ══ -->
+    <div id="dv-inbox" class="dash-view" style="display:flex;flex-direction:row;width:100%;">
+
+      <!-- Conv list panel -->
+      <div class="conv-list" id="conv-list-panel">
+        <div class="conv-list-header">
+          <h1 style="margin:0 0 10px;font-size:16px;font-weight:700;color:var(--text-1);">Inbox</h1>
+          <div style="position:relative;">
+            <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none;" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="var(--text-3)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
+            <input class="search-input" type="text" placeholder="Cari percakapan..." oninput="filterConvs(this.value)">
+          </div>
+        </div>
+        <div class="filter-tabs">
+          <div class="filter-tab active" id="tab-all" onclick="setTab('all')">Semua</div>
+          <div class="filter-tab" id="tab-pending" onclick="setTab('pending')">
+            Perlu Direspon
+            <span id="pending-count" style="background:#EF4444;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:9999px;"></span>
+          </div>
+          <div class="filter-tab" id="tab-closed" onclick="setTab('closed')">Selesai</div>
+        </div>
+        <div class="conv-items" id="conv-list-body"></div>
+      </div>
+
+      <!-- Thread panel -->
+      <div class="thread" id="thread-panel">
+        <div class="thread-header">
+          <div style="display:flex;align-items:center;gap:8px;min-width:0;flex:1;">
+            <!-- Back button (mobile only) -->
+            <button class="thread-back-btn" onclick="closeMobileThread()" aria-label="Kembali">
+              <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+            </button>
+            <div id="th-avatar" style="width:36px;height:36px;border-radius:9999px;background:#10B981;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;flex-shrink:0;"></div>
+            <div style="min-width:0;">
+              <p id="th-name" style="margin:0;font-size:14px;font-weight:700;color:var(--text-1);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></p>
+              <p id="th-sub" style="margin:0;font-size:12px;color:var(--text-3);">Terakhir aktif 2 menit lalu</p>
+            </div>
+            <span id="th-badge" class="badge" style="flex-shrink:0;"></span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
+            <div class="mode-pill-wrap" id="th-mode-switch" style="display:none;">
+              <button class="mode-pill" id="btn-mode-auto" onclick="setReplyMode('auto')">Otomatis</button>
+              <button class="mode-pill" id="btn-mode-manual" onclick="setReplyMode('manual')">Manual</button>
+            </div>
+            <button class="action-btn action-btn-ghost" id="btn-mark-done" onclick="markDone()">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span>Tandai Selesai</span>
+            </button>
+            <button id="btn-more" onclick="toggleThreadMenu(event)" style="width:32px;height:32px;border-radius:9999px;border:1.5px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-3);">
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="thread-body" id="thread-body"></div>
+
+        <div class="thread-reply">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="reply-box" style="display:flex;">
+              <input class="reply-input" id="reply-input" type="text" placeholder="Ketik balasan manual..." onkeypress="if(event.key==='Enter')sendReply()">
+            </div>
+            <button onclick="sendReply()" style="background:#10B981;color:#fff;border:none;border-radius:9999px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;display:flex;align-items:center;gap:6px;">
+              Kirim
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+            </button>
+          </div>
+          <p id="reply-hint" style="margin:8px 0 0 2px;font-size:11.5px;color:var(--text-3);display:none;">Admin otomatis tidak dapat menjawab ini. <span style="color:#6366F1;font-weight:600;cursor:pointer;" onclick="showView('knowledge')">Tambah ke Data Bisnis</span></p>
+        </div>
+      </div>
+
+    </div><!-- /dv-inbox -->
+
+    <!-- ══ VIEW: LAPORAN ══ -->
+    <div id="dv-reports" class="dash-view page-scroll">
+      <div class="page-inner">
+        <div style="margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+          <div>
+            <h2 style="font-size:18px;font-weight:800;color:var(--text-1);margin:0 0 2px;letter-spacing:-.02em;">Laporan</h2>
+            <p id="reports-period" style="font-size:13px;color:var(--text-3);margin:0;">24 Jun – 30 Jun 2026</p>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <button class="btn btn-sm btn-primary" id="btn-7days" onclick="setRange(7)">7 Hari</button>
+            <button class="btn btn-sm btn-secondary" id="btn-30days" onclick="setRange(30)">30 Hari</button>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <p style="margin:0 0 4px;font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;">Total Percakapan</p>
+            <p style="margin:0;font-size:26px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">84</p>
+            <p style="margin:4px 0 0;font-size:11.5px;color:#10B981;font-weight:600;">+8% dari minggu lalu</p>
+          </div>
+          <div class="stat-card">
+            <p style="margin:0 0 4px;font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;">Dibalas Otomatis</p>
+            <p style="margin:0;font-size:26px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">347</p>
+            <p style="margin:4px 0 0;font-size:11.5px;color:var(--text-3);font-weight:500;">88% dari total pesan</p>
+          </div>
+          <div class="stat-card">
+            <p style="margin:0 0 4px;font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;">Perlu Manual</p>
+            <p style="margin:0;font-size:26px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">2</p>
+            <p style="margin:4px 0 0;font-size:11.5px;color:#F59E0B;font-weight:600;">Saat ini menunggu</p>
+          </div>
+          <div class="stat-card">
+            <p style="margin:0 0 4px;font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;">Selesai</p>
+            <p style="margin:0;font-size:26px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">71</p>
+            <p style="margin:4px 0 0;font-size:11.5px;color:#10B981;font-weight:600;">84.5% tingkat selesai</p>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:20px;">
+          <p style="margin:0 0 16px;font-size:14px;font-weight:700;color:var(--text-1);">Percakapan per Hari</p>
+          <svg width="100%" viewBox="0 0 700 160" style="overflow:visible;">
+            <line x1="0" y1="130" x2="700" y2="130" stroke="var(--border)" stroke-width="1"/>
+            <line x1="0" y1="97" x2="700" y2="97" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+            <line x1="0" y1="64" x2="700" y2="64" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
+            <rect x="30" y="90" width="60" height="40" rx="6" fill="#D1FAE5"/>
+            <rect x="130" y="65" width="60" height="65" rx="6" fill="#6EE7B7"/>
+            <rect x="230" y="42" width="60" height="88" rx="6" fill="#10B981"/>
+            <rect x="330" y="72" width="60" height="58" rx="6" fill="#6EE7B7"/>
+            <rect x="430" y="32" width="60" height="98" rx="6" fill="#10B981"/>
+            <rect x="530" y="58" width="60" height="72" rx="6" fill="#6EE7B7"/>
+            <rect x="630" y="38" width="60" height="92" rx="6" fill="#10B981"/>
+            <text x="60" y="150" text-anchor="middle" font-size="11" fill="#9CA3AF" font-family="Plus Jakarta Sans">Sen</text>
+            <text x="160" y="150" text-anchor="middle" font-size="11" fill="#9CA3AF" font-family="Plus Jakarta Sans">Sel</text>
+            <text x="260" y="150" text-anchor="middle" font-size="11" fill="#9CA3AF" font-family="Plus Jakarta Sans">Rab</text>
+            <text x="360" y="150" text-anchor="middle" font-size="11" fill="#9CA3AF" font-family="Plus Jakarta Sans">Kam</text>
+            <text x="460" y="150" text-anchor="middle" font-size="11" fill="#9CA3AF" font-family="Plus Jakarta Sans">Jum</text>
+            <text x="560" y="150" text-anchor="middle" font-size="11" fill="#9CA3AF" font-family="Plus Jakarta Sans">Sab</text>
+            <text x="660" y="150" text-anchor="middle" font-size="11" fill="#9CA3AF" font-family="Plus Jakarta Sans">Min</text>
+          </svg>
+          <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border-sub);">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+              <p style="margin:0;font-size:12px;font-weight:600;color:var(--text-2);">Kuota Balasan Bulan Ini</p>
+              <p style="margin:0;font-size:12px;font-weight:700;color:var(--text-1);">347 / 500</p>
+            </div>
+            <div style="height:8px;background:var(--bg-subtle);border-radius:9999px;overflow:hidden;">
+              <div style="height:100%;width:69.4%;background:#10B981;border-radius:9999px;"></div>
+            </div>
+            <p style="margin:6px 0 0;font-size:11.5px;color:var(--text-3);">153 balasan tersisa · Reset 1 Jul 2026</p>
+          </div>
+        </div>
+
+        <div class="card" style="overflow-x:auto;">
+          <p style="margin:0 0 14px;font-size:14px;font-weight:700;color:var(--text-1);">Percakapan Terbaru</p>
+          <table style="width:100%;border-collapse:collapse;min-width:400px;">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border);">
+                <th style="text-align:left;font-size:11px;font-weight:700;color:var(--text-3);padding:0 12px 10px 0;text-transform:uppercase;letter-spacing:.05em;">Nomor</th>
+                <th style="text-align:left;font-size:11px;font-weight:700;color:var(--text-3);padding:0 12px 10px 0;text-transform:uppercase;letter-spacing:.05em;">Pesan Terakhir</th>
+                <th style="text-align:left;font-size:11px;font-weight:700;color:var(--text-3);padding:0 12px 10px 0;text-transform:uppercase;letter-spacing:.05em;">Status</th>
+                <th style="text-align:right;font-size:11px;font-weight:700;color:var(--text-3);padding:0 12px 10px 0;text-transform:uppercase;letter-spacing:.05em;">Waktu</th>
+                <th style="text-align:right;font-size:11px;font-weight:700;color:var(--text-3);padding:0 0 10px;text-transform:uppercase;letter-spacing:.05em;"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--border-sub);"><td style="padding:10px 12px 10px 0;font-size:13px;color:var(--text-1);font-weight:600;white-space:nowrap;">0812-3456-7890</td><td style="padding:10px 12px 10px 0;font-size:13px;color:var(--text-2);">Apakah bisa early check-in jam 10?</td><td style="padding:10px 12px 10px 0;white-space:nowrap;"><span class="badge badge-needs">Perlu Dibalas</span></td><td style="padding:10px 12px 10px 0;text-align:right;font-size:12px;color:var(--text-3);white-space:nowrap;">08:28</td><td style="padding:10px 0;text-align:right;white-space:nowrap;"><button onclick="viewConvFromReport('0812-3456-7890')" style="font-size:12px;font-weight:700;color:#10B981;background:none;border:none;cursor:pointer;padding:0;display:inline-flex;align-items:center;gap:3px;">Lihat<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></button></td></tr>
+              <tr style="border-bottom:1px solid var(--border-sub);"><td style="padding:10px 12px 10px 0;font-size:13px;color:var(--text-1);font-weight:600;white-space:nowrap;">0878-9012-3456</td><td style="padding:10px 12px 10px 0;font-size:13px;color:var(--text-2);">Suite berapa malam minimalnya?</td><td style="padding:10px 12px 10px 0;white-space:nowrap;"><span class="badge badge-needs">Perlu Dibalas</span></td><td style="padding:10px 12px 10px 0;text-align:right;font-size:12px;color:var(--text-3);white-space:nowrap;">07:45</td><td style="padding:10px 0;text-align:right;white-space:nowrap;"><button onclick="viewConvFromReport('0878-9012-3456')" style="font-size:12px;font-weight:700;color:#10B981;background:none;border:none;cursor:pointer;padding:0;display:inline-flex;align-items:center;gap:3px;">Lihat<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></button></td></tr>
+              <tr style="border-bottom:1px solid var(--border-sub);"><td style="padding:10px 12px 10px 0;font-size:13px;color:var(--text-1);font-weight:600;white-space:nowrap;">0856-7890-1234</td><td style="padding:10px 12px 10px 0;font-size:13px;color:var(--text-2);">Terima kasih informasinya!</td><td style="padding:10px 12px 10px 0;white-space:nowrap;"><span class="badge badge-handled">Dibalas Otomatis</span></td><td style="padding:10px 12px 10px 0;text-align:right;font-size:12px;color:var(--text-3);white-space:nowrap;">08:10</td><td style="padding:10px 0;text-align:right;white-space:nowrap;"><button onclick="viewConvFromReport('0856-7890-1234')" style="font-size:12px;font-weight:700;color:#10B981;background:none;border:none;cursor:pointer;padding:0;display:inline-flex;align-items:center;gap:3px;">Lihat<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></button></td></tr>
+              <tr><td style="padding:10px 12px 10px 0;font-size:13px;color:var(--text-1);font-weight:600;white-space:nowrap;">0821-2345-6789</td><td style="padding:10px 12px 10px 0;font-size:13px;color:var(--text-2);">Ok terima kasih!</td><td style="padding:10px 12px 10px 0;white-space:nowrap;"><span class="badge badge-handled">Dibalas Otomatis</span></td><td style="padding:10px 12px 10px 0;text-align:right;font-size:12px;color:var(--text-3);white-space:nowrap;">06:30</td><td style="padding:10px 0;text-align:right;white-space:nowrap;"><button onclick="viewConvFromReport('0821-2345-6789')" style="font-size:12px;font-weight:700;color:#10B981;background:none;border:none;cursor:pointer;padding:0;display:inline-flex;align-items:center;gap:3px;">Lihat<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- /dv-reports -->
+
+    <!-- ══ VIEW: DATA BISNIS ══ -->
+    <div id="dv-knowledge" class="dash-view page-scroll">
+      <div class="page-inner" style="max-width:680px;">
+        <div style="margin-bottom:20px;">
+          <h2 style="font-size:18px;font-weight:800;color:var(--text-1);margin:0 0 4px;letter-spacing:-.02em;">Data Bisnis</h2>
+          <p style="font-size:13px;color:var(--text-3);margin:0;">Semua yang admin otomatis kamu pelajari. Tulis selengkap mungkin.</p>
+        </div>
+        <div class="card">
+          <div class="field-group">
+            <label class="field-label">Nama Penjawab</label>
+            <input type="text" class="input-base" value="Admin Villa Ubud Jiwa" placeholder="cth: Admin Toko Kami">
+            <p class="field-helper">Nama yang dipakai admin otomatis saat berkenalan dengan pelanggan.</p>
+          </div>
+          <div class="field-group" style="margin-bottom:0;">
+            <label class="field-label">Konten Bisnis</label>
+            <textarea class="input-base" style="min-height:340px;font-size:13.5px;line-height:1.7;" placeholder="Tulis semua info bisnis kamu di sini:&#10;&#10;• Jam buka dan tutup&#10;• Daftar produk / layanan dan harga&#10;• Alamat dan cara ke lokasi&#10;• Pertanyaan yang sering ditanya (FAQ)&#10;• Kebijakan (refund, booking, pembayaran)&#10;&#10;Semakin lengkap, semakin pintar admin otomatis kamu.">Nama: Villa Ubud Jiwa
+Lokasi: Jl. Raya Ubud No. 12, Gianyar, Bali
+
+JAM OPERASIONAL:
+Senin–Minggu, 08:00–21:00.
+
+TIPE KAMAR:
+- Deluxe: Rp 750.000/malam. Balkon, view kebun, sarapan 2 orang.
+- Suite: Rp 1.200.000/malam. Bathtub, view sawah, sarapan 2 orang.
+
+BOOKING:
+Transfer ke BCA 123-456-7890 a/n Villa Ubud Jiwa. Konfirmasi via WhatsApp beserta bukti transfer.
+
+CHECK-IN / CHECK-OUT:
+Check-in: 14:00. Check-out: 12:00.
+Early check-in dari jam 10:00 tersedia jika kamar sudah bersih (gratis, tergantung ketersediaan).
+
+FASILITAS:
+Kolam renang, WiFi gratis, sarapan termasuk, parkir gratis, area taman.</textarea>
+            <p class="field-helper" style="margin-top:8px;">Update kapan saja setelah ada perubahan harga atau info baru.</p>
+          </div>
+        </div>
+        <button class="btn btn-md btn-primary" style="width:100%;justify-content:center;margin-top:16px;" onclick="saveKnowledge()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          Simpan
+        </button>
+        <p style="font-size:12px;color:var(--text-3);margin:8px 0 0;">Terakhir disimpan 29 Jun 2026, 09:14</p>
+      </div>
+    </div><!-- /dv-knowledge -->
+
+    <!-- ══ VIEW: PENGATURAN ══ -->
+    <div id="dv-settings" class="dash-view">
+
+      <!-- Left: menu list -->
+      <div class="sett-menu" id="sett-menu">
+        <div class="sett-menu-header">
+          <h2 style="font-size:18px;font-weight:800;color:var(--text-1);margin:0;letter-spacing:-.02em;">Pengaturan</h2>
+        </div>
+        <div class="sett-menu-item active" id="sm-profile" onclick="showSettingSection('profile')">
+          <div class="sett-icon" style="background:#DBEAFE;"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#2563EB" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"/></svg></div>
+          <span style="flex:1;">Profil Bisnis</span>
+          <svg class="chevron" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+        </div>
+        <div class="sett-menu-item" id="sm-wa" onclick="showSettingSection('wa')">
+          <div class="sett-icon" style="background:#ECFDF5;"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#10B981" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 8.25h3"/></svg></div>
+          <span style="flex:1;">Koneksi WhatsApp</span>
+          <svg class="chevron" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+        </div>
+        <div class="sett-menu-item" id="sm-autoreply" onclick="showSettingSection('autoreply')">
+          <div class="sett-icon" style="background:#EDE9FE;"><svg width="16" height="16" fill="none" viewBox="0 0 40 46" stroke="none"><path d="M10,2 H30 Q38,2 38,10 V28 Q38,36 30,36 H16 L6,46 L6,36 Q2,36 2,28 V10 Q2,2 10,2 Z" fill="#7C3AED" opacity=".8"/><circle cx="12" cy="19" r="3" fill="#fff"/><path d="M12,13 A6,6 0 0,1 12,25" stroke="#fff" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg></div>
+          <span style="flex:1;">Admin Otomatis</span>
+          <svg class="chevron" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+        </div>
+        <div class="sett-menu-item" id="sm-schedule" onclick="showSettingSection('schedule')">
+          <div class="sett-icon" style="background:#FEF3C7;"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#D97706" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+          <span style="flex:1;">Jam Buka Bisnis</span>
+          <svg class="chevron" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+        </div>
+        <div class="sett-menu-item" id="sm-subscription" onclick="showSettingSection('subscription')">
+          <div class="sett-icon" style="background:#ECFDF5;"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#10B981" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg></div>
+          <span style="flex:1;">Langganan</span>
+          <svg class="chevron" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+        </div>
+        <div style="border-top:1px solid var(--border);margin:4px 0;"></div>
+        <div class="sett-menu-item" id="sm-security" onclick="showSettingSection('security')">
+          <div class="sett-icon" style="background:var(--bg-subtle);"><svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="var(--text-2)" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg></div>
+          <span style="flex:1;">Keamanan Akun</span>
+          <svg class="chevron" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg>
+        </div>
+      </div>
+
+      <!-- Right: detail panels -->
+      <div class="sett-detail" id="sett-detail">
+
+        <!-- ─ WhatsApp ─ -->
+        <div class="sett-panel" id="sp-wa">
+          <div class="sett-panel-inner">
+            <div class="sett-panel-header">
+              <button class="sett-back-btn" onclick="closeSettingSection()"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg></button>
+              <h3 style="margin:0;font-size:16px;font-weight:700;color:var(--text-1);">Koneksi WhatsApp</h3>
+            </div>
+            <!-- State 1: not connected -->
+            <div id="wa-state-disconnected" style="display:none;">
+              <div class="wa-connect-state">
+                <div style="width:72px;height:72px;border-radius:9999px;background:#ECFDF5;display:flex;align-items:center;justify-content:center;">
+                  <svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#10B981" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 8.25h3"/></svg>
+                </div>
+                <div style="text-align:center;">
+                  <p style="margin:0 0 6px;font-size:16px;font-weight:700;color:var(--text-1);">Hubungkan WhatsApp</p>
+                  <p style="margin:0;font-size:13px;color:var(--text-3);line-height:1.6;">Masukkan nomor WhatsApp bisnis kamu. Admin otomatis akan membalas dari nomor ini.</p>
+                </div>
+                <div style="width:100%;max-width:320px;">
+                  <label class="field-label">Nomor WhatsApp Bisnis</label>
+                  <div id="wa-input-wrap" style="display:flex;align-items:stretch;background:var(--bg-subtle);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:12px;transition:border-color .15s,box-shadow .15s;">
+                    <span style="padding:0 12px;font-size:13px;font-weight:600;color:var(--text-2);background:var(--bg-base);border-right:1px solid var(--border);display:flex;align-items:center;white-space:nowrap;flex-shrink:0;gap:5px;transition:background .2s,border-color .2s;">🇮🇩 +62</span>
+                    <input id="wa-number-input" type="tel" class="input-base" placeholder="812-xxxx-xxxx" style="border:none;border-radius:0;background:transparent;margin:0;flex:1;box-shadow:none !important;"
+                      onfocus="document.getElementById('wa-input-wrap').style.cssText+=';border-color:#10B981;box-shadow:0 0 0 3px rgba(16,185,129,.18);'"
+                      onblur="document.getElementById('wa-input-wrap').style.borderColor='';document.getElementById('wa-input-wrap').style.boxShadow=''">
+                  </div>
+                  <button class="btn btn-md btn-primary" style="width:100%;justify-content:center;" onclick="demoRequestConnect()">
+                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/></svg>
+                    Hubungkan
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- State 2: pending WABA verification -->
+            <div id="wa-state-pending" style="display:none;">
+              <div class="wa-connect-state">
+                <div style="text-align:center;max-width:340px;">
+                  <div style="width:56px;height:56px;border-radius:9999px;background:#FEF3C7;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+                    <svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="#D97706" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  </div>
+                  <p style="margin:0 0 8px;font-size:16px;font-weight:700;color:var(--text-1);">Sedang Diverifikasi</p>
+                  <p style="margin:0;font-size:13px;color:var(--text-3);line-height:1.65;">Nomor <strong id="wa-pending-number" style="color:var(--text-2);"></strong> sedang dalam proses verifikasi dan persetujuan oleh tim Riplai.<br><br>Tidak ada yang perlu kamu lakukan sekarang — status akan otomatis diperbarui setelah proses selesai, biasanya dalam 1×24 jam.</p>
+                </div>
+                <button onclick="waSetState('disconnected')" style="display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:var(--text-3);font-size:12.5px;cursor:pointer;font-family:inherit;padding:4px 0;margin-top:4px;transition:color .15s;" onmouseover="this.style.color='var(--text-2)'" onmouseout="this.style.color='var(--text-3)'">
+                  <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg>
+                  Salah nomor? Ganti
+                </button>
+              </div>
+            </div>
+            <!-- State 3: connected -->
+            <div id="wa-state-connected">
+              <div class="settings-section" style="margin-bottom:14px;">
+                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                  <div style="width:44px;height:44px;border-radius:9999px;background:#ECFDF5;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="#10B981" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 8.25h3"/></svg>
+                  </div>
+                  <div style="flex:1;min-width:120px;">
+                    <p style="margin:0;font-size:14px;font-weight:700;color:var(--text-1);" id="wa-connected-number">+62 812-3456-7890</p>
+                    <p style="margin:3px 0 0;font-size:12px;color:#10B981;font-weight:600;">● Terhubung</p>
+                  </div>
+                </div>
+              </div>
+              <div class="settings-section" style="margin-bottom:0;">
+                <p style="margin:0 0 6px;font-size:13px;font-weight:600;color:var(--text-1);">Putuskan Koneksi</p>
+                <p style="margin:0 0 12px;font-size:12.5px;color:var(--text-3);line-height:1.6;">Admin otomatis berhenti membalas. Percakapan aktif tidak akan direspon. Kamu bisa hubungkan ulang kapan saja.</p>
+                <button class="btn btn-sm" style="color:#EF4444;background:var(--needs-bg);border:none;" onclick="confirmPutuskan()">Putuskan Koneksi</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ Admin Otomatis ─ -->
+        <div class="sett-panel" id="sp-autoreply">
+          <div class="sett-panel-inner">
+            <div class="sett-panel-header">
+              <button class="sett-back-btn" onclick="closeSettingSection()"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg></button>
+              <h3 style="margin:0;font-size:16px;font-weight:700;color:var(--text-1);">Admin Otomatis</h3>
+            </div>
+            <div class="settings-section">
+              <div class="settings-row">
+                <div><p style="margin:0;font-size:13.5px;font-weight:600;color:var(--text-1);">Balas Otomatis</p><p style="margin:2px 0 0;font-size:12px;color:var(--text-3);">Admin otomatis aktif membalas pesan masuk</p></div>
+                <div class="toggle-track on" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+              </div>
+              <div class="settings-row">
+                <div><p style="margin:0;font-size:13.5px;font-weight:600;color:var(--text-1);">Notifikasi Email</p><p style="margin:2px 0 0;font-size:12px;color:var(--text-3);">Email saat ada percakapan perlu direspon manual</p></div>
+                <div class="toggle-track on" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+              </div>
+              <button class="btn btn-md btn-primary" style="width:100%;justify-content:center;margin-top:16px;" onclick="toast('Pengaturan disimpan.')"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>Simpan</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ Jam Buka ─ -->
+        <div class="sett-panel" id="sp-schedule">
+          <div class="sett-panel-inner">
+            <div class="sett-panel-header">
+              <button class="sett-back-btn" onclick="closeSettingSection()"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg></button>
+              <h3 style="margin:0;font-size:16px;font-weight:700;color:var(--text-1);">Jam Buka Bisnis</h3>
+            </div>
+            <p style="font-size:13px;color:var(--text-3);margin:0 0 16px;line-height:1.6;">Admin otomatis menyebut jadwal ini saat pelanggan tanya jam buka.</p>
+            <div class="settings-section">
+              <div class="schedule-grid">
+                <div class="schedule-row"><label class="schedule-day-label"><input type="checkbox" checked style="accent-color:#10B981;" onchange="toggleDay(this)"><span>Senin</span></label><div class="schedule-times"><input type="time" class="time-input" value="08:00"><span class="time-sep">–</span><input type="time" class="time-input" value="21:00"></div></div>
+                <div class="schedule-row"><label class="schedule-day-label"><input type="checkbox" checked style="accent-color:#10B981;" onchange="toggleDay(this)"><span>Selasa</span></label><div class="schedule-times"><input type="time" class="time-input" value="08:00"><span class="time-sep">–</span><input type="time" class="time-input" value="21:00"></div></div>
+                <div class="schedule-row"><label class="schedule-day-label"><input type="checkbox" checked style="accent-color:#10B981;" onchange="toggleDay(this)"><span>Rabu</span></label><div class="schedule-times"><input type="time" class="time-input" value="08:00"><span class="time-sep">–</span><input type="time" class="time-input" value="21:00"></div></div>
+                <div class="schedule-row"><label class="schedule-day-label"><input type="checkbox" checked style="accent-color:#10B981;" onchange="toggleDay(this)"><span>Kamis</span></label><div class="schedule-times"><input type="time" class="time-input" value="08:00"><span class="time-sep">–</span><input type="time" class="time-input" value="21:00"></div></div>
+                <div class="schedule-row"><label class="schedule-day-label"><input type="checkbox" checked style="accent-color:#10B981;" onchange="toggleDay(this)"><span>Jumat</span></label><div class="schedule-times"><input type="time" class="time-input" value="08:00"><span class="time-sep">–</span><input type="time" class="time-input" value="21:00"></div></div>
+                <div class="schedule-row"><label class="schedule-day-label"><input type="checkbox" checked style="accent-color:#10B981;" onchange="toggleDay(this)"><span>Sabtu</span></label><div class="schedule-times"><input type="time" class="time-input" value="09:00"><span class="time-sep">–</span><input type="time" class="time-input" value="20:00"></div></div>
+                <div class="schedule-row"><label class="schedule-day-label"><input type="checkbox" style="accent-color:#10B981;" onchange="toggleDay(this)"><span style="color:var(--text-3);">Minggu</span></label><div class="schedule-times"><input type="time" class="time-input" disabled value="09:00"><span class="time-sep">–</span><input type="time" class="time-input" disabled value="20:00"></div></div>
+              </div>
+              <button class="btn btn-md btn-primary" style="width:100%;justify-content:center;margin-top:16px;" onclick="toast('Jam buka bisnis disimpan.')"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>Simpan</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ Profil Bisnis ─ -->
+        <div class="sett-panel active" id="sp-profile">
+          <div class="sett-panel-inner">
+            <div class="sett-panel-header">
+              <button class="sett-back-btn" onclick="closeSettingSection()"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg></button>
+              <h3 style="margin:0;font-size:16px;font-weight:700;color:var(--text-1);">Profil Bisnis</h3>
+            </div>
+            <div class="settings-section">
+              <div class="field-group"><label class="field-label">Nama Bisnis</label><input type="text" class="input-base" value="Villa Ubud Jiwa"></div>
+              <div class="field-group"><label class="field-label">Kategori</label><select class="input-base"><option selected>Villa / Penginapan</option><option>Apotek / Toko Obat</option><option>Klinik / Dokter</option><option>Restoran / F&amp;B</option><option>Toko Retail</option><option>Lainnya</option></select></div>
+              <div class="field-group">
+                <div class="field-label-row">
+                  <label class="field-label">Email Pemilik</label>
+                  <span class="tooltip-anchor"><span class="tooltip-i">i</span><span class="tooltip-popup">Notifikasi penting dikirim ke sini.</span></span>
+                </div>
+                <input type="email" class="input-base" value="owner@villaubudjw.id">
+              </div>
+              <div class="field-group"><label class="field-label">Zona Waktu</label><select class="input-base"><option value="WIB" selected>WIB — Waktu Indonesia Barat (UTC+7)</option><option value="WITA">WITA — Waktu Indonesia Tengah (UTC+8)</option><option value="WIT">WIT — Waktu Indonesia Timur (UTC+9)</option></select></div>
+              <div class="field-group"><label class="field-label">Email Bisnis</label><input type="email" class="input-base" value="info@villaubudjw.id"></div>
+              <div class="field-group" style="margin-bottom:0;">
+                <div class="field-label-row">
+                  <label class="field-label">Deskripsi Bisnis</label>
+                  <span class="tooltip-anchor"><span class="tooltip-i">i</span><span class="tooltip-popup">Dipakai untuk komunikasi admin otomatis.</span></span>
+                </div>
+                <textarea class="input-base" style="min-height:80px;">Villa butik di tengah sawah Ubud, Bali. Tersedia 6 kamar, kolam renang, dan sarapan homemade.</textarea>
+              </div>
+              <button class="btn btn-md btn-primary" style="width:100%;justify-content:center;margin-top:16px;" onclick="toast('Profil bisnis disimpan.')"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>Simpan</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ Langganan ─ -->
+        <div class="sett-panel" id="sp-subscription">
+          <div class="sett-panel-inner">
+            <div class="sett-panel-header">
+              <button class="sett-back-btn" onclick="closeSettingSection()"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg></button>
+              <h3 style="margin:0;font-size:16px;font-weight:700;color:var(--text-1);">Langganan</h3>
+            </div>
+            <div class="settings-section" style="margin-bottom:14px;">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;">
+                <span class="badge badge-brand">Paket Starter</span>
+                <p style="margin:0;font-size:13px;color:var(--text-2);">Aktif hingga <strong style="color:var(--text-1);">16 Jul 2026</strong></p>
+              </div>
+              <div style="margin-bottom:16px;">
+                <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                  <p style="margin:0;font-size:12px;color:var(--text-2);">Kuota balasan bulan ini</p>
+                  <p style="margin:0;font-size:12px;font-weight:700;color:var(--text-1);">347 / 500</p>
+                </div>
+                <div style="height:7px;background:var(--bg-subtle);border-radius:9999px;overflow:hidden;"><div style="height:100%;width:69.4%;background:#10B981;border-radius:9999px;"></div></div>
+                <p style="margin:5px 0 0;font-size:11.5px;color:var(--text-3);">153 balasan tersisa · Reset 1 Jul 2026</p>
+              </div>
+              <button class="btn btn-md btn-primary" style="width:100%;justify-content:center;" onclick="showSettingSection('plans')">Upgrade Paket</button>
+            </div>
+            <div class="settings-section">
+              <p style="margin:0 0 8px;font-size:13px;font-weight:600;color:var(--text-1);">Batalkan Langganan</p>
+              <p style="margin:0 0 12px;font-size:12.5px;color:var(--text-3);line-height:1.6;">Admin otomatis akan berhenti pada akhir periode. Data bisnis kamu tetap tersimpan.</p>
+              <button class="btn btn-sm" style="color:#EF4444;background:var(--needs-bg);border:none;" onclick="confirmSheet('Batalkan Langganan?','Admin otomatis berhenti pada 16 Jul 2026. Data kamu tetap aman dan bisa diaktifkan lagi kapan saja.','Ya, Batalkan',()=>toast('Langganan dibatalkan.'))">Batalkan Langganan</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ Pilih Paket (sub-page dari Langganan) ─ -->
+        <div class="sett-panel" id="sp-plans">
+          <div class="sett-panel-inner" style="max-width:620px;">
+            <div class="sett-panel-header">
+              <button class="sett-back-btn" onclick="closeSettingSection()" style="display:flex;"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg></button>
+              <div>
+                <h3 style="margin:0;font-size:16px;font-weight:700;color:var(--text-1);">Pilih Paket</h3>
+                <p style="margin:2px 0 0;font-size:12px;color:var(--text-3);">Semua paket ditagih bulanan. Batalkan kapan saja.</p>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div class="card" style="border:1.5px solid var(--border);position:relative;">
+                <p style="margin:0 0 2px;font-size:13px;font-weight:700;color:var(--text-2);">Gratis</p>
+                <p style="margin:0 0 10px;font-size:26px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">Rp 0 <span style="font-size:14px;font-weight:500;color:var(--text-3);">/ bulan</span></p>
+                <p style="margin:0 0 14px;font-size:13px;color:var(--text-2);">100 balasan otomatis per bulan. Cocok untuk coba-coba.</p>
+                <button class="btn btn-sm btn-secondary" style="width:100%;justify-content:center;">Paket Saat Ini Lebih Baik</button>
+              </div>
+              <div class="card" style="border:2px solid #10B981;position:relative;">
+                <span class="badge badge-brand" style="position:absolute;top:14px;right:14px;">Aktif</span>
+                <p style="margin:0 0 2px;font-size:13px;font-weight:700;color:var(--brand-text);">Starter</p>
+                <p style="margin:0 0 10px;font-size:26px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">Rp 149.000 <span style="font-size:14px;font-weight:500;color:var(--text-3);">/ bulan</span></p>
+                <p style="margin:0 0 14px;font-size:13px;color:var(--text-2);">500 balasan otomatis per bulan. Untuk bisnis yang mulai aktif di WhatsApp.</p>
+                <button class="btn btn-sm btn-secondary" style="width:100%;justify-content:center;" disabled>Paket Sekarang</button>
+              </div>
+              <div class="card" style="border:1.5px solid var(--border);">
+                <p style="margin:0 0 2px;font-size:13px;font-weight:700;color:var(--text-2);">Growth</p>
+                <p style="margin:0 0 10px;font-size:26px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">Rp 349.000 <span style="font-size:14px;font-weight:500;color:var(--text-3);">/ bulan</span></p>
+                <p style="margin:0 0 14px;font-size:13px;color:var(--text-2);">2.000 balasan otomatis per bulan. Untuk bisnis dengan volume pesan tinggi.</p>
+                <button class="btn btn-sm btn-primary" style="width:100%;justify-content:center;" onclick="confirmSheet('Upgrade ke Growth?','Kamu akan ditagih Rp 349.000/bulan mulai hari ini. Sisa kuota bulan ini akan langsung bertambah.','Upgrade Sekarang',()=>toast('Upgrade berhasil! Selamat datang di Growth.'))">Upgrade ke Growth</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─ Keamanan ─ -->
+        <div class="sett-panel" id="sp-security">
+          <div class="sett-panel-inner">
+            <div class="sett-panel-header">
+              <button class="sett-back-btn" onclick="closeSettingSection()"><svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/></svg></button>
+              <h3 style="margin:0;font-size:16px;font-weight:700;color:var(--text-1);">Keamanan Akun</h3>
+            </div>
+            <div class="settings-section">
+              <div class="field-group"><label class="field-label">Kata Sandi Saat Ini</label><input type="password" class="input-base" placeholder="••••••••"></div>
+              <div class="field-group"><label class="field-label">Kata Sandi Baru</label><input type="password" class="input-base" placeholder="Min. 8 karakter"></div>
+              <div class="field-group" style="margin-bottom:0;"><label class="field-label">Konfirmasi Kata Sandi Baru</label><input type="password" class="input-base" placeholder="Ulangi kata sandi baru"></div>
+              <button class="btn btn-md btn-primary" style="width:100%;justify-content:center;margin-top:16px;" onclick="savePassword()">Ganti Kata Sandi</button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /sett-detail -->
+    </div><!-- /dv-settings -->
+
+  </div><!-- /main-content -->
+</div><!-- /dashboard-root -->
+
+<!-- ══ Profile dropdown / mobile bottom sheet ══ -->
+<div class="profile-dropdown" id="profile-dropdown">
+  <!-- Handle bar (mobile only) -->
+  <div style="display:none;" class="sheet-handle" id="sheet-handle">
+    <div style="width:36px;height:4px;background:var(--border);border-radius:9999px;margin:10px auto 6px;"></div>
+  </div>
+  <div style="padding:16px 14px 12px;border-bottom:1px solid var(--border-sub);">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="width:36px;height:36px;border-radius:9999px;background:#10B981;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;flex-shrink:0;">VJ</div>
+      <div style="min-width:0;">
+        <p style="margin:0;font-size:13px;font-weight:700;color:var(--text-1);">Villa Ubud Jiwa</p>
+        <p style="margin:0;font-size:11.5px;color:var(--text-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">info@villaubudjw.id</p>
+      </div>
+    </div>
+  </div>
+  <div style="padding:4px 0;">
+    <div class="dropdown-item" onclick="toggleDark()">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      <span style="flex:1;">Mode Gelap</span>
+      <div class="toggle-track" id="dark-mode-track" style="transform:scale(.8);transform-origin:right center;"><div class="toggle-knob"></div></div>
+    </div>
+  </div>
+  <div class="dropdown-divider"></div>
+  <div style="padding:4px 0;">
+    <div class="dropdown-item" onclick="showView('settings');showSettingSection('profile');closeDropdown();">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+      Profil Saya
+    </div>
+    <div class="dropdown-item" onclick="showView('settings');showSettingSection('security');closeDropdown();">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+      Ganti Kata Sandi
+    </div>
+  </div>
+  <div class="dropdown-divider"></div>
+  <div style="padding:4px 0 8px;">
+    <div class="dropdown-item danger">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"/></svg>
+      Keluar
+    </div>
+  </div>
+</div>
+
+<!-- ══ Confirm sheet ══ -->
+<div class="confirm-overlay" id="confirm-overlay" onclick="closeConfirm()"></div>
+<div class="confirm-sheet" id="confirm-sheet">
+  <div style="padding:20px 20px 0;">
+    <div style="width:36px;height:4px;background:var(--border);border-radius:9999px;margin:0 auto 16px;" id="confirm-handle"></div>
+    <p id="confirm-title" style="margin:0 0 8px;font-size:16px;font-weight:700;color:var(--text-1);"></p>
+    <p id="confirm-desc" style="margin:0;font-size:13.5px;color:var(--text-2);line-height:1.6;"></p>
+  </div>
+  <div style="padding:16px 20px;display:flex;flex-direction:column;gap:8px;">
+    <button id="confirm-action-btn" class="btn btn-md btn-danger" style="width:100%;justify-content:center;" onclick="executeConfirm()"></button>
+    <button class="btn btn-md btn-secondary" style="width:100%;justify-content:center;" onclick="closeConfirm()">Batal</button>
+  </div>
+</div>
+
+<!-- ══ Thread more menu ══ -->
+<div class="thread-more-menu" id="thread-more-menu">
+  <div class="more-menu-item" onclick="threadAction('mark-waiting')">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    Tandai Menunggu
+  </div>
+  <div class="more-menu-item" onclick="threadAction('copy-wa')">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5A3.375 3.375 0 006.375 7.5H5.25m11.9 3.664-7.5 7.5m0 0-1.5 1.5m1.5-1.5h3.75m-3.75 0v3.75"/></svg>
+    Salin Nomor WA
+  </div>
+</div>
+
+<!-- ══ Bottom nav (mobile) ══ -->
+<nav class="bottom-nav" id="bottom-nav">
+  <a class="bottom-nav-item active" id="bnav-inbox" onclick="showView('inbox');return false;" href="#">
+    <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/></svg>
+    Pesan
+    <span class="bottom-nav-badge" id="bnav-badge" style="display:none;">2</span>
+  </a>
+  <a class="bottom-nav-item" id="bnav-reports" onclick="showView('reports');return false;" href="#">
+    <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
+    Laporan
+  </a>
+  <a class="bottom-nav-item" id="bnav-knowledge" onclick="showView('knowledge');return false;" href="#">
+    <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0118 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
+    Data Bisnis
+  </a>
+  <a class="bottom-nav-item" id="bnav-settings" onclick="showView('settings');return false;" href="#">
+    <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+    Pengaturan
+  </a>
+</nav>
+
+<script>
+// ── Mock data ──
+const conversations = [
+  {id:1,waNumber:'0812-3456-7890',lastMsg:'Apakah bisa early check-in jam 10?',lastMsgAt:'2026-06-30T08:28:00',status:'needs',humanTakeover:true,closed:false,avatarBg:'#10B981',
+   messages:[
+     {dir:'in',body:'Halo, ada kamar available malam ini?',time:'08:30',src:'customer'},
+     {dir:'out',body:'Halo! Villa Ubud Jiwa masih ada kamar malam ini.\nKamar Deluxe: Rp 750.000/malam\nSuite: Rp 1.200.000/malam\n\nMau pesan untuk berapa malam?',time:'08:30',src:'bot'},
+     {dir:'in',body:'Berapa harga per malamnya untuk Suite?',time:'08:31',src:'customer'},
+     {dir:'out',body:'Suite Rp 1.200.000/malam, sudah include sarapan untuk 2 orang. View sawah, ada bathtub juga.',time:'08:31',src:'bot'},
+     {dir:'in',body:'Apakah bisa early check-in jam 10 pagi?',time:'08:33',src:'customer',unhandled:true},
+   ]},
+  {id:2,waNumber:'0856-7890-1234',lastMsg:'Terima kasih informasinya!',lastMsgAt:'2026-06-30T09:12:00',status:'handled',humanTakeover:false,closed:true,avatarBg:'#6366F1',
+   messages:[
+     {dir:'in',body:'Harga kamar Deluxe berapa?',time:'09:10',src:'customer'},
+     {dir:'out',body:'Kamar Deluxe Rp 750.000/malam, termasuk balkon, view kebun, dan sarapan untuk 2 orang.',time:'09:10',src:'bot'},
+     {dir:'in',body:'Terima kasih informasinya!',time:'09:12',src:'customer'},
+   ]},
+  {id:3,waNumber:'0878-9012-3456',lastMsg:'Suite berapa malam minimalnya?',lastMsgAt:'2026-06-30T07:45:00',status:'needs',humanTakeover:true,closed:false,avatarBg:'#059669',
+   messages:[
+     {dir:'in',body:'Suite tersedia weekend ini?',time:'07:55',src:'customer'},
+     {dir:'out',body:'Untuk ketersediaan akhir pekan, boleh konfirmasi nama dan tanggal check-in yang diinginkan?',time:'07:55',src:'bot'},
+     {dir:'in',body:'Suite berapa malam minimalnya?',time:'08:00',src:'customer',unhandled:true},
+   ]},
+  {id:4,waNumber:'0821-2345-6789',lastMsg:'Ok terima kasih!',lastMsgAt:'2026-06-29T06:30:00',status:'handled',humanTakeover:false,closed:true,avatarBg:'#0F766E',
+   messages:[
+     {dir:'in',body:'Fasilitas apa saja yang tersedia?',time:'07:00',src:'customer'},
+     {dir:'out',body:'Villa Ubud Jiwa punya kolam renang, WiFi gratis, sarapan termasuk, dan parkir gratis.',time:'07:00',src:'bot'},
+     {dir:'in',body:'Ok terima kasih!',time:'07:02',src:'customer'},
+   ]},
+];
+
+let activeConvId = null;
+let activeTab = 'all';
+const isMobile = () => window.innerWidth <= 640;
+
+function initials(wa){return wa.replace(/\D/g,'').slice(-2);}
+function badgeLabel(s){return {needs:'Perlu Dibalas',handled:'Dibalas Otomatis',manual:'Dibalas Manual',waiting:'Menunggu'}[s]||s;}
+function badgeClass(s){return {needs:'badge-needs',handled:'badge-handled',manual:'badge-manual',waiting:'badge-waiting'}[s]||'badge-muted';}
+
+function fmtTime(iso){
+  const d=new Date(iso),now=new Date();
+  const today=now.toDateString()===d.toDateString();
+  if(today) return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+  const yesterday=new Date(now);yesterday.setDate(now.getDate()-1);
+  if(yesterday.toDateString()===d.toDateString()) return 'Kemarin';
+  const months=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des'];
+  return d.getDate()+' '+months[d.getMonth()];
+}
+
+function getFilteredList(tab){
+  if(tab==='closed') return conversations.filter(c=>c.closed);
+  if(tab==='pending') return conversations.filter(c=>c.humanTakeover&&!c.closed);
+  return conversations.filter(c=>!c.closed);
+}
+
+function updateBadges(){
+  const count = conversations.filter(c=>c.humanTakeover&&!c.closed).length;
+  const sidebarBadge = document.getElementById('sidebar-badge-inbox');
+  const bnavBadge = document.getElementById('bnav-badge');
+  const pendingEl = document.getElementById('pending-count');
+  if(sidebarBadge){sidebarBadge.textContent=count||'';sidebarBadge.style.display=count?'':'none';}
+  if(bnavBadge){bnavBadge.textContent=count;bnavBadge.style.display=count?'':'none';}
+  if(pendingEl){pendingEl.textContent=count||'';pendingEl.style.display=count?'':'none';}
+}
+
+const EMPTY_MSGS = {
+  all:'Belum ada percakapan',
+  pending:'Semua percakapan sudah ditangani 🎉',
+  closed:'Belum ada percakapan yang selesai',
+};
+
+function convListEmptyHTML(msg){
+  return `<div style="padding:40px 20px;text-align:center;"><p style="margin:0;font-size:13.5px;color:var(--text-3);font-weight:500;">${msg}</p></div>`;
+}
+
+function renderConvList(tab){
+  const list = getFilteredList(tab);
+  if(!list.length){
+    document.getElementById('conv-list-body').innerHTML = convListEmptyHTML(EMPTY_MSGS[tab]||'Tidak ada percakapan');
+    updateBadges();
+    return;
+  }
+  document.getElementById('conv-list-body').innerHTML = list.map(c=>`
+    <div class="conv-item${c.id===activeConvId?' active':''}" onclick="selectConv(${c.id})">
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div style="width:38px;height:38px;border-radius:9999px;background:${c.avatarBg};display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;flex-shrink:0;">${initials(c.waNumber)}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+            <span style="font-size:13px;font-weight:${c.humanTakeover?700:600};color:var(--text-1);">${c.waNumber}</span>
+            <span style="font-size:11px;color:var(--text-3);flex-shrink:0;margin-left:6px;">${fmtTime(c.lastMsgAt)}</span>
+          </div>
+          <p style="margin:0;font-size:12px;color:${c.humanTakeover?'var(--text-2)':'var(--text-3)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.lastMsg}</p>
+          <span class="badge ${badgeClass(c.status)}" style="margin-top:5px;">${badgeLabel(c.status)}</span>
+        </div>
+      </div>
+    </div>`).join('');
+  updateBadges();
+}
+
+function renderThread(conv){
+  const av = document.getElementById('th-avatar');
+  av.textContent = initials(conv.waNumber);
+  av.style.background = conv.avatarBg;
+  document.getElementById('th-name').textContent = conv.waNumber;
+  const badge = document.getElementById('th-badge');
+  badge.className = `badge ${badgeClass(conv.status)}`;
+  badge.textContent = badgeLabel(conv.status);
+  document.getElementById('btn-mark-done').style.display = conv.humanTakeover?'':'none';
+  document.getElementById('reply-hint').style.display = conv.humanTakeover?'block':'none';
+
+  const modeSwitch = document.getElementById('th-mode-switch');
+  modeSwitch.style.display = !conv.closed ? 'flex' : 'none';
+  const isManualMode = conv.humanTakeover || conv.status === 'manual';
+  document.getElementById('btn-mode-auto').classList.toggle('active-pill', !isManualMode);
+  document.getElementById('btn-mode-manual').classList.toggle('active-pill', isManualMode);
+
+  document.getElementById('thread-body').innerHTML = conv.messages.map(msg=>{
+    if(msg.dir==='in') return `
+      <div style="display:flex;justify-content:flex-start;">
+        <div class="bubble-in" style="max-width:72%;">
+          <p class="bubble-text">${msg.body.replace(/\n/g,'<br>')}</p>
+          <div class="bubble-meta-inside"><span>${msg.time}</span></div>
+        </div>
+      </div>`;
+    if(msg.src==='bot') return `
+      <div style="display:flex;justify-content:flex-end;">
+        <div class="bubble-bot" style="max-width:72%;">
+          <p class="bubble-text">${msg.body.replace(/\n/g,'<br>')}</p>
+          <div class="bubble-meta-inside"><span>Admin Otomatis</span><span>·</span><span>${msg.time}</span></div>
+        </div>
+      </div>`;
+    return `
+      <div style="display:flex;justify-content:flex-end;">
+        <div class="bubble-out" style="max-width:72%;">
+          <p class="bubble-text">${msg.body.replace(/\n/g,'<br>')}</p>
+          <div class="bubble-meta-inside"><span>Kamu</span><span>·</span><span>${msg.time}</span><svg width="16" height="10" viewBox="0 0 16 10" fill="none"><path d="M1 5.5L4 8.5L10 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 8.5L12 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+      </div>`;
+  }).join('');
+
+  const body = document.getElementById('thread-body');
+  body.scrollTop = body.scrollHeight;
+}
+
+function selectConv(id){
+  activeConvId = id;
+  const conv = conversations.find(c=>c.id===id);
+  renderConvList(activeTab);
+  renderThread(conv);
+  if(isMobile()){
+    document.getElementById('conv-list-panel').classList.add('mobile-hidden');
+    document.getElementById('thread-panel').classList.add('mobile-open');
+  }
+}
+
+function closeMobileThread(){
+  document.getElementById('thread-panel').classList.remove('mobile-open');
+  document.getElementById('conv-list-panel').classList.remove('mobile-hidden');
+  activeConvId = null;
+}
+
+function setTab(tab){
+  activeTab = tab;
+  ['all','pending','closed'].forEach(t=>{
+    document.getElementById(`tab-${t}`).classList.toggle('active',t===tab);
+  });
+  renderConvList(tab);
+  const list = getFilteredList(tab);
+  if(!isMobile()){
+    if(list.length) selectConv(list[0].id);
+    else renderEmptyThread();
+  }
+}
+
+function filterConvs(q){
+  if(!q.trim()){renderConvList(activeTab);return;}
+  const items=document.querySelectorAll('.conv-item');
+  let shown=0;
+  items.forEach(el=>{
+    const vis=el.textContent.toLowerCase().includes(q.toLowerCase());
+    el.style.display=vis?'':'none';
+    if(vis)shown++;
+  });
+  if(!shown){
+    document.getElementById('conv-list-body').innerHTML=convListEmptyHTML(`Tidak ada hasil untuk "${q}"`);
+  }
+}
+
+// ── Navigation ──
+const VIEWS=['inbox','reports','knowledge','settings'];
+function showView(view){
+  VIEWS.forEach(v=>{
+    const el=document.getElementById(`dv-${v}`);
+    if(el) el.style.display='none';
+    const nav=document.getElementById(`nav-${v}`);
+    if(nav) nav.classList.remove('active');
+    const bnav=document.getElementById(`bnav-${v}`);
+    if(bnav) bnav.classList.remove('active');
+  });
+  const el=document.getElementById(`dv-${view}`);
+  if(el) el.style.display='flex';
+  const nav=document.getElementById(`nav-${view}`);
+  if(nav) nav.classList.add('active');
+  const bnav=document.getElementById(`bnav-${view}`);
+  if(bnav) bnav.classList.add('active');
+  closeDropdown();
+  if(view!=='inbox'){
+    document.getElementById('thread-panel').classList.remove('mobile-open');
+    document.getElementById('conv-list-panel').classList.remove('mobile-hidden');
+  }
+  // on mobile settings: always start at menu list (not detail)
+  if(view==='settings'&&isMobile()){
+    document.getElementById('sett-detail').classList.remove('mobile-open');
+  }
+}
+
+// ── Thread actions ──
+function markDone(){
+  const conv=conversations.find(c=>c.id===activeConvId);
+  if(!conv) return;
+  conv.humanTakeover=false;conv.status='handled';conv.closed=true;
+  renderConvList(activeTab);
+  renderThread(conv);
+  toast('Percakapan ditandai selesai.');
+}
+
+function setReplyMode(mode){
+  const conv=conversations.find(c=>c.id===activeConvId);
+  if(!conv) return;
+  if(mode==='manual'){
+    conv.humanTakeover=true;conv.status='needs';conv.closed=false;
+    toast('Diambil alih — kamu yang akan membalas.');
+  }else{
+    conv.humanTakeover=false;conv.status='handled';conv.closed=false;
+    toast('Dialihkan ke admin otomatis.');
+  }
+  renderConvList(activeTab);
+  renderThread(conv);
+}
+
+function viewConvFromReport(waNumber){
+  showView('inbox');
+  const conv=conversations.find(c=>c.waNumber===waNumber);
+  if(conv) selectConv(conv.id);
+}
+
+function renderEmptyThread(){
+  ['th-avatar','th-name','th-sub','th-badge'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.textContent='';el.className=el.id==='th-badge'?'badge':el.className;}
+  });
+  document.getElementById('btn-mark-done').style.display='none';
+  document.getElementById('reply-hint').style.display='none';
+  document.getElementById('th-mode-switch').style.display='none';
+  document.getElementById('thread-body').innerHTML='<div class="thread-empty"><svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="var(--text-3)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/></svg><p style="margin:0;font-size:13.5px;color:var(--text-3);font-weight:500;">Pilih percakapan untuk memulai</p></div>';
+}
+
+function sendReply(){
+  const inp=document.getElementById('reply-input');
+  const text=inp.value.trim();
+  if(!text) return;
+  const conv=conversations.find(c=>c.id===activeConvId);
+  if(!conv) return;
+  const now=new Date();
+  const t=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+  conv.messages.push({dir:'out',body:text,time:t,src:'partner'});
+  conv.humanTakeover=false;conv.status='manual';conv.closed=false;conv.lastMsg=text;conv.lastMsgAt=now.toISOString();
+  inp.value='';
+  renderConvList(activeTab);
+  renderThread(conv);
+}
+
+// ── Thread more menu ──
+function toggleThreadMenu(e){
+  e.stopPropagation();
+  const menu=document.getElementById('thread-more-menu');
+  const btn=document.getElementById('btn-more');
+  const rect=btn.getBoundingClientRect();
+  menu.style.top=(rect.bottom+6)+'px';
+  menu.style.right=(window.innerWidth-rect.right)+'px';
+  menu.classList.toggle('open');
+}
+function closeThreadMenu(){document.getElementById('thread-more-menu').classList.remove('open');}
+function threadAction(action){
+  closeThreadMenu();
+  const conv=conversations.find(c=>c.id===activeConvId);
+  if(action==='mark-waiting'){
+    if(conv){conv.humanTakeover=true;conv.status='needs';conv.closed=false;renderConvList(activeTab);renderThread(conv);}
+    toast('Percakapan ditandai menunggu.');
+  }else if(action==='copy-wa'){
+    navigator.clipboard.writeText(conv?.waNumber||'').catch(()=>{});
+    toast('Nomor WA disalin.');
+  }
+}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#btn-more')&&!e.target.closest('#thread-more-menu')) closeThreadMenu();
+});
+
+// ── Settings master-detail ──
+let activeSettingSection = 'profile';
+function showSettingSection(key){
+  // highlight menu item
+  document.querySelectorAll('.sett-menu-item').forEach(el=>el.classList.remove('active'));
+  const mi=document.getElementById(`sm-${key}`);
+  if(mi)mi.classList.add('active');
+  // show panel
+  document.querySelectorAll('.sett-panel').forEach(el=>el.classList.remove('active'));
+  const panel=document.getElementById(`sp-${key}`);
+  if(panel)panel.classList.add('active');
+  activeSettingSection=key;
+  // mobile: open detail overlay
+  if(isMobile()){
+    document.getElementById('sett-detail').classList.add('mobile-open');
+  }
+}
+function closeSettingSection(){
+  // mobile only: close detail, go back to menu
+  document.getElementById('sett-detail').classList.remove('mobile-open');
+}
+
+// ── WA states: 'disconnected' | 'pending' | 'connected' ──
+function confirmPutuskan(){
+  const num=document.getElementById('wa-connected-number')?.textContent||'+62 812-3456-7890';
+  confirmSheet('Putuskan WhatsApp?','Admin otomatis berhenti membalas pesan dari '+num+'. Kamu bisa hubungkan kembali kapan saja.','Putuskan',()=>{waSetState('disconnected');toast('WhatsApp diputuskan.');});
+}
+let waState='connected';
+function waSetState(s){
+  waState=s;
+  document.getElementById('wa-state-disconnected').style.display=s==='disconnected'?'':'none';
+  document.getElementById('wa-state-pending').style.display=s==='pending'?'':'none';
+  document.getElementById('wa-state-connected').style.display=s==='connected'?'':'none';
+}
+function demoRequestConnect(){
+  const raw=document.getElementById('wa-number-input').value.trim().replace(/^0/,'');
+  const num=raw ? '+62 '+raw : '+62 812-3456-7890';
+  document.getElementById('wa-pending-number').textContent=num;
+  document.getElementById('wa-connected-number').textContent=num;
+  waSetState('pending');
+}
+function demoConnectWA(){
+  waSetState('connected');
+  toast('WhatsApp berhasil terhubung!');
+}
+
+// ── Confirm sheet ──
+let _confirmCallback=null;
+function confirmSheet(title,desc,actionLabel,cb){
+  document.getElementById('confirm-title').textContent=title;
+  document.getElementById('confirm-desc').textContent=desc;
+  document.getElementById('confirm-action-btn').textContent=actionLabel;
+  _confirmCallback=cb;
+  document.getElementById('confirm-overlay').classList.add('open');
+  document.getElementById('confirm-sheet').classList.add('open');
+}
+function executeConfirm(){
+  if(_confirmCallback)_confirmCallback();
+  closeConfirm();
+}
+function closeConfirm(){
+  document.getElementById('confirm-overlay').classList.remove('open');
+  document.getElementById('confirm-sheet').classList.remove('open');
+  _confirmCallback=null;
+}
+
+// ── Schedule ──
+function toggleDay(cb){
+  const row=cb.closest('.schedule-row');
+  row.querySelectorAll('.time-input').forEach(i=>i.disabled=!cb.checked);
+  const label=row.querySelector('.schedule-day-label span');
+  if(label) label.style.color=cb.checked?'':'var(--text-3)';
+}
+
+// ── Dark mode ──
+function toggleDark(){
+  const dark=document.documentElement.classList.toggle('dark');
+  localStorage.setItem('riplai-dark',dark?'1':'0');
+  document.getElementById('dark-mode-track').classList.toggle('on',dark);
+}
+
+// ── Dropdown / bottom sheet ──
+function toggleDropdown(){
+  const dd=document.getElementById('profile-dropdown');
+  const scrim=document.getElementById('dropdown-scrim');
+  const opening=!dd.classList.contains('open');
+  dd.classList.toggle('open');
+  if(scrim) scrim.classList.toggle('open',opening);
+  // show handle on mobile
+  const handle=document.getElementById('sheet-handle');
+  if(handle) handle.style.display=isMobile()?'block':'none';
+}
+function closeDropdown(){
+  document.getElementById('profile-dropdown').classList.remove('open');
+  const scrim=document.getElementById('dropdown-scrim');
+  if(scrim) scrim.classList.remove('open');
+}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#profile-trigger')&&!e.target.closest('#profile-dropdown')&&!e.target.closest('.mobile-header button')) closeDropdown();
+});
+
+// ── Toast ──
+function toast(msg){
+  let el=document.getElementById('_toast');
+  if(!el){
+    el=document.createElement('div');el.id='_toast';
+    el.style.cssText='position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0;padding:10px 20px;border-radius:14px;font-size:13.5px;font-weight:600;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.12);font-family:Plus Jakarta Sans,system-ui;transition:opacity .3s;white-space:nowrap;';
+    document.body.appendChild(el);
+  }
+  el.textContent=msg;el.style.opacity='1';
+  clearTimeout(el._t);
+  el._t=setTimeout(()=>{el.style.opacity='0';},2400);
+}
+
+function saveKnowledge(){toast('Data bisnis berhasil disimpan.');}
+function savePassword(){toast('Kata sandi berhasil diubah.');}
+
+function setRange(d){
+  document.getElementById('btn-7days').className=d===7?'btn btn-sm btn-primary':'btn btn-sm btn-secondary';
+  document.getElementById('btn-30days').className=d===30?'btn btn-sm btn-primary':'btn btn-sm btn-secondary';
+  // show actual date range so numbers are self-explanatory without the button label
+  const end=new Date(2026,5,30); // 30 Jun 2026
+  const start=new Date(end);start.setDate(end.getDate()-(d-1));
+  const fmt=(dt)=>dt.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
+  document.getElementById('reports-period').textContent=`${fmt(start)} – ${fmt(end)}`;
+}
+
+// ── Init ──
+(function(){
+  if(localStorage.getItem('riplai-dark')==='1'){
+    document.documentElement.classList.add('dark');
+    document.getElementById('dark-mode-track').classList.add('on');
+  }
+  waSetState(waState);
+  showView('inbox');
+  renderConvList('all');
+  if(!isMobile()){
+    selectConv(conversations[0].id);
+  }else{
+    renderEmptyThread();
+  }
+})();
+</script>
+</body>
+</html>
