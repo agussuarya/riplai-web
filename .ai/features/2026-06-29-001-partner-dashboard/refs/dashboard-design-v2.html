@@ -247,7 +247,7 @@ body{font-family:'Plus Jakarta Sans',system-ui;margin:0;background:var(--bg-base
 .action-btn-ai{background:#6366F1;color:#fff;border:1.5px solid transparent;}
 .action-btn-ai:hover{background:#4F46E5;}
 @media(max-width:640px){
-  .action-btn-ghost span{display:none;}/* hide label on mobile, icon only */
+  .action-btn-ghost .label-desktop{display:none;}
 }
 
 /* ── Buttons ── */
@@ -422,6 +422,30 @@ html.dark .tooltip-popup{background:#1F2937;color:#F3F4F6;}
 .mode-pill:hover:not(.active-pill){background:var(--bg-hover);}
 .mode-pill.active-pill{background:var(--bg-surface);color:var(--text-1);box-shadow:0 1px 3px rgba(0,0,0,.12);}
 
+/* ── Responsive action-btn labels ── */
+.label-mobile{display:none;}
+.label-desktop{display:inline;}
+@media(max-width:640px){
+  .label-mobile{display:inline;}
+  .label-desktop{display:none;}
+}
+
+/* ── Thread mode bar (amber banner when partner is driving) ── */
+.thread-mode-bar{
+  display:none;background:#FFFBEB;border-bottom:1px solid #FDE68A;
+  padding:7px 16px;flex-shrink:0;align-items:center;gap:7px;
+  font-size:11.5px;color:#92400E;font-weight:600;
+}
+.thread-mode-bar.visible{display:flex;}
+html.dark .thread-mode-bar{
+  background:rgba(245,158,11,.1);border-bottom-color:rgba(245,158,11,.22);color:#FCD34D;
+}
+
+/* ── Manual pill — amber when active ── */
+.mode-pill-wrap.manual-active #btn-mode-manual{
+  background:var(--waiting-bg);color:var(--waiting-c);box-shadow:0 1px 3px rgba(0,0,0,.12);
+}
+
 /* ── Confirm sheet / modal ── */
 .confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:499;}
 .confirm-overlay.open{display:block;}
@@ -545,18 +569,25 @@ html.dark .tooltip-popup{background:#1F2937;color:#F3F4F6;}
             <span id="th-badge" class="badge" style="flex-shrink:0;"></span>
           </div>
           <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
-            <div class="mode-pill-wrap" id="th-mode-switch" style="display:none;">
-              <button class="mode-pill" id="btn-mode-auto" onclick="setReplyMode('auto')">Otomatis</button>
-              <button class="mode-pill" id="btn-mode-manual" onclick="setReplyMode('manual')">Manual</button>
+            <div class="mode-pill-wrap" id="th-mode-switch" style="display:none;" title="Mode balasan percakapan ini">
+              <button class="mode-pill" id="btn-mode-auto" onclick="setReplyMode('auto')" title="Admin otomatis yang membalas">Otomatis</button>
+              <button class="mode-pill" id="btn-mode-manual" onclick="setReplyMode('manual')" title="Kamu yang membalas">Manual</button>
             </div>
             <button class="action-btn action-btn-ghost" id="btn-mark-done" onclick="markDone()">
               <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-              <span>Tandai Selesai</span>
+              <span class="label-desktop">Tandai Selesai</span>
+              <span class="label-mobile">Selesai</span>
             </button>
             <button id="btn-more" onclick="toggleThreadMenu(event)" style="width:32px;height:32px;border-radius:9999px;border:1.5px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-3);">
               <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/></svg>
             </button>
           </div>
+        </div>
+
+        <!-- Amber banner: shows when partner is in manual mode -->
+        <div class="thread-mode-bar" id="thread-mode-bar">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+          Kamu yang membalas percakapan ini
         </div>
 
         <div class="thread-body" id="thread-body"></div>
@@ -580,7 +611,9 @@ html.dark .tooltip-popup{background:#1F2937;color:#F3F4F6;}
     <!-- ══ VIEW: LAPORAN ══ -->
     <div id="dv-reports" class="dash-view page-scroll">
       <div class="page-inner">
-        <div style="margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+
+        <!-- Header -->
+        <div style="margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
           <div>
             <h2 style="font-size:18px;font-weight:800;color:var(--text-1);margin:0 0 2px;letter-spacing:-.02em;">Laporan</h2>
             <p id="reports-period" style="font-size:13px;color:var(--text-3);margin:0;">24 Jun – 30 Jun 2026</p>
@@ -591,62 +624,78 @@ html.dark .tooltip-popup{background:#1F2937;color:#F3F4F6;}
           </div>
         </div>
 
-        <div class="stats-grid">
+        <!-- Insight strip -->
+        <div style="background:var(--brand-sub);border:1px solid var(--brand-sub2);border-radius:12px;padding:10px 14px;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="var(--brand-text)" stroke-width="2" style="flex-shrink:0;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.355a3 3 0 01-3 0M9.75 12.75a6.01 6.01 0 001.5.189m0-6.439a6.01 6.01 0 00-1.5.189M12 6V4.5m0 0a2.25 2.25 0 00-2.25 2.25M12 4.5a2.25 2.25 0 012.25 2.25M12 4.5v.75"/></svg>
+          <p id="report-insight-text" style="margin:0;font-size:12.5px;color:var(--brand-text);font-weight:600;"></p>
+        </div>
+
+        <!-- Stat cards -->
+        <div class="stats-grid" style="margin-bottom:16px;">
+          <!-- Hero: automation rate -->
+          <div class="stat-card" style="border-color:var(--brand-sub2);">
+            <p style="margin:0 0 4px;font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;">Tingkat Otomatis</p>
+            <p id="stat-auto-rate" style="margin:0;font-size:26px;font-weight:800;color:#10B981;letter-spacing:-.02em;">88%</p>
+            <p id="stat-auto-rate-sub" style="margin:4px 0 0;font-size:11.5px;color:var(--text-3);font-weight:500;">dari total pesan</p>
+          </div>
+          <!-- Total conversations -->
           <div class="stat-card">
             <p style="margin:0 0 4px;font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;">Total Percakapan</p>
-            <p style="margin:0;font-size:26px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">84</p>
-            <p style="margin:4px 0 0;font-size:11.5px;color:#10B981;font-weight:600;">+8% dari minggu lalu</p>
+            <p id="stat-total" style="margin:0;font-size:26px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">84</p>
+            <p id="stat-total-delta" style="margin:4px 0 0;font-size:11.5px;font-weight:600;color:#10B981;">+8 vs periode lalu</p>
           </div>
+          <!-- Manual replies -->
           <div class="stat-card">
-            <p style="margin:0 0 4px;font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;">Dibalas Otomatis</p>
-            <p style="margin:0;font-size:26px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">347</p>
-            <p style="margin:4px 0 0;font-size:11.5px;color:var(--text-3);font-weight:500;">88% dari total pesan</p>
+            <p style="margin:0 0 4px;font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;">Dibalas Manual</p>
+            <p id="stat-manual" style="margin:0;font-size:26px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">10</p>
+            <p id="stat-manual-delta" style="margin:4px 0 0;font-size:11.5px;font-weight:600;color:#F59E0B;">+2 vs periode lalu</p>
           </div>
-          <div class="stat-card">
-            <p style="margin:0 0 4px;font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;">Perlu Manual</p>
-            <p style="margin:0;font-size:26px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">2</p>
-            <p style="margin:4px 0 0;font-size:11.5px;color:#F59E0B;font-weight:600;">Saat ini menunggu</p>
-          </div>
+          <!-- Resolved -->
           <div class="stat-card">
             <p style="margin:0 0 4px;font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em;">Selesai</p>
-            <p style="margin:0;font-size:26px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">71</p>
-            <p style="margin:4px 0 0;font-size:11.5px;color:#10B981;font-weight:600;">84.5% tingkat selesai</p>
+            <p id="stat-closed" style="margin:0;font-size:26px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">71</p>
+            <p id="stat-closed-sub" style="margin:4px 0 0;font-size:11.5px;color:#10B981;font-weight:600;">84.5% tingkat selesai</p>
           </div>
         </div>
 
+        <!-- Chart card (stacked bars) -->
+        <div class="card" style="margin-bottom:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+            <p id="chart-title" style="margin:0;font-size:14px;font-weight:700;color:var(--text-1);">Percakapan per Hari</p>
+            <div style="display:flex;align-items:center;gap:14px;">
+              <div style="display:flex;align-items:center;gap:5px;">
+                <div style="width:10px;height:10px;border-radius:3px;background:#10B981;flex-shrink:0;"></div>
+                <span style="font-size:11.5px;color:var(--text-2);font-weight:500;">Otomatis</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:5px;">
+                <div style="width:10px;height:10px;border-radius:3px;background:#6366F1;flex-shrink:0;"></div>
+                <span style="font-size:11.5px;color:var(--text-2);font-weight:500;">Manual</span>
+              </div>
+            </div>
+          </div>
+          <svg id="report-chart" width="100%" viewBox="0 0 700 150" style="overflow:visible;"></svg>
+        </div>
+
+        <!-- Quota card (separate) -->
         <div class="card" style="margin-bottom:20px;">
-          <p style="margin:0 0 16px;font-size:14px;font-weight:700;color:var(--text-1);">Percakapan per Hari</p>
-          <svg width="100%" viewBox="0 0 700 160" style="overflow:visible;">
-            <line x1="0" y1="130" x2="700" y2="130" stroke="var(--border)" stroke-width="1"/>
-            <line x1="0" y1="97" x2="700" y2="97" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
-            <line x1="0" y1="64" x2="700" y2="64" stroke="var(--border)" stroke-width="1" stroke-dasharray="4,4"/>
-            <rect x="30" y="90" width="60" height="40" rx="6" fill="#D1FAE5"/>
-            <rect x="130" y="65" width="60" height="65" rx="6" fill="#6EE7B7"/>
-            <rect x="230" y="42" width="60" height="88" rx="6" fill="#10B981"/>
-            <rect x="330" y="72" width="60" height="58" rx="6" fill="#6EE7B7"/>
-            <rect x="430" y="32" width="60" height="98" rx="6" fill="#10B981"/>
-            <rect x="530" y="58" width="60" height="72" rx="6" fill="#6EE7B7"/>
-            <rect x="630" y="38" width="60" height="92" rx="6" fill="#10B981"/>
-            <text x="60" y="150" text-anchor="middle" font-size="11" fill="#9CA3AF" font-family="Plus Jakarta Sans">Sen</text>
-            <text x="160" y="150" text-anchor="middle" font-size="11" fill="#9CA3AF" font-family="Plus Jakarta Sans">Sel</text>
-            <text x="260" y="150" text-anchor="middle" font-size="11" fill="#9CA3AF" font-family="Plus Jakarta Sans">Rab</text>
-            <text x="360" y="150" text-anchor="middle" font-size="11" fill="#9CA3AF" font-family="Plus Jakarta Sans">Kam</text>
-            <text x="460" y="150" text-anchor="middle" font-size="11" fill="#9CA3AF" font-family="Plus Jakarta Sans">Jum</text>
-            <text x="560" y="150" text-anchor="middle" font-size="11" fill="#9CA3AF" font-family="Plus Jakarta Sans">Sab</text>
-            <text x="660" y="150" text-anchor="middle" font-size="11" fill="#9CA3AF" font-family="Plus Jakarta Sans">Min</text>
-          </svg>
-          <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border-sub);">
-            <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
-              <p style="margin:0;font-size:12px;font-weight:600;color:var(--text-2);">Kuota Balasan Bulan Ini</p>
-              <p style="margin:0;font-size:12px;font-weight:700;color:var(--text-1);">347 / 500</p>
-            </div>
-            <div style="height:8px;background:var(--bg-subtle);border-radius:9999px;overflow:hidden;">
-              <div style="height:100%;width:69.4%;background:#10B981;border-radius:9999px;"></div>
-            </div>
-            <p style="margin:6px 0 0;font-size:11.5px;color:var(--text-3);">153 balasan tersisa · Reset 1 Jul 2026</p>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+            <p style="margin:0;font-size:14px;font-weight:700;color:var(--text-1);">Kuota Balasan</p>
+            <span class="badge badge-brand">Paket Starter</span>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:10px;">
+            <span style="font-size:28px;font-weight:800;color:var(--text-1);letter-spacing:-.02em;">347</span>
+            <span style="font-size:13px;font-weight:500;color:var(--text-3);">/ 500 balasan bulan ini</span>
+          </div>
+          <div style="height:8px;background:var(--bg-subtle);border-radius:9999px;overflow:hidden;margin-bottom:8px;">
+            <div style="height:100%;width:69.4%;background:#10B981;border-radius:9999px;"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px;">
+            <p style="margin:0;font-size:11.5px;color:var(--text-3);">153 tersisa · Reset 1 Jul 2026</p>
+            <button onclick="showView('settings');showSettingSection('subscription');" style="font-size:11.5px;font-weight:700;color:#10B981;background:none;border:none;cursor:pointer;padding:0;font-family:inherit;display:inline-flex;align-items:center;gap:3px;">Upgrade Paket <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></button>
           </div>
         </div>
 
+        <!-- Recent conversations table -->
         <div class="card" style="overflow-x:auto;">
           <p style="margin:0 0 14px;font-size:14px;font-weight:700;color:var(--text-1);">Percakapan Terbaru</p>
           <table style="width:100%;border-collapse:collapse;min-width:400px;">
@@ -662,6 +711,7 @@ html.dark .tooltip-popup{background:#1F2937;color:#F3F4F6;}
             <tbody>
               <tr style="border-bottom:1px solid var(--border-sub);"><td style="padding:10px 12px 10px 0;font-size:13px;color:var(--text-1);font-weight:600;white-space:nowrap;">0812-3456-7890</td><td style="padding:10px 12px 10px 0;font-size:13px;color:var(--text-2);">Apakah bisa early check-in jam 10?</td><td style="padding:10px 12px 10px 0;white-space:nowrap;"><span class="badge badge-needs">Perlu Dibalas</span></td><td style="padding:10px 12px 10px 0;text-align:right;font-size:12px;color:var(--text-3);white-space:nowrap;">08:28</td><td style="padding:10px 0;text-align:right;white-space:nowrap;"><button onclick="viewConvFromReport('0812-3456-7890')" style="font-size:12px;font-weight:700;color:#10B981;background:none;border:none;cursor:pointer;padding:0;display:inline-flex;align-items:center;gap:3px;">Lihat<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></button></td></tr>
               <tr style="border-bottom:1px solid var(--border-sub);"><td style="padding:10px 12px 10px 0;font-size:13px;color:var(--text-1);font-weight:600;white-space:nowrap;">0878-9012-3456</td><td style="padding:10px 12px 10px 0;font-size:13px;color:var(--text-2);">Suite berapa malam minimalnya?</td><td style="padding:10px 12px 10px 0;white-space:nowrap;"><span class="badge badge-needs">Perlu Dibalas</span></td><td style="padding:10px 12px 10px 0;text-align:right;font-size:12px;color:var(--text-3);white-space:nowrap;">07:45</td><td style="padding:10px 0;text-align:right;white-space:nowrap;"><button onclick="viewConvFromReport('0878-9012-3456')" style="font-size:12px;font-weight:700;color:#10B981;background:none;border:none;cursor:pointer;padding:0;display:inline-flex;align-items:center;gap:3px;">Lihat<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></button></td></tr>
+              <tr style="border-bottom:1px solid var(--border-sub);"><td style="padding:10px 12px 10px 0;font-size:13px;color:var(--text-1);font-weight:600;white-space:nowrap;">0855-1122-3344</td><td style="padding:10px 12px 10px 0;font-size:13px;color:var(--text-2);">Oke terima kasih atas informasinya!</td><td style="padding:10px 12px 10px 0;white-space:nowrap;"><span class="badge badge-manual">Dibalas Manual</span></td><td style="padding:10px 12px 10px 0;text-align:right;font-size:12px;color:var(--text-3);white-space:nowrap;">14:20</td><td style="padding:10px 0;text-align:right;white-space:nowrap;"><button onclick="viewConvFromReport('0855-1122-3344')" style="font-size:12px;font-weight:700;color:#10B981;background:none;border:none;cursor:pointer;padding:0;display:inline-flex;align-items:center;gap:3px;">Lihat<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></button></td></tr>
               <tr style="border-bottom:1px solid var(--border-sub);"><td style="padding:10px 12px 10px 0;font-size:13px;color:var(--text-1);font-weight:600;white-space:nowrap;">0856-7890-1234</td><td style="padding:10px 12px 10px 0;font-size:13px;color:var(--text-2);">Terima kasih informasinya!</td><td style="padding:10px 12px 10px 0;white-space:nowrap;"><span class="badge badge-handled">Dibalas Otomatis</span></td><td style="padding:10px 12px 10px 0;text-align:right;font-size:12px;color:var(--text-3);white-space:nowrap;">08:10</td><td style="padding:10px 0;text-align:right;white-space:nowrap;"><button onclick="viewConvFromReport('0856-7890-1234')" style="font-size:12px;font-weight:700;color:#10B981;background:none;border:none;cursor:pointer;padding:0;display:inline-flex;align-items:center;gap:3px;">Lihat<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></button></td></tr>
               <tr><td style="padding:10px 12px 10px 0;font-size:13px;color:var(--text-1);font-weight:600;white-space:nowrap;">0821-2345-6789</td><td style="padding:10px 12px 10px 0;font-size:13px;color:var(--text-2);">Ok terima kasih!</td><td style="padding:10px 12px 10px 0;white-space:nowrap;"><span class="badge badge-handled">Dibalas Otomatis</span></td><td style="padding:10px 12px 10px 0;text-align:right;font-size:12px;color:var(--text-3);white-space:nowrap;">06:30</td><td style="padding:10px 0;text-align:right;white-space:nowrap;"><button onclick="viewConvFromReport('0821-2345-6789')" style="font-size:12px;font-weight:700;color:#10B981;background:none;border:none;cursor:pointer;padding:0;display:inline-flex;align-items:center;gap:3px;">Lihat<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></button></td></tr>
             </tbody>
@@ -679,12 +729,17 @@ html.dark .tooltip-popup{background:#1F2937;color:#F3F4F6;}
         </div>
         <div class="card">
           <div class="field-group">
-            <label class="field-label">Nama Penjawab</label>
+            <div class="field-label-row">
+              <label class="field-label">Nama Penjawab</label>
+              <span class="tooltip-anchor"><span class="tooltip-i">i</span><span class="tooltip-popup">Nama yang dipakai admin otomatis saat berkenalan dengan pelanggan.</span></span>
+            </div>
             <input type="text" class="input-base" value="Admin Villa Ubud Jiwa" placeholder="cth: Admin Toko Kami">
-            <p class="field-helper">Nama yang dipakai admin otomatis saat berkenalan dengan pelanggan.</p>
           </div>
           <div class="field-group" style="margin-bottom:0;">
-            <label class="field-label">Konten Bisnis</label>
+            <div class="field-label-row">
+              <label class="field-label">Konten Bisnis</label>
+              <span class="tooltip-anchor"><span class="tooltip-i">i</span><span class="tooltip-popup">Tulis selengkap mungkin — semakin lengkap, semakin pintar admin otomatis kamu. Update kapan saja setelah ada perubahan.</span></span>
+            </div>
             <textarea class="input-base" style="min-height:340px;font-size:13.5px;line-height:1.7;" placeholder="Tulis semua info bisnis kamu di sini:&#10;&#10;• Jam buka dan tutup&#10;• Daftar produk / layanan dan harga&#10;• Alamat dan cara ke lokasi&#10;• Pertanyaan yang sering ditanya (FAQ)&#10;• Kebijakan (refund, booking, pembayaran)&#10;&#10;Semakin lengkap, semakin pintar admin otomatis kamu.">Nama: Villa Ubud Jiwa
 Lokasi: Jl. Raya Ubud No. 12, Gianyar, Bali
 
@@ -704,7 +759,6 @@ Early check-in dari jam 10:00 tersedia jika kamar sudah bersih (gratis, tergantu
 
 FASILITAS:
 Kolam renang, WiFi gratis, sarapan termasuk, parkir gratis, area taman.</textarea>
-            <p class="field-helper" style="margin-top:8px;">Update kapan saja setelah ada perubahan harga atau info baru.</p>
           </div>
         </div>
         <button class="btn btn-md btn-primary" style="width:100%;justify-content:center;margin-top:16px;" onclick="saveKnowledge()">
@@ -1082,7 +1136,7 @@ Kolam renang, WiFi gratis, sarapan termasuk, parkir gratis, area taman.</textare
 <script>
 // ── Mock data ──
 const conversations = [
-  {id:1,waNumber:'0812-3456-7890',lastMsg:'Apakah bisa early check-in jam 10?',lastMsgAt:'2026-06-30T08:28:00',status:'needs',humanTakeover:true,closed:false,avatarBg:'#10B981',
+  {id:1,waNumber:'0812-3456-7890',lastMsg:'Apakah bisa early check-in jam 10?',lastMsgAt:'2026-06-30T08:28:00',alertedAt:'2026-06-30T08:28:00',humanTakeover:false,closed:false,avatarBg:'#10B981',
    messages:[
      {dir:'in',body:'Halo, ada kamar available malam ini?',time:'08:30',src:'customer'},
      {dir:'out',body:'Halo! Villa Ubud Jiwa masih ada kamar malam ini.\nKamar Deluxe: Rp 750.000/malam\nSuite: Rp 1.200.000/malam\n\nMau pesan untuk berapa malam?',time:'08:30',src:'bot'},
@@ -1090,23 +1144,31 @@ const conversations = [
      {dir:'out',body:'Suite Rp 1.200.000/malam, sudah include sarapan untuk 2 orang. View sawah, ada bathtub juga.',time:'08:31',src:'bot'},
      {dir:'in',body:'Apakah bisa early check-in jam 10 pagi?',time:'08:33',src:'customer',unhandled:true},
    ]},
-  {id:2,waNumber:'0856-7890-1234',lastMsg:'Terima kasih informasinya!',lastMsgAt:'2026-06-30T09:12:00',status:'handled',humanTakeover:false,closed:true,avatarBg:'#6366F1',
+  {id:2,waNumber:'0856-7890-1234',lastMsg:'Terima kasih informasinya!',lastMsgAt:'2026-06-30T09:12:00',alertedAt:null,humanTakeover:false,closed:true,avatarBg:'#6366F1',
    messages:[
      {dir:'in',body:'Harga kamar Deluxe berapa?',time:'09:10',src:'customer'},
      {dir:'out',body:'Kamar Deluxe Rp 750.000/malam, termasuk balkon, view kebun, dan sarapan untuk 2 orang.',time:'09:10',src:'bot'},
      {dir:'in',body:'Terima kasih informasinya!',time:'09:12',src:'customer'},
    ]},
-  {id:3,waNumber:'0878-9012-3456',lastMsg:'Suite berapa malam minimalnya?',lastMsgAt:'2026-06-30T07:45:00',status:'needs',humanTakeover:true,closed:false,avatarBg:'#059669',
+  {id:3,waNumber:'0878-9012-3456',lastMsg:'Suite berapa malam minimalnya?',lastMsgAt:'2026-06-30T07:45:00',alertedAt:'2026-06-30T07:45:00',humanTakeover:false,closed:false,avatarBg:'#059669',
    messages:[
      {dir:'in',body:'Suite tersedia weekend ini?',time:'07:55',src:'customer'},
      {dir:'out',body:'Untuk ketersediaan akhir pekan, boleh konfirmasi nama dan tanggal check-in yang diinginkan?',time:'07:55',src:'bot'},
      {dir:'in',body:'Suite berapa malam minimalnya?',time:'08:00',src:'customer',unhandled:true},
    ]},
-  {id:4,waNumber:'0821-2345-6789',lastMsg:'Ok terima kasih!',lastMsgAt:'2026-06-29T06:30:00',status:'handled',humanTakeover:false,closed:true,avatarBg:'#0F766E',
+  {id:4,waNumber:'0821-2345-6789',lastMsg:'Ok terima kasih!',lastMsgAt:'2026-06-29T06:30:00',alertedAt:null,humanTakeover:false,closed:true,avatarBg:'#0F766E',
    messages:[
      {dir:'in',body:'Fasilitas apa saja yang tersedia?',time:'07:00',src:'customer'},
      {dir:'out',body:'Villa Ubud Jiwa punya kolam renang, WiFi gratis, sarapan termasuk, dan parkir gratis.',time:'07:00',src:'bot'},
      {dir:'in',body:'Ok terima kasih!',time:'07:02',src:'customer'},
+   ]},
+  {id:5,waNumber:'0855-1122-3344',lastMsg:'Oke terima kasih atas informasinya!',lastMsgAt:'2026-06-29T14:20:00',alertedAt:'2026-06-29T14:10:00',humanTakeover:true,closed:false,avatarBg:'#7C3AED',
+   messages:[
+     {dir:'in',body:'Apakah villa bisa untuk acara pernikahan kecil?',time:'14:05',src:'customer'},
+     {dir:'out',body:'Mohon maaf, untuk pertanyaan tentang acara khusus saya belum bisa memberikan info yang lengkap.',time:'14:05',src:'bot'},
+     {dir:'in',body:'Kami butuh tempat untuk sekitar 30 tamu.',time:'14:10',src:'customer',unhandled:true},
+     {dir:'out',body:'Halo! Villa kami bisa menampung hingga 30 tamu untuk acara intimate. Hubungi kami untuk detail paket event ya.',time:'14:15',src:'partner'},
+     {dir:'in',body:'Oke terima kasih atas informasinya!',time:'14:20',src:'customer'},
    ]},
 ];
 
@@ -1117,6 +1179,13 @@ const isMobile = () => window.innerWidth <= 640;
 function initials(wa){return wa.replace(/\D/g,'').slice(-2);}
 function badgeLabel(s){return {needs:'Perlu Dibalas',handled:'Dibalas Otomatis',manual:'Dibalas Manual',waiting:'Menunggu'}[s]||s;}
 function badgeClass(s){return {needs:'badge-needs',handled:'badge-handled',manual:'badge-manual',waiting:'badge-waiting'}[s]||'badge-muted';}
+
+// Derive display status from alertedAt + humanTakeover fields
+function deriveStatus(conv){
+  if(conv.alertedAt && !conv.humanTakeover) return 'needs';
+  if(conv.humanTakeover) return 'manual';
+  return 'handled';
+}
 
 function fmtTime(iso){
   const d=new Date(iso),now=new Date();
@@ -1130,12 +1199,12 @@ function fmtTime(iso){
 
 function getFilteredList(tab){
   if(tab==='closed') return conversations.filter(c=>c.closed);
-  if(tab==='pending') return conversations.filter(c=>c.humanTakeover&&!c.closed);
+  if(tab==='pending') return conversations.filter(c=>c.alertedAt&&!c.humanTakeover&&!c.closed);
   return conversations.filter(c=>!c.closed);
 }
 
 function updateBadges(){
-  const count = conversations.filter(c=>c.humanTakeover&&!c.closed).length;
+  const count = conversations.filter(c=>c.alertedAt&&!c.humanTakeover&&!c.closed).length;
   const sidebarBadge = document.getElementById('sidebar-badge-inbox');
   const bnavBadge = document.getElementById('bnav-badge');
   const pendingEl = document.getElementById('pending-count');
@@ -1167,11 +1236,11 @@ function renderConvList(tab){
         <div style="width:38px;height:38px;border-radius:9999px;background:${c.avatarBg};display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;flex-shrink:0;">${initials(c.waNumber)}</div>
         <div style="flex:1;min-width:0;">
           <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
-            <span style="font-size:13px;font-weight:${c.humanTakeover?700:600};color:var(--text-1);">${c.waNumber}</span>
+            <span style="font-size:13px;font-weight:${(c.alertedAt&&!c.humanTakeover)?700:600};color:var(--text-1);">${c.waNumber}</span>
             <span style="font-size:11px;color:var(--text-3);flex-shrink:0;margin-left:6px;">${fmtTime(c.lastMsgAt)}</span>
           </div>
-          <p style="margin:0;font-size:12px;color:${c.humanTakeover?'var(--text-2)':'var(--text-3)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.lastMsg}</p>
-          <span class="badge ${badgeClass(c.status)}" style="margin-top:5px;">${badgeLabel(c.status)}</span>
+          <p style="margin:0;font-size:12px;color:${c.alertedAt?'var(--text-2)':'var(--text-3)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.lastMsg}</p>
+          <span class="badge ${badgeClass(deriveStatus(c))}" style="margin-top:5px;">${badgeLabel(deriveStatus(c))}</span>
         </div>
       </div>
     </div>`).join('');
@@ -1183,17 +1252,21 @@ function renderThread(conv){
   av.textContent = initials(conv.waNumber);
   av.style.background = conv.avatarBg;
   document.getElementById('th-name').textContent = conv.waNumber;
+  const status = deriveStatus(conv);
   const badge = document.getElementById('th-badge');
-  badge.className = `badge ${badgeClass(conv.status)}`;
-  badge.textContent = badgeLabel(conv.status);
-  document.getElementById('btn-mark-done').style.display = conv.humanTakeover?'':'none';
-  document.getElementById('reply-hint').style.display = conv.humanTakeover?'block':'none';
+  badge.className = `badge ${badgeClass(status)}`;
+  badge.textContent = badgeLabel(status);
+  document.getElementById('btn-mark-done').style.display = conv.closed?'none':'';
+  document.getElementById('reply-hint').style.display = (conv.alertedAt&&!conv.humanTakeover)?'block':'none';
 
   const modeSwitch = document.getElementById('th-mode-switch');
   modeSwitch.style.display = !conv.closed ? 'flex' : 'none';
-  const isManualMode = conv.humanTakeover || conv.status === 'manual';
+  const isManualMode = conv.humanTakeover;
   document.getElementById('btn-mode-auto').classList.toggle('active-pill', !isManualMode);
   document.getElementById('btn-mode-manual').classList.toggle('active-pill', isManualMode);
+  document.getElementById('th-mode-switch').classList.toggle('manual-active', isManualMode);
+  const modeBar = document.getElementById('thread-mode-bar');
+  if(modeBar) modeBar.classList.toggle('visible', isManualMode);
 
   document.getElementById('thread-body').innerHTML = conv.messages.map(msg=>{
     if(msg.dir==='in') return `
@@ -1299,7 +1372,7 @@ function showView(view){
 function markDone(){
   const conv=conversations.find(c=>c.id===activeConvId);
   if(!conv) return;
-  conv.humanTakeover=false;conv.status='handled';conv.closed=true;
+  conv.humanTakeover=false;conv.alertedAt=null;conv.closed=true;
   renderConvList(activeTab);
   renderThread(conv);
   toast('Percakapan ditandai selesai.');
@@ -1309,10 +1382,12 @@ function setReplyMode(mode){
   const conv=conversations.find(c=>c.id===activeConvId);
   if(!conv) return;
   if(mode==='manual'){
-    conv.humanTakeover=true;conv.status='needs';conv.closed=false;
+    conv.humanTakeover=true;
+    if(!conv.alertedAt) conv.alertedAt=new Date().toISOString();
+    conv.closed=false;
     toast('Diambil alih — kamu yang akan membalas.');
   }else{
-    conv.humanTakeover=false;conv.status='handled';conv.closed=false;
+    conv.humanTakeover=false;conv.alertedAt=null;conv.closed=false;
     toast('Dialihkan ke admin otomatis.');
   }
   renderConvList(activeTab);
@@ -1333,6 +1408,8 @@ function renderEmptyThread(){
   document.getElementById('btn-mark-done').style.display='none';
   document.getElementById('reply-hint').style.display='none';
   document.getElementById('th-mode-switch').style.display='none';
+  const modeBar=document.getElementById('thread-mode-bar');
+  if(modeBar) modeBar.classList.remove('visible');
   document.getElementById('thread-body').innerHTML='<div class="thread-empty"><svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="var(--text-3)" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/></svg><p style="margin:0;font-size:13.5px;color:var(--text-3);font-weight:500;">Pilih percakapan untuk memulai</p></div>';
 }
 
@@ -1345,7 +1422,7 @@ function sendReply(){
   const now=new Date();
   const t=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
   conv.messages.push({dir:'out',body:text,time:t,src:'partner'});
-  conv.humanTakeover=false;conv.status='manual';conv.closed=false;conv.lastMsg=text;conv.lastMsgAt=now.toISOString();
+  conv.humanTakeover=true;conv.closed=false;conv.lastMsg=text;conv.lastMsgAt=now.toISOString();
   inp.value='';
   renderConvList(activeTab);
   renderThread(conv);
@@ -1366,7 +1443,7 @@ function threadAction(action){
   closeThreadMenu();
   const conv=conversations.find(c=>c.id===activeConvId);
   if(action==='mark-waiting'){
-    if(conv){conv.humanTakeover=true;conv.status='needs';conv.closed=false;renderConvList(activeTab);renderThread(conv);}
+    if(conv){conv.alertedAt=new Date().toISOString();conv.humanTakeover=false;conv.closed=false;renderConvList(activeTab);renderThread(conv);}
     toast('Percakapan ditandai menunggu.');
   }else if(action==='copy-wa'){
     navigator.clipboard.writeText(conv?.waNumber||'').catch(()=>{});
@@ -1494,14 +1571,100 @@ function toast(msg){
 function saveKnowledge(){toast('Data bisnis berhasil disimpan.');}
 function savePassword(){toast('Kata sandi berhasil diubah.');}
 
+// ── Report mock data ──
+const reportData={
+  7:{
+    totalConv:84,totalDelta:'+8',totalDeltaPos:true,
+    autoRate:88,
+    manualCount:10,manualDelta:'+2',manualDeltaPos:false,
+    closed:71,closedRate:84.5,
+    insightText:'Hari paling ramai: Jumat (25 percakapan) · Admin otomatis hemat ~6 jam waktu balas manual minggu ini',
+    chartTitle:'Percakapan per Hari',
+    chart:[
+      {label:'Sen',auto:8,manual:2},
+      {label:'Sel',auto:14,manual:2},
+      {label:'Rab',auto:18,manual:2},
+      {label:'Kam',auto:12,manual:1},
+      {label:'Jum',auto:22,manual:3},
+      {label:'Sab',auto:16,manual:0},
+      {label:'Min',auto:20,manual:1},
+    ]
+  },
+  30:{
+    totalConv:347,totalDelta:'+23',totalDeltaPos:true,
+    autoRate:91,
+    manualCount:31,manualDelta:'+7',manualDeltaPos:false,
+    closed:298,closedRate:85.9,
+    insightText:'Minggu paling ramai: Mg. 4 (106 percakapan) · Admin otomatis hemat ~24 jam waktu balas manual bulan ini',
+    chartTitle:'Percakapan per Minggu',
+    chart:[
+      {label:'Mg. 1',auto:72,manual:8},
+      {label:'Mg. 2',auto:85,manual:10},
+      {label:'Mg. 3',auto:91,manual:12},
+      {label:'Mg. 4',auto:99,manual:7},
+    ]
+  }
+};
+
+function renderReportChart(chartData){
+  const svg=document.getElementById('report-chart');
+  if(!svg) return;
+  const W=700,BASE=120,n=chartData.length;
+  const barW=Math.floor((W-(n+1)*10)/n);
+  const gap=Math.floor((W-n*barW)/(n+1));
+  const maxTotal=Math.max(...chartData.map(d=>d.auto+d.manual));
+  const gridMax=Math.ceil(maxTotal/5)*5||10;
+  let html='';
+  // Grid lines
+  [0.33,0.66,1].forEach(frac=>{
+    const y=(BASE-frac*BASE).toFixed(1);
+    const val=Math.round(frac*gridMax);
+    html+=`<line x1="0" y1="${y}" x2="${W}" y2="${y}" stroke="var(--border)" stroke-width="1" stroke-dasharray="3,3"/>`;
+    html+=`<text x="-5" y="${(BASE-frac*BASE+4).toFixed(1)}" text-anchor="end" font-size="9.5" fill="#9CA3AF" font-family="Plus Jakarta Sans">${val}</text>`;
+  });
+  html+=`<line x1="0" y1="${BASE}" x2="${W}" y2="${BASE}" stroke="var(--border)" stroke-width="1"/>`;
+  // Bars
+  chartData.forEach((d,i)=>{
+    const x=gap+i*(barW+gap);
+    const totalH=Math.round(((d.auto+d.manual)/gridMax)*BASE);
+    const manualH=Math.round((d.manual/gridMax)*BASE);
+    if(totalH>0){
+      // Emerald full bar (provides rounded bottom corners)
+      html+=`<rect x="${x}" y="${BASE-totalH}" width="${barW}" height="${totalH}" rx="4" fill="#10B981"/>`;
+      // Indigo overlay for manual portion (provides rounded top corners, blends at junction)
+      if(manualH>0){
+        html+=`<rect x="${x}" y="${BASE-totalH}" width="${barW}" height="${manualH}" rx="4" fill="#6366F1"/>`;
+      }
+    }
+    html+=`<text x="${(x+barW/2).toFixed(1)}" y="${BASE+15}" text-anchor="middle" font-size="10.5" fill="#9CA3AF" font-family="Plus Jakarta Sans">${d.label}</text>`;
+  });
+  svg.innerHTML=html;
+}
+
 function setRange(d){
   document.getElementById('btn-7days').className=d===7?'btn btn-sm btn-primary':'btn btn-sm btn-secondary';
   document.getElementById('btn-30days').className=d===30?'btn btn-sm btn-primary':'btn btn-sm btn-secondary';
-  // show actual date range so numbers are self-explanatory without the button label
-  const end=new Date(2026,5,30); // 30 Jun 2026
+  const end=new Date(2026,5,30);
   const start=new Date(end);start.setDate(end.getDate()-(d-1));
   const fmt=(dt)=>dt.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
   document.getElementById('reports-period').textContent=`${fmt(start)} – ${fmt(end)}`;
+  const rd=reportData[d];
+  // Stat cards
+  document.getElementById('stat-auto-rate').textContent=rd.autoRate+'%';
+  document.getElementById('stat-total').textContent=rd.totalConv;
+  const totalDel=document.getElementById('stat-total-delta');
+  totalDel.textContent=rd.totalDelta+' vs periode lalu';
+  totalDel.style.color=rd.totalDeltaPos?'#10B981':'#EF4444';
+  document.getElementById('stat-manual').textContent=rd.manualCount;
+  const manualDel=document.getElementById('stat-manual-delta');
+  manualDel.textContent=rd.manualDelta+' vs periode lalu';
+  manualDel.style.color=rd.manualDeltaPos?'#10B981':'#F59E0B';
+  document.getElementById('stat-closed').textContent=rd.closed;
+  document.getElementById('stat-closed-sub').textContent=rd.closedRate+'% tingkat selesai';
+  // Insight + chart
+  document.getElementById('report-insight-text').textContent=rd.insightText;
+  document.getElementById('chart-title').textContent=rd.chartTitle;
+  renderReportChart(rd.chart);
 }
 
 // ── Init ──
@@ -1511,6 +1674,7 @@ function setRange(d){
     document.getElementById('dark-mode-track').classList.add('on');
   }
   waSetState(waState);
+  setRange(7);
   showView('inbox');
   renderConvList('all');
   if(!isMobile()){
